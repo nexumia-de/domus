@@ -1,0 +1,1 @@
+A cooked dish is no longer called "Uncooked" because its heat steps are written as plain actions (heat, cook, melt): pizza, tacos, tamagoyaki and 17 more lose the mark and drop out of that filter; the raw salads keep it.

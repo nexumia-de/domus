@@ -74,14 +74,16 @@ or rereading the sources of the shipped dishes.
 section "Dishes like this" on every dish page, under the method and above
 the closed sections, with up to five dishes and what each shares; none
 when nothing is alike enough. Decided: Jaccard over the characters
-without "with meat", "with fish" and "uncooked", at least two shared and
-a share of at least one half, the same course required where both state
-one (not only a tie-breaker, as written below: a dessert like a main
-was the plainest wrong match), then meat flag and cuisine as
-tie-breakers; a list on the page rather than a link to the filtered
-list. 27 of the 121 dishes get one. **Open**: whether the link into the
-list, ordered by likeness, is still wanted; the native app; how it reads
-on a real notebook. What follows is the plan as written.
+without "with meat" and "with fish", at least two shared and a share of
+at least one half, one shared character other than a seasoning
+(tomatoey, garlicky, lemony, spicy), the same course required where both
+state one (not only a tie-breaker, as written below: a dessert like a
+main was the plainest wrong match), never a frame with one of its own
+parts, then meat flag and cuisine as tie-breakers; a list on the page
+rather than a link to the filtered list. Counted on 2026-11-24: 21 of
+the 121 dishes get one. **Open**: whether the link into the list,
+ordered by likeness, is still wanted; the native app; how it reads on a
+real notebook. What follows is the plan as written.
 
 - **Now**: every dish has its characters, computed when it is shown
   ([analysis](dish-characters.md)).

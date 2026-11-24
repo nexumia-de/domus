@@ -4,7 +4,8 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
-import { CLASSICS } from '../src/classics/index';
+import { isDishOfItsOwn, withoutAlternatives } from '@culina/engine';
+import { CLASSICS, FRAMES } from '../src/classics/index';
 import { belowOf, classesOf, conversionOf } from '../src/characters/classes';
 import { factsOfClassic } from '../src/characters/classic';
 import { factsOfDish } from '../src/characters/dish';
@@ -274,6 +275,22 @@ describe('a dish of the notebook', () => {
       stepsKnown: true,
     });
   });
+
+  test('heat written as a plain action counts: a dish whose step is "heat" is not uncooked', () => {
+    // Before 2026-11-24 the facts carried techniques only, and a step "heat" was invisible.
+    const heated: DishRecord = { ...dish('c-tomato'), steps: [{ action: 'heat' }] };
+    const plain: Notebook = { ...nb, components: [] };
+    const facts = factsOfDish(plain, { ...heated, slots: [] }, lookup);
+    expect(facts.actions).toEqual(['heat']);
+    expect(characterIds(facts)).not.toContain('uncooked');
+    // Control: a step that only serves leaves it uncooked.
+    const served = factsOfDish(
+      plain,
+      { ...heated, slots: [], steps: [{ action: 'serve' }] },
+      lookup,
+    );
+    expect(characterIds(served)).toContain('uncooked');
+  });
 });
 
 describe('chips', () => {
@@ -398,5 +415,77 @@ describe('without meat and fish, a dish of the notebook', () => {
       .flatMap((r) => r.when)
       .flatMap((c) => c.ingredients ?? []);
     expect(classes.filter((c) => !MEAT_AND_FISH.classes.includes(c))).toEqual([]);
+  });
+});
+
+// The rule "uncooked" reads the plain actions of the steps since 2026-11-24: before, heat written
+// as an action (cook, heat, melt, preheat, ...) was invisible, and 20 cooked dishes were said to be
+// uncooked. Each list is the state of 2026-11-24, read against the steps of each dish.
+describe('uncooked on the shipped dishes and frames', () => {
+  const uncooked = [...CLASSICS, ...FRAMES]
+    .filter(isDishOfItsOwn)
+    .map(withoutAlternatives)
+    .filter((c) => characterIds(factsOfClassic(c, lookup, below)).includes('uncooked'))
+    .map((c) => c.id);
+  const ofAny = (id: string): string[] => {
+    const classic = [...CLASSICS, ...FRAMES].find((c) => c.id === id);
+    if (classic === undefined) throw new Error(id);
+    return characterIds(factsOfClassic(withoutAlternatives(classic), lookup, below));
+  };
+
+  test('exactly the seven dishes of which no step uses heat', () => {
+    expect(uncooked.sort()).toEqual(
+      [
+        'coban-salatasi',
+        'coleslaw',
+        'gazpacho-andaluz',
+        'horiatiki',
+        'kachumber',
+        'marinierte-heringe',
+        'pai-huanggua',
+      ].sort(),
+    );
+  });
+
+  test('not the 20 cooked dishes that carried it before', () => {
+    for (const id of [
+      'fanqie-chao-dan',
+      'ruehrei',
+      'gambas-al-ajillo',
+      'crepes',
+      'oeufs-brouilles-au-fromage',
+      'patates-lemonates',
+      'souvlaki-kotopoulo',
+      'chapati',
+      'impasto-per-pizza',
+      'miso-shiru',
+      'sake-no-shioyaki',
+      'tamagoyaki',
+      'tofu-suteki',
+      'pollo-deshebrado-en-jitomate',
+      'tortillas-de-harina',
+      'kofte',
+      'buttermilk-pancakes',
+      'pizza-margherita',
+      'souvlaki-plate',
+      'tacos',
+    ]) {
+      expect(ofAny(id), id).not.toContain('uncooked');
+    }
+  });
+
+  test('two that lose it by the rule: sesame toasted, a syrup heated', () => {
+    expect(ofAny('kyuri-no-sunomono')).not.toContain('uncooked');
+    expect(ofAny('achat')).not.toContain('uncooked');
+  });
+
+  test('a sauce base: saure Eiersauce is cooked; two cited sauces stay wrong (known)', () => {
+    expect(ofAny('saure-eiersauce')).not.toContain('uncooked');
+    // Their heat is in a step "whisk over the heat" with neither a heat action nor a technique;
+    // the cited recipes' steps are not changed for it (docs/dish-characters.md).
+    expect(ofAny('spargelsauce')).toContain('uncooked');
+    expect(ofAny('sauce-blanche')).toContain('uncooked');
+    // Control: a cold sauce keeps it.
+    expect(ofAny('mayonnaise')).toContain('uncooked');
   });
 });

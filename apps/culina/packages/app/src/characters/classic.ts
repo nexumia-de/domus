@@ -42,6 +42,9 @@ export const factsOfClassic = (
     techniques: [
       ...new Set(steps.flatMap((s) => (s.technique === undefined ? [] : [s.technique]))),
     ],
+    // A step names a technique or a plain action; heat written as an action ("heat", "cook") is
+    // only here, and the rule "uncooked" reads it.
+    actions: [...new Set(steps.flatMap((s) => (s.action === undefined ? [] : [s.action])))],
     stepsKnown: steps.some((s) => s.technique !== undefined || s.action !== undefined),
     course: classic.course,
   };

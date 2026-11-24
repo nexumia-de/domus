@@ -115,6 +115,23 @@ describe('techniques', () => {
     expect(ids(facts([], [], false), [FRIED, COLD])).toEqual([]);
   });
 
+  test('withoutActions: a plain action of heat takes the character away; others do not', () => {
+    const rule: CharacterRule = {
+      id: 'cold',
+      when: [{ withoutTechniques: ['boil'], withoutActions: ['heat', 'cook'] }],
+    };
+    const withActions = (actions: string[], stepsKnown = true): CharacterFacts => ({
+      ...facts([], ['knife-cuts'], stepsKnown),
+      actions,
+    });
+    expect(ids(withActions(['heat', 'serve']), [rule])).toEqual([]);
+    // Controls: actions without heat, and facts without any actions, keep it.
+    expect(ids(withActions(['mix', 'serve']), [rule])).toEqual(['cold']);
+    expect(ids(facts([], ['knife-cuts']), [rule])).toEqual(['cold']);
+    // Not judged without known steps.
+    expect(ids(withActions([], false), [rule])).toEqual([]);
+  });
+
   test('ingredient and technique in one clause must both hold', () => {
     const rule: CharacterRule = {
       id: 'creamy',

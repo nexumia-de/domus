@@ -115,6 +115,12 @@ const holds = (
     if (clause.withoutTechniques.some((t) => facts.techniques.includes(t))) return undefined;
     reason ??= { clause: index, by: 'technique' };
   }
+  if (clause.withoutActions !== undefined) {
+    if (!facts.stepsKnown) return undefined;
+    const actions = facts.actions ?? [];
+    if (clause.withoutActions.some((a) => actions.includes(a))) return undefined;
+    reason ??= { clause: index, by: 'technique' };
+  }
   if (clause.courses !== undefined) {
     if (facts.course === undefined || !clause.courses.includes(facts.course)) return undefined;
     reason ??= { clause: index, by: 'course' };

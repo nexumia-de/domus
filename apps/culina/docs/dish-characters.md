@@ -235,6 +235,9 @@ Counts per character over the 48 dishes:
 | rich          |      0 |     4 | Holländische Sauce, alioli, mayonnaise, sauce hollandaise                                                                                                                                                                                                |
 | light         |      0 |     0 |                                                                                                                                                                                                                                                          |
 
+The counts are those of the 48 dishes of 2026-11-21; "uncooked" was
+corrected on 2026-11-24 ([below](#uncooked-reads-the-plain-actions-2026-11-24)).
+
 Dishes with no character after: egg noodles, Kartoffelklöße, potato soup,
 arlequín de judías, guisantes, potaje, haricots verts au beurre, potage aux
 pois, tagliatelle verdi (9; before: 13).
@@ -287,6 +290,45 @@ dish, which gives every dish the characters it had; the alioli gains "eggy",
 which the unmeasured water line had held back. **Test:**
 `test/characters.test.ts` ("a boiled dinner whose meat has no amount is not
 called light" fails with the water counted), `test/water-line.test.ts`.
+
+## Uncooked reads the plain actions (2026-11-24)
+
+Found by the review of "Dishes like this" ([behaviour](behaviour.md#dishes-like-this)):
+"uncooked" was a chip on 20 cooked dishes and in the filter. Its rule
+(`withoutTechniques`, "no step uses heat") holds when the steps are known
+and none names a heat technique; but a step names a technique or a plain
+action, the facts carried only the techniques, and heat written as an
+action ("Heat the oil", "Bring the water to the boil", "Melt the butter")
+was invisible. Now the facts carry the steps' actions too
+(`actions` in the engine's `CharacterFacts`, set by `factsOfClassic` and
+`factsOfDish`), a clause may ask `withoutActions`, and "uncooked" lists
+the heat actions: cook, grill, heat, melt, preheat, remove-from-heat,
+roast, toast (a judgement: "dry", "cool", "stand" and "take-out" are not
+heat).
+
+Of the 121 dishes of Cook, "uncooked" is now said of seven: pai huanggua,
+marinierte Heringe, gazpacho, horiatiki, kachumber, çoban salatası and
+coleslaw. It is no longer said of the 20 cooked ones: fanqie chao dan,
+Rührei, gambas al ajillo, crêpes, oeufs brouillés, patates lemonates,
+souvlaki, chapati, the pizza dough, miso shiru, sake no shioyaki,
+tamagoyaki, tofu suteki, pollo deshebrado, tortillas de harina, köfte,
+buttermilk pancakes, pizza margherita, the souvlaki plate and the tacos.
+Two lose it by the rule's own basis: kyuri no sunomono (its sesame is
+toasted) and achat (its syrup is heated). Among the sauce bases saure
+Eiersauce is no longer uncooked, and sauce maître d'hôtel loses it too (its
+bowl is set near the stove to soften the butter, a step "heat"); the cold
+sauces keep it.
+
+**Known and left**: Spargelsauce and sauce blanche are still said to be
+uncooked. Their heat is in a step "whisk over the heat" whose word is
+"whisk", neither a heat action nor a technique; they are cited recipes and
+their steps are not changed for a rule. **Test:**
+`test/characters.test.ts` ("uncooked on the shipped dishes and frames": the
+seven exactly, the 20 not, the two that lose it, the sauces with the two
+known ones; "heat written as a plain action counts" on a dish of the
+notebook, with a control), the engine's `test/characters.test.ts`
+("withoutActions", with controls). All of them fail on the code before the
+change, the engine's controls aside.
 
 **Without meat and fish on a dish of the notebook** (from a review the
 same day). It was derived from the characters "with meat" and "with fish"

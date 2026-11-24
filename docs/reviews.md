@@ -21,6 +21,53 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: "Dishes like this" in Culina, and the character "uncooked"
+
+Two agents under one lead, both on the second-largest model. One built
+the section and its measure and counted whether a dish's total time
+could be shown honestly (it could not, and was not built). The other,
+which wrote none of it, computed every pair the measure gives on the
+real content and read them as a cook would, traced the page's code, and
+counted the times again. The builder then fixed what was found; those
+fixes were not read by a second agent.
+
+| Part                                            | Done by | Checked by                                                         |
+| ----------------------------------------------- | ------- | ------------------------------------------------------------------ |
+| The measure, the section, the tests             | agent 1 | agent 2 (all 29 pairs, the code, a browser at 360 px)              |
+| The count for a total time, and not building it | agent 1 | agent 2, with its own count (22 of 121 both times)                 |
+| The fixes, among them the rule of "uncooked"    | agent 1 | nobody but the tests, the e2e and the lead's reading of the report |
+
+**What the checks found, and where it was fixed.**
+
+- _Weak matches shown, some first:_ the dal and the tacos shared only
+  how they are seasoned (tomatoey, garlicky, lemony) and scored 1.00. A
+  match now needs one shared character that is no seasoning.
+- _A frame matched with the recipe it is made of_ (the curry and its
+  plate): the same dish. A frame and any of its parts never match.
+- _"Uncooked" said of 20 cooked dishes_ (pizza, tacos, köfte, the
+  pancakes): the rule looked for heat among a step's techniques and did
+  not see heat written as a plain action. The measure had worked around
+  it; the rule itself is fixed (the facts carry the actions, the rule
+  names the heat actions), seven dishes carry it rightly, and the
+  measure counts it again. Two cited sauces whose heat is only in a
+  step's words keep it wrongly and are named in the document.
+- _An own dish with a course word the app does not know_ was compared
+  with no dish; it takes the course the lists know.
+- _Every dish page rebuilt all list entries_ because the names were
+  loaded into a new map each time; the map keeps its identity.
+- _A count pinned by hand_ ("27 of 121") became invariants over every
+  dish plus named pairs.
+- _The builder, against its brief,_ used `git stash` once to put an old
+  file back for a test run; the tree was restored and nothing was lost.
+
+**Test counts** (the agent's runs): `npm run check:culina` passes with
+1254 engine, 1152 app and 24 native tests; Culina's e2e passes with 2064
+checks, run alone. 21 of the 121 dishes show the section.
+
+**What nobody verified.** What a cook thinks of the 21. The fixes by a
+second reader. A notebook with real own dishes. The native app, whose
+filter loses "uncooked" on the 20 dishes through the shared rule.
+
 ## 2026-11-24: Culina's list judges a frame by the chosen filling
 
 Two agents under one lead, both on the second-largest model. One made

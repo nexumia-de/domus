@@ -3,7 +3,12 @@
 // depends on. On the fictional example dishes and an in-memory notebook cache (no store, no
 // browser); the timing gain itself is not measured here.
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
-import { derivations, dishEntries, dishEntriesByKey } from '../src/browse/entries';
+import {
+  derivations,
+  dishEntries,
+  dishEntriesByKey,
+  shippedEntriesMade,
+} from '../src/browse/entries';
 import { resetCatalogue } from '../src/catalogue/load';
 import { loadContent, resetContent } from '../src/classics/content';
 import { loadNames } from '../src/classics/names';
@@ -86,4 +91,32 @@ test('a load of the catalogue names drops both halves once', async () => {
   dishEntries();
   dishEntries();
   expect(counts()).toEqual({ own: before.own + 1, shipped: before.shipped + 1 });
+});
+
+test('the names loaded again, as each dish page does, keep the entries', async () => {
+  // Each dish page calls loadNames when it opens. Before 2026-11-24 every call made a new map of
+  // the catalogue, a key of the cache, so opening a second dish page derived every entry again.
+  // Not proved: the page itself (no browser here); the cost on a phone.
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            format: 'culina-ingredient-catalogue',
+            formatVersion: 1,
+            ingredients: [{ id: 'fdc-173410', name: 'Butter, salted' }],
+          }),
+      }),
+    ),
+  );
+  const first = await loadNames();
+  dishEntries();
+  const before = counts();
+  const made = shippedEntriesMade.count;
+  expect(await loadNames()).toBe(first);
+  dishEntries();
+  expect(counts()).toEqual(before);
+  expect(shippedEntriesMade.count).toBe(made);
 });

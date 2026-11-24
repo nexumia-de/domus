@@ -1316,6 +1316,8 @@ arguments; the table with its catalogue ids is the app's
 `classes` (the ingredient's id, its ancestors, `category:<USDA food
 category>`), `g` when the mass is known and fat and energy per 100 g when
 the catalogue has them. `techniques`: the technique ids of the steps.
+`actions`: the plain action ids of the steps (since 2026-11-24; absent
+counts as none).
 `stepsKnown`: whether a step names what is done. `course`: the course the
 dish states (since 2026-11-21; a shipped dish always states one, a dish of
 the notebook none yet).
@@ -1330,6 +1332,7 @@ clause takes it away). Every condition of a clause must hold:
 | `alsoIngredients`   | each of its lists has a line of one of its classes as well (presence, no share)                                |
 | `techniques`        | a step names one of them                                                                                       |
 | `withoutTechniques` | no step names one of them, and `stepsKnown`                                                                    |
+| `withoutActions`    | no step names one of these plain actions, and `stepsKnown` (since 2026-11-24, for "uncooked")                  |
 | `courses`           | the dish states one of them; a dish without a course never matches                                             |
 | `fat`, `kcal`       | the figure per 100 g of the measured mass is within `min` and `max`                                            |
 

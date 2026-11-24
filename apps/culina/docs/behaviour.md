@@ -1146,17 +1146,25 @@ it), section `src/screens/dish-like.ts`, texts `strings.characters`.
 
 - **What is compared**: the characters of the two dishes as the lists
   have them ([characters](#characters): computed, with the cook's
-  correction on an own dish), without three: "with meat" and "with fish"
-  (what is in a dish, not what it is like: two dishes that share only
-  meat are not alike) and "uncooked" (said from the absence of a heat
-  technique, and on the shipped dishes said of pizza, tacos and scrambled
-  eggs, whose heat steps are plain actions; counted, it made tomato eggs
-  and pizza alike).
+  correction on an own dish), without "with meat" and "with fish": they
+  say what is in a dish, not what it is like, and two dishes that share
+  only meat are not alike. The dish of the page is read as the entry of
+  the dish as shown (a swap, a chosen filling), with the course only
+  where the lists know it: an own dish whose course is a word of its own
+  ("Hauptgang") has no course here, as in the lists.
 - **Score**: the characters both have over the characters either has
   (Jaccard). **A match needs at least two shared characters and a score
   of at least one half.** One shared character is a weak match even when
   it is all either dish has (red berry pudding and every other dish that
   is only sweet); two of five is mostly unlike.
+- **Seasoning alone is no likeness.** Tomatoey, garlicky, lemony and
+  spicy say how a dish is seasoned (a tomato base, garlic, lemon,
+  chilli); they count in the score, but a match needs one shared
+  character outside them. Masoor dal and the tacos share tomatoey,
+  garlicky and lemony and nothing else: not alike. The four were chosen
+  from the table as the characters of a seasoning that runs through
+  unlike dishes; sweet, cheesy, eggy and mushroomy say what the dish is
+  made of and stay full characters. A judgement.
 - **Course**: a dish of another course is never like it, where both
   state one (a dessert is not like a main; Napfkuchen is not like the
   baked flan); a dish without a course is compared with every course.
@@ -1166,40 +1174,68 @@ it), section `src/screens/dish-like.ts`, texts `strings.characters`.
 - **The dishes it chooses from** are those of the lists (`dishEntries`):
   own (the head of each family) and shipped, never a sauce base that is
   no dish, never the dish itself; for an older version the head of its
-  family counts as the dish itself. A shipped dish and its copy kept in
-  the notebook (the record's `x-origin`, now `copyOf` on the entry) are
-  never offered as like each other, nor two copies of one dish.
+  family counts as the dish itself. **The same dish under another key is
+  never offered**: a shipped dish and its copy kept in the notebook (the
+  record's `x-origin`, `copyOf` on the entry), two copies of one dish,
+  and a frame and a recipe that is one of its parts, chosen or an
+  alternative of a slot (`from.recipe` of its components, `parts` on the
+  entry): chana masala is not "like" the chickpea curry plate built on
+  it.
 - **No claim of taste**: the heading and the line say what was
   compared, nothing more.
 
-On the 121 dishes of Cook on 2026-11-24, **27 get a section**; the
-other 94 have too few characters (of the 121, 43 have no character the
-measure counts and 37 only one) or share them with no dish of their
-course. What comes out, read once by the
-agent that built it: the cheese gratins together, the egg custards
-together, the two cakes together, chana masala with its plate; the
-weakest it gives are dal with tacos and with souvlaki (tomatoey,
-garlicky, lemony), which the line under the row says plainly.
+Counted on 2026-11-24 (after the review below): **21 of the 121 dishes
+of Cook get a section.** What comes out: the cheese gratins together,
+the egg custards together, the two cakes, the two sweet baked desserts,
+the egg and cheese mains, the raw salads (çoban salatası with kachumber
+and horiatiki), ratatouille with pollo alla contadina (tomatoey, fried).
 
-**Test:** `test/dish-like.test.ts`: on written entries the thresholds,
-one shared character not enough, two of five not enough beside two of
-four (control), the three characters left out, no characters no like,
-course, the dish itself and a kept copy (control: an own dish not kept
-from it is compared), the order of the ties, at most five; on the
-shipped dishes gratin dauphinois (the potato gratin, then the
-cauliflower), crème caramel (latte brûlé, then the three creamy egg
-custards), Napfkuchen (only the torta mantovana), chana masala (its
-plate), the controls pot-au-feu, cocido, Bratkartoffeln and rote Grütze
-(none), tomato eggs not like pizza, and 27 of 121. `e2e/dish-like.mjs`
-(English and German at 360 px: the heading, the two gratins in order
-with three shared characters each, its place between the recipe and
-the closed sections, a row opening the potato gratin whose page names
-the gratin back, the layout; the control pot-au-feu with no section;
-the copy kept in the notebook like the other gratins and the shipped
-gratin not naming its copy, which failed with the copy rule taken
-out). Not proved: what a cook thinks of the matches; a real notebook
-(own dishes are compared by the same entries, tested only with written
-ones and the one kept copy); desktop width; a screen reader.
+**Review of the first version (2026-11-24).** An independent review
+computed all 29 pairs of the first version and found weak ones, some
+ranked first: a frame with the recipe it is built on (chana masala and
+its plate, souvlaki and its plate, pollo deshebrado and the tacos), and
+matches of seasoning alone (dal and tacos at 1.00, souvlaki with dal and
+tacos). Both are now excluded as above. "Uncooked", left out of the
+first version because it was said of 20 cooked dishes, is fixed in its
+rule ([dish characters](dish-characters.md#uncooked-reads-the-plain-actions-2026-11-24))
+and counted again. The page compared an own dish's unknown course word
+and found nothing; it now reads the course of the lists. Opening a dish
+page made every entry anew (the catalogue map was a new object on each
+`loadNames`); the map now keeps its identity
+(`test/browse-entries.test.ts`, "the names loaded again ... keep the
+entries", fails on the code before).
+
+**Test:** `test/dish-like.test.ts`: on written entries one shared
+character not enough, two of five not enough beside two of four
+(control), meat and fish left out and uncooked counted, seasoning alone
+not enough (control: with one other shared character), no characters no
+like, course, the dish itself and a kept copy (control: an own dish not
+kept from it), a frame and its part or a copy of its part (control: a
+recipe that is no part), the like input, the order of the ties, at most
+five; on the shipped dishes gratin dauphinois (the potato gratin, then
+the cauliflower), crème caramel (latte brûlé, then the three creamy egg
+custards), Napfkuchen (only the torta mantovana), the pairs that must
+not match (chana masala and its plate, souvlaki and its plate, pollo
+deshebrado with the tacos and the burrito; dal with the tacos, souvlaki
+with dal and tacos, pollo deshebrado with dal) beside the controls
+(gratin and potato gratin, œufs à la neige and huevos amerengados,
+Napfkuchen and torta mantovana), the raw salads, tomato eggs not like
+pizza, the controls pot-au-feu, cocido, Bratkartoffeln and rote Grütze
+(none), and invariants over every dish (never itself, never across
+courses, every match at or above both thresholds, never a frame with
+its part, symmetric). `test/dish-shown.test.ts` (a course word the app
+does not know: the like input has no course and finds a main; control:
+with the word it finds nothing). `e2e/dish-like.mjs` (English and German
+at 360 px: the heading, the two gratins in order with three shared
+characters each, its place between the recipe and the closed sections,
+a row opening the potato gratin whose page names the gratin back, the
+layout; the controls pot-au-feu and the tacos with no section; the copy
+kept in the notebook like the other gratins and the shipped gratin not
+naming its copy, which failed with the copy rule taken out). Not
+proved: what a cook thinks of the matches; a real notebook (own dishes
+are compared by the same entries, tested only with written ones, one
+kept copy and one own dish with an unknown course); desktop width; a
+screen reader.
 
 # One filter over every dish
 

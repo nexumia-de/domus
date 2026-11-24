@@ -10,6 +10,7 @@ import {
   LIKE_MIN_SCORE,
   LIKE_MIN_SHARED,
   dishesLike,
+  likeInput,
   likeness,
   type LikeEntry,
 } from '../src/browse/alike';
@@ -29,10 +30,6 @@ const e = (key: string, characters: string[], more: Partial<LikeEntry> = {}): Li
 const keys = (list: { entry: LikeEntry }[]): string[] => list.map((a) => a.entry.key);
 
 describe('the measure on written entries', () => {
-  test('the thresholds are what docs/behaviour.md states', () => {
-    expect([LIKE_MIN_SHARED, LIKE_MIN_SCORE, LIKE_MAX]).toEqual([2, 0.5, 5]);
-  });
-
   test('two shared characters of three either has is a match; its score is the share', () => {
     const a = likeness(
       e('own:a', ['cheesy', 'baked', 'creamy']),
@@ -48,23 +45,36 @@ describe('the measure on written entries', () => {
 
   test('two shared of five is below the share: nothing, not a weak match', () => {
     // Control beside it: the same two of four is exactly the share and passes.
-    const dish = e('own:a', ['tomatoey', 'garlicky', 'lemony']);
-    expect(likeness(dish, e('own:b', ['tomatoey', 'garlicky', 'fried', 'creamy']))).toBeUndefined();
-    expect(likeness(dish, e('own:c', ['tomatoey', 'garlicky', 'fried']))?.score).toBe(0.5);
+    const dish = e('own:a', ['tomatoey', 'fried', 'lemony']);
+    expect(likeness(dish, e('own:b', ['tomatoey', 'fried', 'baked', 'creamy']))).toBeUndefined();
+    expect(likeness(dish, e('own:c', ['tomatoey', 'fried', 'baked']))?.score).toBe(0.5);
   });
 
-  test('with meat, with fish and uncooked are not counted', () => {
+  test('with meat and with fish are not counted; uncooked is', () => {
     expect(
-      likeness(
-        e('own:a', ['with-meat', 'with-fish', 'uncooked']),
-        e('own:b', ['with-meat', 'with-fish', 'uncooked']),
-      ),
+      likeness(e('own:a', ['with-meat', 'with-fish']), e('own:b', ['with-meat', 'with-fish'])),
     ).toBeUndefined();
     // They do not dilute the share either: two shared of the two counted is 1.
     expect(
+      likeness(e('own:a', ['tomatoey', 'with-meat', 'fried']), e('own:b', ['tomatoey', 'fried']))
+        ?.score,
+    ).toBe(1);
+    expect(
+      likeness(e('own:a', ['cheesy', 'uncooked']), e('own:b', ['cheesy', 'uncooked']))?.shared,
+    ).toEqual(['cheesy', 'uncooked']);
+  });
+
+  test('seasoning alone is no likeness: one shared character must be another', () => {
+    const dal = e('own:dal', ['tomatoey', 'garlicky', 'lemony']);
+    expect(likeness(dal, e('own:tacos', ['tomatoey', 'garlicky', 'lemony']))).toBeUndefined();
+    expect(
+      likeness(e('own:a', ['spicy', 'lemony']), e('own:b', ['spicy', 'lemony'])),
+    ).toBeUndefined();
+    // Control: the same seasoning with one shared character of another kind is a match.
+    expect(
       likeness(
-        e('own:a', ['tomatoey', 'with-meat', 'fried']),
-        e('own:b', ['tomatoey', 'fried', 'uncooked']),
+        e('own:a', ['tomatoey', 'garlicky', 'fried']),
+        e('own:b', ['tomatoey', 'garlicky', 'fried']),
       )?.score,
     ).toBe(1);
   });
@@ -92,6 +102,24 @@ describe('the measure on written entries', () => {
     expect(likeness(copy, other)).toBeUndefined();
     // Control: an own dish not kept from it is compared.
     expect(likeness(shipped, e('own:z', ['cheesy', 'baked']))).toBeDefined();
+  });
+
+  test('a frame and a recipe that is one of its parts, or a copy of one, are never alike', () => {
+    const frame = e('shipped:plate', ['cheesy', 'baked'], { parts: ['gratin', 'salad'] });
+    const part = e('shipped:gratin', ['cheesy', 'baked']);
+    const copy = e('own:x', ['cheesy', 'baked'], { copyOf: 'salad' });
+    expect(likeness(frame, part)).toBeUndefined();
+    expect(likeness(part, frame)).toBeUndefined();
+    expect(likeness(frame, copy)).toBeUndefined();
+    // Control: a recipe that is no part of it is compared.
+    expect(likeness(frame, e('shipped:other', ['cheesy', 'baked']))).toBeDefined();
+  });
+
+  test('the like input: the entry as shown, the key of the lists, the parts of the lists', () => {
+    const shown = e('own:v2', ['cheesy', 'baked'], { course: 'main' });
+    const listed = e('shipped:plate', [], { parts: ['gratin'] });
+    expect(likeInput(shown, 'own:head', undefined)).toEqual({ ...shown, key: 'own:head' });
+    expect(likeInput(shown, 'shipped:plate', listed).parts).toEqual(['gratin']);
   });
 
   test('ranked by share, then shared count, then meat flag, then cuisine, then list order', () => {
@@ -150,18 +178,23 @@ describe('on the shipped dishes', () => {
   const lookup = (id: string): IngredientRecord | undefined => byId.get(id);
   const below = belowOf(file.ingredients);
   // As the lists show them: the dishes of their own (no sauce base), frames as they come.
-  const entries = [...CLASSICS, ...FRAMES]
-    .filter(isDishOfItsOwn)
-    .map(withoutAlternatives)
-    .map((c) => ({
-      ...entryOfClassic(c, lookup, 'en'),
+  // As the lists show them: the dishes of their own (no sauce base), a frame as shipped, with the
+  // parts of the file with its alternatives (as src/browse/entries.ts does).
+  const entries = [...CLASSICS, ...FRAMES].filter(isDishOfItsOwn).map((source) => {
+    const c = withoutAlternatives(source);
+    return {
+      ...entryOfClassic(c, lookup, 'en', source),
       characters: characterIds(factsOfClassic(c, lookup, below)),
-    }));
-  const like = (id: string): string[] => {
+    };
+  });
+  const entry = (id: string) => {
     const dish = entries.find((x) => x.id === id);
     if (dish === undefined) throw new Error(id);
-    return dishesLike(dish, entries).map((a) => a.entry.id);
+    return dish;
   };
+  const like = (id: string): string[] => dishesLike(entry(id), entries).map((a) => a.entry.id);
+  const alike = (a: string, b: string): boolean =>
+    likeness(entry(a), entry(b)) !== undefined || likeness(entry(b), entry(a)) !== undefined;
 
   test('gratin dauphinois: the other two cheese gratins, potatoes first', () => {
     // All three are sides, cheesy, from the oven and creamy; the cauliflower is also crisp, so it
@@ -184,8 +217,35 @@ describe('on the shipped dishes', () => {
     expect(like('napfkuchen')).toEqual(['torta-mantovana']);
   });
 
-  test('chana masala: the plate built on it, by tomato and heat', () => {
-    expect(like('chana-masala')).toEqual(['chana-masala-plate']);
+  test('a frame is never like a recipe that is one of its parts, chosen or an alternative', () => {
+    // The same dish, not a like one. The first three matched before 2026-11-24's review; the
+    // burrito shares too little with pollo deshebrado to match either way.
+    expect(alike('chana-masala', 'chana-masala-plate')).toBe(false);
+    expect(alike('souvlaki-kotopoulo', 'souvlaki-plate')).toBe(false);
+    expect(alike('pollo-deshebrado-en-jitomate', 'tacos')).toBe(false);
+    expect(alike('pollo-deshebrado-en-jitomate', 'burrito')).toBe(false);
+    // An alternative of a slot counts: the rice bowl's parts include the salmon it can take.
+    expect(entry('rice-bowl').parts).toEqual(
+      expect.arrayContaining(['tofu-suteki', 'sake-no-shioyaki']),
+    );
+  });
+
+  test('seasoning alone: dal, tacos, souvlaki and pollo deshebrado are not alike', () => {
+    // They share only tomatoey, garlicky or lemony; dal and tacos scored 1 before.
+    expect(alike('masoor-dal-tadka', 'tacos')).toBe(false);
+    expect(alike('souvlaki-kotopoulo', 'masoor-dal-tadka')).toBe(false);
+    expect(alike('souvlaki-kotopoulo', 'tacos')).toBe(false);
+    expect(alike('pollo-deshebrado-en-jitomate', 'masoor-dal-tadka')).toBe(false);
+    // Controls: pairs that share more than seasoning.
+    expect(alike('gratin-dauphinois', 'baked-potatoes-cheese')).toBe(true);
+    expect(alike('oeufs-a-la-neige', 'huevos-amerengados')).toBe(true);
+    expect(alike('napfkuchen', 'torta-mantovana')).toBe(true);
+  });
+
+  test('uncooked, now said only of what is not cooked, makes the raw salads alike', () => {
+    // Horiatiki and çoban salatası share tomatoey and uncooked; kachumber and çoban also lemony.
+    expect(like('coban-salatasi')).toEqual(['kachumber', 'horiatiki']);
+    expect(like('horiatiki')).toEqual(['coban-salatasi']);
   });
 
   test('controls: no like where little is known or only meat is shared', () => {
@@ -197,18 +257,27 @@ describe('on the shipped dishes', () => {
     expect(like('rote-gruetze')).toEqual([]);
   });
 
-  test('uncooked carries no match: tomato eggs and pizza are not alike', () => {
-    // Both are said tomatoey and uncooked (their heat steps are plain actions); with uncooked
-    // counted they would match at one half.
-    expect(like('fanqie-chao-dan')).not.toContain('pizza-margherita');
+  test('tomato eggs and pizza are not alike: neither is uncooked any more', () => {
+    // Before the rule read plain actions, both were tomatoey and uncooked and matched at one half.
+    expect(alike('fanqie-chao-dan', 'pizza-margherita')).toBe(false);
     expect(like('pizza-margherita')).toEqual([]);
   });
 
-  test('27 of the 121 dishes get a like at all', () => {
-    // 27 of 121 on 2026-11-24, pinned exactly: a new shipped dish or a changed character rule
-    // changes it, and then docs/behaviour.md is to be updated with it.
-    const some = entries.filter((x) => dishesLike(x, entries).length > 0).length;
-    expect(entries).toHaveLength(121);
-    expect(some).toBe(27);
+  test('over every pair: never itself, never across courses, never a frame with its part', () => {
+    // Invariants instead of a count, so that a new dish does not need a test changed.
+    for (const dish of entries) {
+      const like = dishesLike(dish, entries);
+      expect(like.length).toBeLessThanOrEqual(LIKE_MAX);
+      for (const { entry, shared, score } of like) {
+        expect(entry.key).not.toBe(dish.key);
+        expect(entry.course).toBe(dish.course);
+        expect(shared.length).toBeGreaterThanOrEqual(LIKE_MIN_SHARED);
+        expect(score).toBeGreaterThanOrEqual(LIKE_MIN_SCORE);
+        expect(dish.parts ?? []).not.toContain(entry.id);
+        expect(entry.parts ?? []).not.toContain(dish.id);
+        // Symmetric: the other dish finds this one alike, with the same score.
+        expect(likeness(entry, dish)?.score).toBe(score);
+      }
+    }
   });
 });

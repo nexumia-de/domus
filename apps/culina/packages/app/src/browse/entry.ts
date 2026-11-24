@@ -56,6 +56,12 @@ export interface DishEntry {
    * `x-origin`), so that "Dishes like this" does not offer a dish as like its own copy.
    */
   copyOf?: string;
+  /**
+   * For a shipped frame: the ids of the shipped recipes its components are (`from.recipe`), the
+   * chosen ones and the alternatives, so that "Dishes like this" does not offer a frame as like
+   * one of its own parts. Absent on every other dish.
+   */
+  parts?: readonly string[];
 }
 
 /** The shipped dish a record was kept from (`x-origin.classic`), read defensively. */
@@ -112,20 +118,41 @@ const classicComplete = (classic: Classic): boolean => {
   return lines.length > 0 && lines.every((l) => l.amount !== undefined);
 };
 
-/** The entry of a shipped classic. */
-export const entryOfClassic = (classic: Classic, lookup: Lookup, lang: Lang): DishEntry => ({
-  key: entryKey('shipped', classic.id),
-  origin: 'shipped',
-  id: classic.id,
-  name: pickText(classic.name, lang),
-  href: `#/classic/${encodeURIComponent(classic.id)}`,
-  course: classic.course,
-  cuisine: classic.country,
-  meatFree: classic.vegetarian,
-  characters: characterIds(factsOfClassic(classic, lookup)),
-  complete: classicComplete(classic),
-  ...(classic.frame === true ? { frame: true as const } : {}),
-});
+/** The shipped recipes the components of a frame are, each once, in file order. */
+const partsOf = (classic: Classic): string[] => [
+  ...new Set(
+    (classic.components ?? []).flatMap((c) => (c.from === undefined ? [] : [c.from.recipe])),
+  ),
+];
+
+/**
+ * The entry of a shipped classic.
+ *
+ * @param source - The file as shipped, with the alternatives of its slots, for the parts of a
+ *   frame; by default the classic itself.
+ */
+export const entryOfClassic = (
+  classic: Classic,
+  lookup: Lookup,
+  lang: Lang,
+  source: Classic = classic,
+): DishEntry => {
+  const parts = partsOf(source);
+  return {
+    key: entryKey('shipped', classic.id),
+    origin: 'shipped',
+    id: classic.id,
+    name: pickText(classic.name, lang),
+    href: `#/classic/${encodeURIComponent(classic.id)}`,
+    course: classic.course,
+    cuisine: classic.country,
+    meatFree: classic.vegetarian,
+    characters: characterIds(factsOfClassic(classic, lookup)),
+    complete: classicComplete(classic),
+    ...(classic.frame === true ? { frame: true as const } : {}),
+    ...(parts.length === 0 ? {} : { parts }),
+  };
+};
 
 /** Every dish: the notebook's first (in its order), then the shipped ones (in theirs). */
 export const allEntries = (

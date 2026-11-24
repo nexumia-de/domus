@@ -1,7 +1,8 @@
 // "Dishes like this" on a dish page in a browser, on the shipped dishes, at 360 px in English and
 // German: under the recipe and above the closed sections at the foot, the cheese gratins on the
 // gratin dauphinois with what they share, each a link to its page; nothing at all on pot-au-feu,
-// which shares only "with meat" (the control); a copy kept in the notebook is like the other
+// which shares only "with meat" (the control), nor on the tacos (seasoning alone, and a frame
+// built on one of the recipes it would match); a copy kept in the notebook is like the other
 // gratins and never like its own shipped dish. What the matches are worth to a cook is not
 // judged here: test/dish-like.test.ts holds the measure.
 import { check, watch } from './harness.mjs';
@@ -69,6 +70,16 @@ export const dishLike = async (browser, server) => {
     check(
       (await page.locator('.like-section, .like-host *').count()) === 0,
       `${label}: pot-au-feu has no section at all`,
+    );
+
+    // The tacos share only seasoning with the dal and the souvlaki, and are built on pollo
+    // deshebrado: no section (the first version showed four rows, the dal first).
+    await open(page, server.origin, 'classic/tacos');
+    await page.locator('.character-chips [data-character="garlicky"]').waitFor();
+    await page.waitForLoadState('networkidle');
+    check(
+      (await page.locator('.like-section').count()) === 0,
+      `${label}: the tacos have no section (seasoning alone, and a part of their own)`,
     );
     check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
     await context.close();

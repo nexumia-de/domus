@@ -13,6 +13,7 @@
 // version" stores it, as a new version.
 import { wantedLines } from '@culina/engine';
 import type { Classic } from '@culina/engine';
+import { likeInput } from '../browse/alike';
 import { dishEntries, dishEntriesByKey } from '../browse/entries';
 import { entryKey } from '../browse/entry';
 import { characterLookup } from '../characters/lookup';
@@ -69,12 +70,6 @@ export const quietLine = (dish: ShownDish): string =>
   ]
     .filter((part): part is string => part !== undefined)
     .join(' · ');
-
-/** The shipped dish an own dish was kept from, as its entry in the lists says. */
-const copyOf = (key: string): { copyOf?: string } => {
-  const from = dishEntriesByKey().get(key)?.copyOf;
-  return from === undefined ? {} : { copyOf: from };
-};
 
 /** What differs between the two origins; everything else is drawn the same. */
 interface DishPage {
@@ -149,14 +144,7 @@ const dishPage = (page: DishPage): HTMLElement => {
       ...(page.afterMethod?.(dish) ?? []),
     );
     const like = likeSection(
-      {
-        key: page.likeKey,
-        characters: dish.characters,
-        ...(dish.course === undefined ? {} : { course: dish.course }),
-        ...(dish.cuisine === undefined ? {} : { cuisine: dish.cuisine }),
-        ...(dish.meatFree === undefined ? {} : { meatFree: dish.meatFree }),
-        ...copyOf(page.likeKey),
-      },
+      likeInput(dish.entry, page.likeKey, dishEntriesByKey().get(page.likeKey)),
       dishEntries(),
       lang,
     );

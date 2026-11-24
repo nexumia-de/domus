@@ -13,7 +13,7 @@
 // Nothing here is written by a screen; the arrays handed out must not be changed.
 import type { Classic, Lang } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
-import { dishClassics } from '../classics/content';
+import { classics, dishClassics } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { catalogueEntries } from '../classics/names';
 import { allVersions, listDishes, listIngredients, notebook } from '../notebook';
@@ -51,11 +51,13 @@ const shippedEntries = keptWhile(
         ? byClassic.entries
         : undefined;
     const entries = new Map<Classic, DishEntry>();
+    // A frame's parts are read from the file as shipped, with the alternatives of its slots.
+    const shipped = new Map(classics().map((c) => [c.id, c]));
     const list = dishClassics().map((c: Classic) => {
       let entry = kept?.get(c);
       if (entry === undefined) {
         shippedEntriesMade.count++;
-        entry = entryOfClassic(c, characterLookup, lang);
+        entry = entryOfClassic(c, characterLookup, lang, shipped.get(c.id) ?? c);
       }
       entries.set(c, entry);
       return entry;
