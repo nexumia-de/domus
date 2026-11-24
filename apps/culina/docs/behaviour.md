@@ -1163,9 +1163,9 @@ own; the origin is only a choice of the filter.
   `test/dishes-notebook-list.test.ts`, `e2e/dish-browse.mjs`,
   `e2e/kit-parts.mjs`.
 - **A sauce that is a base is no dish (since 2026-11-23).** The
-  shipped bases of the course sauce (12 of them) are on no dish list, in
+  shipped bases of the course sauce (26 of them) are on no dish list, in
   the finder or the random pick; they are in the Components list. Cook
-  lists 56 of the 68 shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+  lists 98 of the 124 shipped files. **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1588,7 +1588,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   nothing is counted), the coverage, and everything else behind the second
   tap. Before, figures were shown from two counted ingredients and a quarter of
   all (`MIN_COUNTED`, `MIN_SHARE`, removed), which let the herb omelette show 5
-  kcal from its salt and pepper. On the 68 shipped dishes 17 show figures (9 of 48 before the recipes of 2026-11-23)
+  kcal from its salt and pepper. On the 124 shipped dishes 68 show figures (17 of 68 before the own recipes of 2026-11-24, 9 of 48 before the recipes of 2026-11-23)
   ([evaluation](nutrition-evaluation.md#figures-only-where-they-mean-something-2026-11-21)). **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be

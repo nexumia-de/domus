@@ -112,7 +112,7 @@ const EXPECTED: Record<string, [number | null, number, number]> = {
   'bulgur-pilavi': [350, 7, 8],
   'buttermilk-pancakes': [null, 7, 9],
   'chana-masala': [390, 16, 18],
-  'chao-cai-jiang': [40, 6, 6],
+  'chao-cai-jiang': [35, 6, 6],
   chapati: [260, 4, 5],
   'coban-salatasi': [140, 8, 8],
   coleslaw: [null, 6, 7],

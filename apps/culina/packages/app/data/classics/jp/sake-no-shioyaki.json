@@ -140,7 +140,7 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
   },
   "note": {
     "en": "Cooked in a pan here; under a hot oven grill the fillets take about the same time.",

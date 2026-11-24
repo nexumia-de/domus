@@ -39,7 +39,7 @@ app and finds quickly what they want to cook or can cook.
    [helper build plan](helper-plan.md): technique notes, handling rules
    per ingredient and substitutes with their effect, each with source
    and evidence level; a skill marked as learned is not taught again;
-   68 shipped dishes cooked step by step. They are there so that the
+   124 shipped dishes cooked step by step. They are there so that the
    user can learn abilities ([helper](decisions/mentor.md)), no longer
    the app's purpose.
 6. **One list, one Cook screen.** Own and shipped dishes in one list
@@ -56,9 +56,10 @@ app and finds quickly what they want to cook or can cook.
    burrito, pizza, bowl, curry, risotto, stir-fry, soup) and more bases
    (sauces, doughs), so that a dish is put together instead of picked
    ([recipe app](decisions/scope-recipe-app.md),
-   [bases and the pack](decisions/bases-and-pack.md)). Done so far: 33
-   of the 68 shipped dishes are bases (16 came with the 20 recipes of
-   2026-11-23, [selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit)); none has an alternative
+   [bases and the pack](decisions/bases-and-pack.md)). Done so far: 83
+   of the 124 shipped files are bases (16 came with the 20 recipes of
+   2026-11-23, [selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit); 50 with the 56 own recipes of 13 cuisines of
+   2026-11-24, [own recipes](decisions/own-recipes.md)); none has an alternative
    and no frame exists. Decided by the owner on 2026-11-23
    ([building kit](decisions/building-kit.md), answers 1 and 2): a
    frame is the project's own composition, each component in it keeping

@@ -37,7 +37,7 @@
           },
           "note": {
             "en": "Elbow macaroni or another short pasta.",
-            "de": "Ellenbogennudeln oder eine andere kurze Nudelsorte."
+            "de": "Hörnchennudeln oder eine andere kurze Nudelsorte."
           }
         },
         {
@@ -47,7 +47,7 @@
             "id": "fdc-173468"
           },
           "amount": {
-            "value": 1,
+            "value": 2,
             "unit": "tsp"
           },
           "note": {
@@ -291,7 +291,7 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it raised the salt for the cooking water from 1 to 2 teaspoons (2 l of water) and corrected the German name of elbow macaroni."
   },
   "note": {
     "en": "Bake in a dish of about 22 x 30 cm.",

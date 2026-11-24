@@ -7,7 +7,7 @@
   },
   "originalName": "Miso shiru",
   "country": "jp",
-  "vegetarian": true,
+  "vegetarian": false,
   "course": "soup",
   "source": {
     "own": true,
@@ -37,8 +37,8 @@
             "unit": "ml"
           },
           "note": {
-            "en": "Made from kombu and dried bonito, which the catalogue lacks. Use ready dashi or make it from them.",
-            "de": "Aus Kombu und getrocknetem Bonito, die der Katalog nicht hat. Fertige Dashi nehmen oder daraus kochen."
+            "en": "Made from kombu and dried bonito (a fish), which the catalogue lacks. Use ready dashi or make it from them.",
+            "de": "Aus Kombu und getrocknetem Bonito (einem Fisch), die der Katalog nicht hat. Fertige Dashi nehmen oder daraus kochen."
           }
         },
         {
@@ -143,6 +143,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it marked the soup as not vegetarian, because dashi is made with dried bonito, and said so in the dashi note."
   }
 }

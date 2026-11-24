@@ -33,7 +33,7 @@
             "id": "fdc-174277"
           },
           "amount": {
-            "value": 3,
+            "value": 2,
             "unit": "tbsp"
           }
         },
@@ -44,7 +44,7 @@
             "id": "fdc-174529"
           },
           "amount": {
-            "value": 2,
+            "value": 1.5,
             "unit": "tbsp"
           }
         },
@@ -141,7 +141,7 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it lowered the soy sauce from 3 to 2 tablespoons and the oyster sauce from 2 to 1.5, as the sauce was too salty (about 1.2% salt in the finished stir-fry, now about 0.85%)."
   },
   "note": {
     "en": "Enough for a stir-fry of about 600 g of meat and vegetables.",

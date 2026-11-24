@@ -172,6 +172,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
   }
 }

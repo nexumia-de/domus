@@ -21,6 +21,75 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: 56 own recipes for Culina, and 48 foods for its catalogue (pull request 5 of nexumia-de/domus)
+
+Seventeen agents over two sessions, under two leads. The first session
+(2026-11-23) had five writers write 40 recipes from their own knowledge
+and one agent propose 48 foods; it stopped before anything was read
+([handover](../apps/culina/docs/handover-2026-11-23.md)). The second
+session's lead (the largest model) checked and built the catalogue,
+and delegated to smaller models: five writers, by cuisine, repaired the
+recipes bent by gaps of the catalogue and wrote 16 new ones (the first
+three were cut off by a usage limit after their files were written; the
+other two were started again), and six second readers, none of them a
+writer of the files it read, read all 56.
+
+| Part                                                         | Done by                            | Checked by                                                                            |
+| ------------------------------------------------------------ | ---------------------------------- | ------------------------------------------------------------------------------------- |
+| The list of 48 foods (ids, portion modifiers)                | one agent of the first session     | the second lead, each id, description and portion in the downloaded SR Legacy 2018-04 |
+| 40 German names, 17 link corrections, the meat-and-fish list | second lead                        | nobody but the tests                                                                  |
+| 40 recipes of the first session                              | five writers of the first session  | the six second readers                                                                |
+| The repairs of the bent recipes, 16 new recipes              | five writers of the second session | the six second readers (another agent than the writer in every case)                  |
+| The readers' corrections in 13 files                         | the second readers                 | nobody but the per-file validator and the lead's runs                                 |
+| The pinned tests, the documents, the commits                 | second lead                        | nobody but `check:culina` and Culina's e2e                                            |
+
+**What the checks found, and where it was fixed** (in the recipe files
+unless said otherwise).
+
+- _Too little or too much water:_ bulgur pilaf 600 to 750 ml, basmati
+  500 to 450 ml, the chickpeas 750 to 1500 ml (soaked, then cooked in
+  fresh water), pizza dough 300 to 325 ml.
+- _Food safety:_ the dried pinto beans were simmered without a hard
+  boil; they now boil hard for ten minutes first.
+- _A false claim:_ the miso soup was marked vegetarian; dashi is made
+  with dried bonito.
+- _Proportions:_ three eggs in 400 ml of quiche filling, now four; the
+  sweet chilli sauce too sour and thin (vinegar 120 to 80 ml, water 60
+  to 100 ml, sugar 100 to 150 g); the stir-fry sauce too salty (soy
+  sauce 3 to 2 tbsp, oyster sauce 2 to 1.5 tbsp).
+- _Salt:_ ratatouille, basmati rice, the pulled chicken's sauce and the
+  pasta water of the macaroni were under-salted.
+- _Order:_ the oven for the pizza was switched on after a rest of 15
+  minutes; it is heated first and the rest is 30 minutes.
+- _Wording:_ "Ellenbogennudeln" became "Hörnchennudeln"; a note that
+  Dijon is the usual mustard where the catalogue has yellow mustard
+  only; a German note that said an ingredient "fehlt" tripped the test
+  against judging words and was reworded by the lead.
+- _The catalogue's own test caught the lead:_ the name scan for food of
+  an animal found the fish sauce; the stocks, the oyster sauce and the
+  Worcestershire sauce were not found by the old pattern and were added
+  to the list and to the pattern by hand. The refreshed Wikidata
+  snapshot names savoy cabbage, which the test against doubled names
+  reported; the own name left the overlay.
+- _A browser check that tested a name, not the thing:_ "no sauce base
+  on Cook" looked for "Mayonnaise" anywhere in a row and failed on the
+  coleslaw, "Krautsalat mit Mayonnaise", which is a dish. The check now
+  asks whether a row's name begins with a sauce's name. The app was
+  right; the check was wrong, and is said to be so here.
+
+**Test counts** (the second lead's runs): `npm run check:culina` passes
+with 1253 engine, 1045 app and 19 native tests. Culina's e2e passed on the
+final content (1967 checks), run alone; a run beside `check:culina`
+stopped in the navigation check with a timeout, as on 2026-11-23.
+
+**What nobody verified.** Any recipe cooked: the second reading is one
+model reading another model's recipe, and the readers' own doubts stand
+unanswered (the quiche's pastry is not baked blind, the onion gravy is
+thin, the teriyaki sauce is on the salty side, the patatas bravas use
+red wine vinegar where sherry vinegar is usual). The German texts by a
+native reader. The 40 German names of the new foods. Portion weights
+against a scale. A real phone; the native app on a desktop.
+
 ## 2026-11-23: 20 shipped recipes for Culina's kit, and the research on pairing sources
 
 Ten agents under one lead, all on the lead's model. Four writers, one

@@ -139,8 +139,8 @@
         },
         {
           "text": {
-            "en": "Bring to the boil, then simmer with the lid half on until the beans are quite soft; add hot water if they are no longer covered.",
-            "de": "Aufkochen, dann bei halb aufgelegtem Deckel köcheln lassen, bis die Bohnen ganz weich sind; heißes Wasser nachgießen, wenn sie nicht mehr bedeckt sind."
+            "en": "Bring to a rolling boil and boil hard for 10 minutes, then simmer with the lid half on until the beans are quite soft; add hot water if they are no longer covered. No soaking is needed for pinto beans.",
+            "de": "Aufkochen und 10 Minuten sprudelnd kochen, dann bei halb aufgelegtem Deckel köcheln lassen, bis die Bohnen ganz weich sind; heißes Wasser nachgießen, wenn sie nicht mehr bedeckt sind. Pintobohnen müssen nicht eingeweicht werden."
           },
           "technique": "simmer",
           "time": {
@@ -171,8 +171,8 @@
         },
         {
           "text": {
-            "en": "Add the beans and the garlic with about 200 ml of their cooking liquid.",
-            "de": "Die Bohnen und den Knoblauch mit etwa 200 ml ihrer Kochflüssigkeit dazugeben."
+            "en": "Lift the beans and the garlic out of the pot with a slotted spoon, add them to the pan with about 200 ml of their cooking liquid.",
+            "de": "Die Bohnen und den Knoblauch mit einer Schaumkelle aus dem Topf heben, in die Pfanne geben und etwa 200 ml ihrer Kochflüssigkeit dazugießen."
           },
           "action": "add",
           "uses": ["beans", "garlic"]
@@ -212,6 +212,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it added a 10-minute hard boil and the note that pinto beans need no soaking, and made the transfer to the pan explicit."
   }
 }

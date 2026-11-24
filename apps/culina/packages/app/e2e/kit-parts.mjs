@@ -19,7 +19,11 @@ export const kitParts = async (browser, server) => {
   check(
     cook.length === 98 &&
       !cook.some((row) =>
-        /Alioli|Mayonnaise|Holländische Sauce|Béchamelsauce \(Balsamella\)|Spargelsauce/.test(row),
+        // The name is the row's first line. A dish may name a sauce it is made with (the
+        // coleslaw is "Krautsalat mit Mayonnaise"); only a row that is the sauce itself counts.
+        /^(Alioli|Mayonnaise|Holländische Sauce|Béchamelsauce \(Balsamella\)|Spargelsauce)/.test(
+          row,
+        ),
       ),
     `${label}: Cook lists 98 dishes and none of the sauces that are bases (${cook.length})`,
   );

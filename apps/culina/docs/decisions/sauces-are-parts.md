@@ -47,7 +47,8 @@ review.
    source and "Keep in my notebook". When this was decided these were five: alioli,
    mayonnaise, sauce hollandaise, holländische Sauce, salsa di pomodoro,
    and Cook listed 43 dishes. With the recipes added later the same day
-   they are 12, and Cook lists 56 of 68.
+   they are 12, and Cook lists 56 of 68; with the own recipes of
+   2026-11-24 they are 26, and Cook lists 98 of 124.
 2. **The kind decides, not the course alone.** A sauce a source gives as
    a dish (no `kind`) stays a dish; there is none today. A base of
    another course (noodles, gnocchi, purée, custard) stays a dish: it is
