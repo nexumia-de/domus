@@ -9,6 +9,7 @@
 // end a shipped dish can be kept in the notebook; an own one leads back.
 import type { Classic } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
+import { asChosen, withChoices } from '../classics/choices';
 import { classicOf, handlingRulesList, techniques } from '../classics/content';
 import type { StepView } from '../classics/cook-view';
 import type { ComponentView, LineView } from '../classics/dish-view';
@@ -209,13 +210,13 @@ export const cookClassicScreen = (id: string | undefined): HTMLElement => {
     backHash: hashFor('classic', classic.id),
     backLabel: t.backToRecipe,
     view: (learned) => {
-      const shown = shownOfClassic(classic, portions, context(learned));
+      const shown = shownOfClassic(asChosen(classic), portions, context(learned));
       return shown.ok ? shown.dish : { name: classic.id, steps: [], components: [], slots: [] };
     },
     finish: (total, status) => [
       ...(total === 0 ? [el('p', 'note-quiet', t.noSteps)] : []),
       status,
-      finishPanel(classic, portions, currentLang()),
+      finishPanel(withChoices(classic), portions, currentLang()),
     ],
   });
 };

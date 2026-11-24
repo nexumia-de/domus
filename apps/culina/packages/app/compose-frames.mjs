@@ -83,7 +83,12 @@ export const composeFrame = (frame, recipes) => {
         lines: part.component.lines.map((line) =>
           line.amount === undefined ? line : { ...line, amount: scaleAmount(line.amount, factor) },
         ),
-        from: { recipe: recipe.id, name: recipe.name, source: recipe.source },
+        from: {
+          recipe: recipe.id,
+          name: recipe.name,
+          source: recipe.source,
+          vegetarian: recipe.vegetarian === true,
+        },
       });
       if (j === 0) {
         if (recipe.vegetarian !== true) vegetarian = false;

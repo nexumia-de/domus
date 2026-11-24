@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import type { Classic } from '@culina/engine';
-import { CLASSICS } from '../src/classics/index';
+import { CLASSICS, FRAMES } from '../src/classics/index';
 import type { IngredientRecord } from '../src/records';
 import { displayName, matchesAnyName } from '../src/shared/names';
 import { must } from './must';
@@ -61,11 +61,13 @@ test('no two entries share a kitchen name in a language, and none is empty or lo
   }
 });
 
-test('every ingredient a shipped recipe names has a kitchen name', () => {
+test('every ingredient a shipped recipe or a frame names has a kitchen name', () => {
   const refs = (c: Classic): string[] =>
     [...(c.components ?? []).flatMap((k) => k.lines), ...c.slots].flatMap((l) =>
       l.ref?.kind === 'ingredient' ? [l.ref.id] : [],
     );
-  const missing = [...new Set(CLASSICS.flatMap(refs))].filter((id) => kitchen[id] === undefined);
+  const missing = [...new Set([...CLASSICS, ...FRAMES].flatMap(refs))].filter(
+    (id) => kitchen[id] === undefined,
+  );
   expect(missing).toEqual([]);
 });

@@ -1,0 +1,43 @@
+{
+  "id": "burrito",
+  "name": {
+    "en": "Burritos with rice, beans and chicken",
+    "de": "Burritos mit Reis, Bohnen und Hähnchen"
+  },
+  "originalName": "Burrito",
+  "country": "mx",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["tortillas-de-harina"]
+    },
+    {
+      "role": "main",
+      "parts": ["pollo-deshebrado-en-jitomate"]
+    },
+    {
+      "role": "side",
+      "parts": ["arroz-rojo"]
+    },
+    {
+      "role": "side",
+      "parts": ["frijoles-refritos"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["crema-de-limon", "guacamole"]
+    },
+    {
+      "role": "acid",
+      "parts": ["pico-de-gallo"],
+      "optional": true
+    }
+  ],
+  "note": {
+    "en": "Cook the beans and the chicken first; both take the longest. Make the rice and the sauce meanwhile and the tortillas last, larger than for tacos: roll the dough of two into one. Lay rice, beans and chicken in a line on each warm tortilla, fold in the sides and roll it up.",
+    "de": "Zuerst Bohnen und Hähnchen garen; beide brauchen am längsten. Währenddessen Reis und Sauce zubereiten, die Tortillas zuletzt und größer als für Tacos: den Teig von zweien zu einer ausrollen. Reis, Bohnen und Hähnchen als Streifen auf jede warme Tortilla legen, die Seiten einschlagen und aufrollen."
+  }
+}

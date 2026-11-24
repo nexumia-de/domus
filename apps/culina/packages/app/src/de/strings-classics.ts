@@ -54,6 +54,7 @@ export const classicsStringsDe: typeof classicsStrings = {
   ownChecked:
     'Von einer zweiten KI-Sitzung gegengelesen. Niemand aus dem Projekt hat es nachgekocht.',
   ownPersons: (n: number): string => `Geschrieben für ${n} Personen.`,
+  fillingHeading: 'Wählen, was hineinkommt',
   frameSource:
     'Von dieser App aus ihren eigenen Rezepten zusammengestellt. Jeder Teil ist ein eigenes Rezept:',
   framePartOwn: (name: string): string =>

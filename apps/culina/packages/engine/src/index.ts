@@ -381,12 +381,14 @@ export type {
 } from './classics/derive';
 export { copyClassic } from './classics/copy';
 export {
+  chooseAlternative,
   componentsInDish,
   componentsReached,
   componentsUsed,
   isBase,
   isDishOfItsOwn,
   slotAlternatives,
+  withoutAlternatives,
 } from './classics/base';
 export { copyClassicComponent } from './classics/copy-component';
 export type { CopyComponentResult } from './classics/copy-component';

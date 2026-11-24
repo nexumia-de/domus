@@ -21,6 +21,7 @@ const SAUCES = [
   'balsamella',
   'barbecue-sauce',
   'chao-cai-jiang',
+  'crema-de-limon',
   'guacamole',
   'holl-sauce',
   'ladolemono',
@@ -66,7 +67,7 @@ afterEach(() => {
   resetContent();
 });
 
-test('the 26 sauce bases are no dishes; every other shipped file is', () => {
+test('the 27 sauce bases are no dishes; every other shipped file is', () => {
   const left = classics()
     .filter((c) => !dishClassics().includes(c))
     .map((c) => c.id)

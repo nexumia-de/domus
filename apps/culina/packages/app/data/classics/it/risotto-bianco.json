@@ -1,0 +1,227 @@
+{
+  "id": "risotto-bianco",
+  "kind": "base",
+  "name": {
+    "en": "White risotto with Parmesan",
+    "de": "Weißes Risotto mit Parmesan"
+  },
+  "originalName": "Risotto bianco",
+  "country": "it",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "risotto-bianco-main",
+      "name": {
+        "en": "White risotto with Parmesan",
+        "de": "Weißes Risotto mit Parmesan"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "rice",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168931"
+          },
+          "amount": {
+            "value": 320,
+            "unit": "g"
+          },
+          "note": {
+            "en": "The catalogue has no arborio; short-grain white rice stands in. Do not wash it.",
+            "de": "Der Katalog hat keinen Arborio; Rundkornreis ersetzt ihn. Nicht waschen."
+          }
+        },
+        {
+          "key": "broth",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171583"
+          },
+          "amount": {
+            "value": 1000,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Hot, kept at a bare simmer in a second pot.",
+            "de": "Heiß, in einem zweiten Topf knapp unter dem Köcheln gehalten."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173410"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Salted; 20 g for the onion, 30 g at the end.",
+            "de": "Gesalzen; 20 g für die Zwiebel, 30 g zum Schluss."
+          }
+        },
+        {
+          "key": "wine",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174837"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "parm",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese-parmesan"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Finely grated.",
+            "de": "Fein gerieben."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "To taste; the broth, the butter and the Parmesan are already salty.",
+            "de": "Nach Geschmack; Brühe, Butter und Parmesan sind schon salzig."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Freshly ground.",
+            "de": "Frisch gemahlen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Heat the broth in a pot and keep it at a bare simmer. Peel the onion and chop it very finely.",
+            "de": "Die Brühe in einem Topf erhitzen und knapp unter dem Köcheln halten. Die Zwiebel schälen und sehr fein hacken."
+          },
+          "action": "heat",
+          "uses": ["broth", "onion"]
+        },
+        {
+          "text": {
+            "en": "Melt 20 g of the butter in a wide, heavy pot over medium heat, add the onion and cook for 4 to 5 minutes, stirring, until soft and translucent.",
+            "de": "20 g der Butter in einem breiten, schweren Topf bei mittlerer Hitze schmelzen, die Zwiebel dazugeben und 4 bis 5 Minuten unter Rühren glasig und weich dünsten."
+          },
+          "technique": "sweat",
+          "uses": ["butter", "onion"],
+          "time": {
+            "value": 4,
+            "to": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the rice and stir for 1 to 2 minutes until every grain is coated with fat and the edges look translucent.",
+            "de": "Den Reis dazugeben und 1 bis 2 Minuten rühren, bis jedes Korn mit Fett überzogen ist und die Ränder glasig aussehen."
+          },
+          "technique": "risotto",
+          "uses": ["rice"],
+          "time": {
+            "value": 1,
+            "to": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the wine and stir until it has almost all been taken up.",
+            "de": "Den Wein angießen und rühren, bis er fast ganz aufgenommen ist."
+          },
+          "technique": "deglaze",
+          "uses": ["wine"]
+        },
+        {
+          "text": {
+            "en": "Add a ladle of hot broth and stir over medium heat until it is taken up, then the next ladle. Go on for 16 to 18 minutes, stirring often, until the rice is creamy but still has a little bite in the middle. You may not need all the broth.",
+            "de": "Eine Kelle heiße Brühe dazugeben und bei mittlerer Hitze rühren, bis sie aufgenommen ist, dann die nächste Kelle. So 16 bis 18 Minuten fortfahren und oft rühren, bis der Reis cremig ist, aber in der Mitte noch leichten Biss hat. Vielleicht wird nicht die ganze Brühe gebraucht."
+          },
+          "technique": "risotto",
+          "uses": ["broth", "rice"],
+          "time": {
+            "value": 16,
+            "to": 18,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat. Stir in the rest of the butter and the Parmesan, season with the salt and the pepper, cover and leave for 2 minutes. The risotto should flow slowly when you tilt the pot; loosen it with a little broth if it is too thick. Serve at once.",
+            "de": "Den Topf vom Herd nehmen. Die restliche Butter und den Parmesan einrühren, mit Salz und Pfeffer abschmecken, zudecken und 2 Minuten ruhen lassen. Das Risotto soll langsam fließen, wenn man den Topf neigt; ist es zu fest, mit etwas Brühe lockern. Sofort servieren."
+          },
+          "action": "remove-from-heat",
+          "uses": ["butter", "parm", "salt", "pepper"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "risotto-bianco-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it lowered the added salt from 1/2 to 1/4 teaspoon, as the ready-made vegetable broth, the salted butter and the Parmesan already bring about 0.8% salt."
+  }
+}

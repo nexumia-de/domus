@@ -1,8 +1,8 @@
 {
   "id": "fried-egg-rice-plate",
   "name": {
-    "en": "Rice with tomato and egg and smashed cucumber",
-    "de": "Reis mit Tomaten-Rührei und Gurkensalat"
+    "en": "Rice with a stir-fry and smashed cucumber",
+    "de": "Reis mit Pfannengericht und Gurkensalat"
   },
   "originalName": "Jiachang cai",
   "country": "cn",
@@ -16,7 +16,7 @@
     },
     {
       "role": "main",
-      "parts": ["fanqie-chao-dan"]
+      "parts": ["fanqie-chao-dan", "chao-shi-cai"]
     },
     {
       "role": "crunch",
@@ -24,7 +24,7 @@
     }
   ],
   "note": {
-    "en": "Start the rice, then make the cucumber salad so that it can stand. The eggs with tomato take a few minutes and are cooked last, when the rice rests.",
-    "de": "Den Reis aufsetzen, dann den Gurkensalat zubereiten, damit er ziehen kann. Das Rührei mit Tomaten braucht wenige Minuten und kommt zuletzt, wenn der Reis ruht."
+    "en": "Start the rice, then make the cucumber salad so that it can stand. The eggs with tomato, or the chicken and vegetables, are stir-fried last, when the rice rests; for the stir-fry cut everything before the pan is hot.",
+    "de": "Den Reis aufsetzen, dann den Gurkensalat zubereiten, damit er ziehen kann. Das Rührei mit Tomaten oder das Hähnchen mit Gemüse kommt zuletzt in die Pfanne, wenn der Reis ruht; für das Pfannengericht alles schneiden, bevor die Pfanne heiß ist."
   }
 }

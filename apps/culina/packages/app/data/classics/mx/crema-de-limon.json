@@ -1,0 +1,123 @@
+{
+  "id": "crema-de-limon",
+  "kind": "base",
+  "name": {
+    "en": "Lime sour cream",
+    "de": "Limetten-Sauerrahm"
+  },
+  "originalName": "Crema de limón",
+  "country": "mx",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "crema-de-limon-sauce",
+      "name": {
+        "en": "Lime sour cream",
+        "de": "Limetten-Sauerrahm"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "cream",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171257"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "lime",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168156"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Juice of about 1 lime.",
+            "de": "Saft von etwa 1 Limette."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Clove, grated or pressed.",
+            "de": "Zehe, gerieben oder gepresst."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Grate or press the garlic clove very finely.",
+            "de": "Die Knoblauchzehe sehr fein reiben oder pressen."
+          },
+          "action": "prepare",
+          "uses": ["garlic"]
+        },
+        {
+          "text": {
+            "en": "Stir the sour cream with the lime juice, the garlic and the salt until smooth.",
+            "de": "Die Saure Sahne mit Limettensaft, Knoblauch und Salz glatt rühren."
+          },
+          "action": "mix",
+          "uses": ["cream", "lime", "garlic", "salt"]
+        },
+        {
+          "text": {
+            "en": "Taste and add salt or lime juice if needed. Leave in the fridge for 15 minutes, then spoon over burritos or tacos.",
+            "de": "Abschmecken und bei Bedarf Salz oder Limettensaft zugeben. 15 Minuten im Kühlschrank ziehen lassen, dann über Burritos oder Tacos geben."
+          },
+          "action": "taste"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "crema-de-limon-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it replaced the reduced-fat sour cream with ordinary sour cream (now in the catalogue) and removed the note that explained the stand-in."
+  }
+}

@@ -149,6 +149,10 @@
               },
               "source": {
                 "$ref": "#/$defs/source"
+              },
+              "vegetarian": {
+                "description": "Whether that recipe is vegetarian.",
+                "type": "boolean"
               }
             }
           }

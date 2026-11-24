@@ -89,6 +89,8 @@ export interface ComponentFrom {
   recipe: string;
   name: I18nText;
   source: ClassicSource;
+  /** Whether that recipe is vegetarian, so that a frame can say so for the parts chosen. */
+  vegetarian?: boolean;
 }
 
 export interface ClassicComponent {

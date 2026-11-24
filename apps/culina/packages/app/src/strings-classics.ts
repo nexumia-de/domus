@@ -55,6 +55,8 @@ export const classicsStrings = {
     'A recipe of this app, not from a source: written by an AI model from general cooking knowledge.',
   ownChecked: 'Read a second time by another AI session. Nobody of the project has cooked it.',
   ownPersons: (n: number): string => `Written for ${n} persons.`,
+  /** Above the choices of a base whose slots have alternatives. */
+  fillingHeading: 'Choose what goes in',
   /** A frame: the app's own composition of shipped recipes. */
   frameSource: 'Put together by this app from its own recipes. Each part is a recipe of its own:',
   framePartOwn: (name: string): string => `${name}: a recipe of this app, written by an AI model.`,
