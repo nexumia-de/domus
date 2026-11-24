@@ -4,7 +4,7 @@ import { strings } from '../strings';
 import { el } from './el';
 import { backupBanner, refreshBackupBanner } from './backup-banner';
 import { createNav } from './nav';
-import { linkToFocus, scrollFor, entryOf, withEntry, type LinkSpot, type Place } from './place';
+import { bandOf, entryOf, restoreTarget, withEntry, type LinkSpot, type Place } from './place';
 import { dismissToast, mountToast } from './toast';
 
 export interface Shell {
@@ -57,7 +57,25 @@ const markEntry = (): string | undefined => {
   }
 };
 
+/** What the focus may be given on the way back. */
+const FOCUSABLE = 'a[href], button:not([disabled]), summary';
+
 const pageTop = (element: Element): number => element.getBoundingClientRect().top + window.scrollY;
+
+/**
+ * The link a click follows within the app: a hash route of this page, no new tab or window (no
+ * `target`, no download, no modifier key, the main button). Undefined for every other click.
+ */
+const appLinkOf = (event: MouseEvent, main: HTMLElement): HTMLAnchorElement | undefined => {
+  if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
+    return undefined;
+  const target = event.target instanceof Element ? event.target : null;
+  const link = target?.closest('a[href]');
+  if (!(link instanceof HTMLAnchorElement) || !main.contains(link)) return undefined;
+  if ((link.target !== '' && link.target !== '_self') || link.hasAttribute('download'))
+    return undefined;
+  return link.getAttribute('href')?.startsWith('#/') === true ? link : undefined;
+};
 
 /** Landmarks: header (banner), nav, main. The screen replaces the content of main. */
 export const mountShell = (root: HTMLElement): Shell => {
@@ -79,6 +97,14 @@ export const mountShell = (root: HTMLElement): Shell => {
   frame.append(header, nav.element, main);
   root.append(skip, frame);
   mountToast(root);
+  // The shell puts every screen where it belongs (shown, below): the browser restoring a scroll of
+  // its own on a move through the history would scroll the screen being left, before hashchange,
+  // and its place would be noted wrong.
+  try {
+    window.history.scrollRestoration = 'manual';
+  } catch {
+    // Not offered: the place is then noted after the browser's own scroll.
+  }
   // The real height of the bottom bar (German labels take two lines): what sticks above it, and the
   // toast, sit on top of it, not behind it.
   const measureNav = (): void =>
@@ -95,41 +121,86 @@ export const mountShell = (root: HTMLElement): Shell => {
   document.addEventListener(
     'click',
     (event) => {
-      const target = event.target instanceof Element ? event.target : null;
-      const link = target?.closest('a[href]');
+      const link = appLinkOf(event, main);
       followed =
-        link && main.contains(link)
-          ? { href: link.getAttribute('href') ?? '', top: pageTop(link) }
-          : undefined;
+        link === undefined
+          ? undefined
+          : { href: link.getAttribute('href') ?? '', top: pageTop(link) };
     },
     { capture: true },
   );
-  /** The part of the window between the sticky header and the bottom bar (none from 720 px). */
-  const band = (): { top: number; bottom: number } => {
-    const bar = nav.element.getBoundingClientRect();
-    return {
-      top: header.getBoundingClientRect().bottom,
-      bottom: bar.top > window.innerHeight / 2 ? bar.top : window.innerHeight,
+  /**
+   * A screen draws parts of itself again once the catalogue is read, just after it is shown (the
+   * dish screen, Cook's list); the link given the focus on the way back may go with them, and the
+   * focus to the page. For a second, or until the next key or tap, the link of the same address
+   * that is drawn in its place takes the focus back.
+   */
+  let stopKeeping: (() => void) | undefined;
+  const keepFocus = (first: HTMLElement): void => {
+    stopKeeping?.();
+    if (typeof MutationObserver !== 'function') return;
+    let link = first;
+    const href = link.getAttribute('href');
+    const top = pageTop(link);
+    const observer = new MutationObserver(() => {
+      const active = document.activeElement;
+      if (active === link) return;
+      // The focus went elsewhere by the user or a script: leave it there.
+      if (active !== null && active !== document.body) return stop();
+      // Moved or drawn anew: the same element, or the link of the same address nearest its place.
+      const again = link.isConnected
+        ? link
+        : [...main.querySelectorAll('a[href]')]
+            .filter((a) => a.getAttribute('href') === href && a.getClientRects().length > 0)
+            .sort((a, b) => Math.abs(pageTop(a) - top) - Math.abs(pageTop(b) - top))[0];
+      if (!(again instanceof HTMLElement)) return;
+      link = again;
+      again.focus({ preventScroll: true });
+    });
+    const timer = window.setTimeout(() => stop(), 1000);
+    const stop = (): void => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+      document.removeEventListener('keydown', stop, true);
+      document.removeEventListener('pointerdown', stop, true);
+      stopKeeping = undefined;
     };
+    observer.observe(main, { childList: true, subtree: true });
+    document.addEventListener('keydown', stop, true);
+    document.addEventListener('pointerdown', stop, true);
+    stopKeeping = stop;
   };
-  /** Shows the screen where it was left: its scroll, the focus on the link it was left by. */
+
+  /** Shows the screen where it was left: its scroll, and the focus (place.ts, restoreTarget). */
   const restore = (place: Place, heading: HTMLElement | null): void => {
-    const links = [...main.querySelectorAll('a[href]')].filter(
+    // Links, and buttons and summaries for a screen with no link in view; never a form field,
+    // which would open the keyboard of a phone.
+    const links = [...main.querySelectorAll(FOCUSABLE)].filter(
       (a) => a.getClientRects().length > 0,
     );
     const spots: LinkSpot[] = links.map((a) => ({
       href: a.getAttribute('href') ?? '',
       top: pageTop(a),
+      height: a.getBoundingClientRect().height,
     }));
-    const index = linkToFocus(place, spots);
-    const link = index === undefined ? undefined : links[index];
-    const target =
-      link === undefined
+    const band = bandOf(
+      main.getBoundingClientRect(),
+      header.getBoundingClientRect(),
+      nav.element.getBoundingClientRect(),
+      window.innerHeight,
+    );
+    const head =
+      heading === null
         ? undefined
-        : { top: pageTop(link), height: link.getBoundingClientRect().height };
-    window.scrollTo(0, scrollFor(place.y, target, band()));
-    if (link instanceof HTMLElement) link.focus({ preventScroll: true });
-    else if (heading) {
+        : { top: pageTop(heading), height: heading.getBoundingClientRect().height };
+    const maxY = document.documentElement.scrollHeight - window.innerHeight;
+    const { y, focus } = restoreTarget(place, spots, head, band, maxY);
+    window.scrollTo(0, y);
+    const link = focus === 'heading' ? undefined : links[focus];
+    if (link instanceof HTMLElement) {
+      link.focus({ preventScroll: true });
+      keepFocus(link);
+    } else if (heading) {
       heading.classList.toggle('focus-quiet', lastInput === 'pointer');
       heading.focus({ preventScroll: true });
     }
@@ -144,14 +215,22 @@ export const mountShell = (root: HTMLElement): Shell => {
     },
     show(route, param, focusHeading, action) {
       // The place of the screen left, for the way back to it; the history has moved on already.
+      // The link noted is the one left by only when this navigation goes to its address (not a
+      // button pressed after it, nor the browser's back or forward); else the one noted earlier is
+      // kept, to be focused if it is still in view on the way back.
       if (entry !== undefined) {
+        const left = followed !== undefined && followed.href === window.location.hash;
+        const link = left ? followed : places.get(entry)?.link;
+        places.delete(entry);
         places.set(entry, {
           y: window.scrollY,
-          ...(followed === undefined ? {} : { link: followed }),
+          followed: left,
+          ...(link === undefined ? {} : { link }),
         });
         if (places.size > 200) places.delete(places.keys().next().value ?? '');
       }
       followed = undefined;
+      stopKeeping?.();
       // An entry with an id was shown before: the user came back to it (a new entry has no state).
       // The first screen of a page starts at the top, a reload too.
       const known = entryOf(readState());

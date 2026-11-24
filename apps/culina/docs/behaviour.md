@@ -1237,13 +1237,20 @@ own; the origin is only a choice of the filter.
   changed in another tab, the dish kept) and the row is gone, the link that
   now stands nearest to its place takes the focus. **Test:**
   `test/shell-place.test.ts`, `e2e/list-place.mjs` (360 x 720, English, the
-  real content: the first dessert, about 9800 px down, opened and left by
-  the browser's back, by "Back to the list", and by "Back to the list"
-  after the cook screen and back; each time the scroll within 4 px, the
-  row in view, its link focused; the control, the dish reached forward at
-  the top with its heading focused; another tab choosing "Main course"
-  while the dessert is open: no error, a row in view focused). The three
-  checks of the way back failed on the code before the change (scroll 0,
+  real content: the first dessert, about 10000 px down, put 40 px below the
+  top of the band (not its middle, so that centring the link would show),
+  opened and left by the browser's back, by "Back to the list", and by
+  "Back to the list" after the cook screen and back; each time the scroll
+  within 1 px, the row in the band, its link focused; back, forward and
+  back again with the dish scrolled to 300: the dish at 300 and the list
+  where it was with the row focused; left by the navigation and back: the
+  scroll as it was and a link in the band focused, not the heading; the
+  control, the dish reached forward at the top with its heading focused;
+  another tab choosing "Main course" while the dessert is open: no error,
+  a row in the band focused). The three checks of the way back failed on
+  the code before the first change (scroll 0, the heading focused); the
+  checks of forward and back again and of leaving by the navigation failed
+  on the first version (the dish at 886 for 300, then the list at 300 with
   the heading focused), the controls passed there and after. Not proved:
   a screen reader announcing the row, a real phone, scrolling by touch
   (the check scrolls by script), the German texts (the mechanism has
@@ -1904,32 +1911,59 @@ kept in `localStorage` (`culina.lang`) like the theme. English is canonical, Ger
   forward (a link, the navigation, an address) starts at its top with its
   heading focused, as above. A screen reached again through the history
   (the browser's back or forward, "Back to the list", which is the
-  browser's back) stands where it was left: the same scroll, and the focus
-  on the link it was left by (a row of a list, "Cook step by step"); the
-  link is scrolled into the middle when the old scroll would leave it
-  under the header or the bottom bar. Left without a link of the screen
-  (the navigation, a button), only the scroll comes back and the heading
-  takes the focus without moving the page. When the link is gone, the
-  link that now stands nearest to where it stood takes the focus.
-  The place lives in memory for the page, keyed by an id the shell
-  writes into the history entry's state (`culinaScreen`, beside the
-  mark of `list-return.ts`); nothing is written to the notebook or to
-  localStorage, and after a reload the way back starts at the top again.
-  This covers Cook's list, the Notebook's Components and Dishes and every
-  other screen alike (`src/shell/place.ts`, the pure part; `show` in
-  `src/shell/shell.ts`). The shell is Culina's own; the sister apps are
-  not touched. **Test:** `test/shell-place.test.ts` (the link followed
-  is focused again, also when it moved; the nearest link when it is gone;
-  none when nothing was followed (the control); the scroll kept while the
-  link is in view (the control), else the link in the middle; the id kept
-  beside the state), `e2e/list-place.mjs` (Cook, see
-  [Cook](#cook); a component far down the Notebook's Components and the
-  browser's back; the controls: the Notebook and Cook from the
-  navigation start at the top with the heading focused). Not proved: the
-  Notebook's Dishes in a browser (an empty notebook has no rows there; it
-  is the same list code as Components), the side layout from 720 px, a
-  screen reader, Safari and Firefox (which do not focus a link on a click;
-  the shell notes the click itself).
+  browser's back) stands where it was left, with the same scroll. The
+  focus:
+  - **left by a link of the screen** (a row of a list, "Cook step by
+    step"): that link, scrolled into the middle of the band between the
+    header and the bottom bar when the old scroll would hide it; when it
+    is gone, the link that now stands nearest to where it stood. Only a
+    link that navigates within the app counts: the main button, no
+    modifier key, no `target` (a source opened in a new tab is not the way
+    out), and only when the navigation that follows goes to its address
+    (a button pressed after it is not);
+  - **left another way** (the navigation, a button, the browser's back or
+    forward): the page is not moved from the old scroll, and the focus
+    goes to the heading when it is in view, else to the link the screen
+    was left by earlier when that is in view (back, forward and back again
+    leave the row focused), else to the first link in view (a button or a
+    summary where no link is, such as the portions of a dish scrolled to
+    its ingredients; never a form field), so that the next Tab goes on
+    from where the user looks and not from the top of the page; the
+    heading when nothing is in view.
+
+  A screen that draws parts of itself again just after it is shown (the
+  catalogue read: the dish screen, Cook's list) keeps the focus given
+  (for a second or until the next key or tap). The shell sets
+  `history.scrollRestoration` to `manual`: Chromium otherwise applies its
+  own scroll of the entry being entered before `hashchange`, while the old
+  screen is still up, and the place of the screen left was noted wrong.
+  From 720 px the header and the rail stand beside main and cover none of
+  it, so the band is the whole window there. The place lives in memory for
+  the page, keyed by an id the shell writes into the history entry's state
+  (`culinaScreen`, beside the mark of `list-return.ts`); nothing is
+  written to the notebook or to localStorage, and after a reload the way
+  back starts at the top again. This covers Cook's list, the Notebook's
+  Components and Dishes and every other screen alike (`src/shell/place.ts`,
+  the pure part; `show` in `src/shell/shell.ts`). The shell is Culina's
+  own; the sister apps are not touched. **Test:** `test/shell-place.test.ts`
+  (the link followed is focused again, also when it moved; the nearest
+  link when it is gone; none when nothing was followed (the control); the
+  scroll kept while the link is in view (the control), else the link in
+  the middle; the band at 360 and at 1000 px; left another way, the link
+  of earlier in view, else the first link in view, the heading at the top
+  (the control); the id kept beside the state), `e2e/list-place.mjs` (Cook,
+  see [Cook](#cook); back, forward and back again; back after the
+  navigation; "Cook step by step" opened in a new tab; a component far
+  down the Notebook's Components and the browser's back; the controls:
+  the Notebook and Cook from the navigation start at the top with the
+  heading focused). The side layout at 1000 px was looked at by a reviewer
+  (list to dish and back; one dish to another through the side list, then
+  back) and works; no browser check pins it. Not proved: the Notebook's
+  Dishes in a browser check (an empty notebook has no rows there; it is
+  the same list code as Components), a screen reader, a real phone,
+  scrolling by touch, Safari and Firefox (which do not focus a link on a
+  click; the shell notes the click itself).
+
 - **Sub-paths.** All URLs are relative, so the app works under a
   sub-path; `e2e/smoke.mjs` runs the offline check under `/apps/cook/`.
 
