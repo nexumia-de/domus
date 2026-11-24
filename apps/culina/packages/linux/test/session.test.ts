@@ -22,10 +22,13 @@ import {
   readyKeysOf,
   setPortions,
   STOCK,
+  stringsEn,
   useUpFrom,
   useUpNote,
+  type DishEntry,
 } from '@culina/app/core';
 import { shippedContent } from '@culina/app/make-classics.mjs';
+import { rowLine } from '../src/dish-choices';
 import { PREFS, createSession, type SessionOptions } from '../src/session';
 
 /** A value that the test knows is there. */
@@ -72,6 +75,23 @@ const MILK = 'fdc-group-milk';
 const FLOUR = 'fdc-group-wheat-flour';
 const SALT = 'fdc-173468';
 const BUTTER = 'fdc-group-butter';
+/**
+ * Every ingredient of the set meal with the omelette in the salmon's place (rice, omelette,
+ * cucumber salad, teriyaki sauce): the eggs (fdc-171287) are in it, the salmon (fdc-173686) not.
+ */
+const OMELETTE_MEAL = [
+  'fdc-168931',
+  'fdc-173647',
+  'fdc-171287',
+  'fdc-169655',
+  'fdc-167723',
+  'fdc-174277',
+  'fdc-173468',
+  'fdc-172336',
+  'fdc-169225',
+  'fdc-172237',
+  'fdc-170150',
+];
 
 test('the content is the shipped one: every classic and every catalogue entry', async () => {
   const { session } = await make();
@@ -455,6 +475,59 @@ test('a slot with alternatives offers its recipes, and a choice changes the dish
     expect(session.chooseFilling('no-such-dish', 0, 'x')).toBe(false);
     // Control: another frame keeps its own filling.
     expect(must(session.fillings('burrito')[0]).current).toBe('crema-de-limon-sauce');
+  } finally {
+    resetChoices();
+    session.stop();
+  }
+});
+
+test("a choice of filling reaches Cook's list: the row's line, the filter and Only with what I have judge the frame as chosen", async () => {
+  // On the real content and catalogue; the stock is ticked through the session. Not proved: the
+  // GTK pages (the list page draws again when told; nobody looked at it on a screen).
+  resetChoices();
+  const { session } = await make();
+  try {
+    await session.load();
+    const meal = (): DishEntry => must(session.entries().find((e) => e.id === 'teishoku'));
+    const line = (): string => {
+      const row = session
+        .cookView({}, { have: false, order: 'use-up' })
+        .rows.find((r) => r.entry.id === 'teishoku');
+      return rowLine(stringsEn, must(row));
+    };
+    const tacos = must(session.entries().find((e) => e.id === 'tacos'));
+    const plain = must(session.entries().find((e) => e.id === 'chana-masala'));
+    expect(meal().meatFree).toBe(false);
+    expect(line()).toContain('With meat or fish');
+    expect(session.dishes({ meatFree: true }).some((e) => e.id === 'teishoku')).toBe(false);
+    // The stock of the set meal with the omelette: eggs, no salmon.
+    for (const id of OMELETTE_MEAL) expect(await session.tick(id)).toBe(true);
+    const ready = (): boolean =>
+      session
+        .cookView({}, { have: true, order: 'name' })
+        .rows.some((row) => row.entry.id === 'teishoku');
+    expect(ready()).toBe(false);
+
+    let told = 0;
+    const off = session.subscribe(() => told++);
+    const at = must(session.fillings('teishoku')[0]).slotIndex;
+    expect(session.chooseFilling('teishoku', at, 'tamagoyaki-omelette')).toBe(true);
+    off();
+    // The pages that show the list are told, so it draws again.
+    expect(told).toBe(1);
+    expect(meal().meatFree).toBe(true);
+    expect(line()).toContain('Without meat and fish');
+    expect(session.dishes({ meatFree: true }).some((e) => e.id === 'teishoku')).toBe(true);
+    expect(ready()).toBe(true);
+    // Controls: another frame and an unrelated dish keep their entry objects.
+    expect(session.entries().find((e) => e.id === 'tacos')).toBe(tacos);
+    expect(session.entries().find((e) => e.id === 'chana-masala')).toBe(plain);
+
+    // The shipped filling again: as shipped.
+    expect(session.chooseFilling('teishoku', at, 'sake-no-shioyaki-salmon')).toBe(true);
+    expect(meal().meatFree).toBe(false);
+    expect(line()).toContain('With meat or fish');
+    expect(ready()).toBe(false);
   } finally {
     resetChoices();
     session.stop();

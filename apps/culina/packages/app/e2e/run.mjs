@@ -19,6 +19,7 @@ import { editor } from './editor.mjs';
 import { editorMore } from './editor-more.mjs';
 import { everydayStock } from './everyday-stock.mjs';
 import { exportImport } from './export-import.mjs';
+import { frameChoice } from './frame-choice.mjs';
 import { german } from './german.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
@@ -58,6 +59,7 @@ try {
   await dishPairing(browser, server);
   await editorPairing(browser, server);
   await kitParts(browser, server);
+  await frameChoice(browser, server);
   await cookGroups(browser, server);
   await listPlace(browser, server);
   await dishBrowse(browser, server);

@@ -542,7 +542,11 @@ Cook see the recipe that fills the slot and not the others. On the dish
 screen, a slot with alternatives has a choice under the ingredients
 ("Choose what goes in"); choosing puts that recipe into the slot
 (`chooseAlternative`), and the screen, the cook screen and Keep follow
-it. The choice lasts while the app is open and is not stored. Keep
+it, and so does every list that judges the dish: Cook's row, the
+filter, "Only with what I have", "Use up first" and the random pick
+(since 2026-11-24, [behaviour](behaviour.md#cook)). The choice lasts
+while the app is open and is not stored: after a reload the frame is
+shipped again, on its page and in the lists alike. Keep
 copies the base with every alternative, so Swap offers them in the
 notebook. A frame's "without meat and fish" follows the parts in the
 dish. A first build listed an alternative among the ingredients, seen in a

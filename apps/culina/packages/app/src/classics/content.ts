@@ -6,6 +6,7 @@
 // tests run on a fictional example; without that query nothing is read from there.
 import type { Classic, HandlingRule, Substitute, Technique } from '@culina/engine';
 import { isDishOfItsOwn, withoutAlternatives } from '@culina/engine';
+import { asChosen, choiceKey } from './choices';
 
 const FORMAT = 'culina-classics';
 
@@ -70,20 +71,39 @@ export const resetContent = (): void => {
 /** Every classic that is shown. */
 export const classics = (): readonly Classic[] => override()?.classics ?? shipped.classics;
 
-let dishesOf: { all: readonly Classic[]; dishes: readonly Classic[] } | undefined;
+let dishesOf:
+  { all: readonly Classic[]; sources: readonly Classic[]; shipped: readonly Classic[] } | undefined;
+let chosenOf:
+  { shipped: readonly Classic[]; keys: readonly string[]; dishes: readonly Classic[] } | undefined;
 
 /**
  * The classics that are dishes of their own: what the dish lists, the finder and the random pick
  * show. A base that is a sauce is left out; it stays among `classics()` for the Components list
- * and its own screen. The same array while the classics are the same, so caches keyed by
- * identity hold.
+ * and its own screen. A base is listed as it is cooked, without the alternatives held for its
+ * slots, and a frame as the cook chose it on its page (`asChosen`), so that the list, the filter,
+ * the finder and the random pick judge what the page shows. The same array while the classics and
+ * the choices are the same, so caches keyed by identity hold; after a choice the array is new, but
+ * every other dish is the same object as before, so a cache by dish redraws only the one.
  */
 export const dishClassics = (): readonly Classic[] => {
   const all = classics();
-  // A base is listed as it is cooked: without the alternatives held for its slots.
-  if (dishesOf?.all !== all)
-    dishesOf = { all, dishes: all.filter(isDishOfItsOwn).map(withoutAlternatives) };
-  return dishesOf.dishes;
+  if (dishesOf?.all !== all) {
+    const sources = all.filter(isDishOfItsOwn);
+    dishesOf = { all, sources, shipped: sources.map(withoutAlternatives) };
+  }
+  const { sources, shipped } = dishesOf;
+  const keys = sources.map((c) => choiceKey(c.id));
+  const before = chosenOf?.shipped === shipped ? chosenOf : undefined;
+  if (before === undefined || keys.some((k, i) => k !== before.keys[i])) {
+    const dishes = sources.map((c, i): Classic => {
+      const key = keys[i];
+      if (key === '') return shipped[i] as Classic;
+      const kept = before !== undefined && before.keys[i] === key ? before.dishes[i] : undefined;
+      return kept ?? asChosen(c);
+    });
+    chosenOf = { shipped, keys, dishes };
+  }
+  return chosenOf?.dishes ?? shipped;
 };
 
 /** Every technique the engine knows. */
