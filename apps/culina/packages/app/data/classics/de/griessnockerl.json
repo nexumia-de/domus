@@ -158,8 +158,8 @@
         },
         {
           "text": {
-            "en": "With two teaspoons dipped in water, shape the dough into 12 small ovals and slide them into the water.",
-            "de": "Mit zwei in Wasser getauchten Teelöffeln aus dem Teig 12 kleine Nocken formen und ins Wasser gleiten lassen."
+            "en": "With two tablespoons dipped in water, shape the dough into 12 ovals and slide them into the water.",
+            "de": "Mit zwei in Wasser getauchten Esslöffeln aus dem Teig 12 Nocken formen und ins Wasser gleiten lassen."
           },
           "action": "shape"
         },
@@ -196,6 +196,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24: 50 g butter, 1 egg and 100 g semolina is the classic ratio and holds, 15 minutes below the boil and 5 off the heat is usual. It changed the shaping step from two teaspoons to two tablespoons, since about 200 g of dough in 12 pieces is about 17 g each, a tablespoon size."
   }
 }

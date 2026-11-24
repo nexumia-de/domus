@@ -184,7 +184,7 @@ describe('the shipped frames', () => {
     ]);
   });
 
-  test('the soup: the custard can take the dumplings place; carrots and chives are plain ingredients', () => {
+  test('the soup: the custard can take the place of the dumplings; carrots and chives are plain ingredients', () => {
     const soup = frame('suppe-mit-einlage');
     expect(soup.course).toBe('soup');
     expect(soup.slots.map((s) => [s.role, s.ref?.kind, s.ref?.id])).toEqual([

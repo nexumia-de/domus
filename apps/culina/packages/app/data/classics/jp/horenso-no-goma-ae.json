@@ -48,8 +48,8 @@
             "id": "fdc-169655"
           },
           "amount": {
-            "value": 2,
-            "unit": "tsp"
+            "value": 1,
+            "unit": "tbsp"
           }
         },
         {
@@ -195,6 +195,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24. It raised the sugar from 2 tsp to 1 tbsp: against 2 tbsp of soy sauce and 4 tbsp of sesame for 400 g of spinach, 2 tsp left the dressing salty, and usual goma-ae dressings take about as much sugar as soy sauce or a little less."
   }
 }

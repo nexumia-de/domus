@@ -133,8 +133,8 @@
         },
         {
           "text": {
-            "en": "Lay in the slices with room around them and fry for 3 to 4 minutes, until golden and crisp underneath.",
-            "de": "Die Scheiben mit etwas Abstand hineinlegen und 3 bis 4 Minuten braten, bis die Unterseite goldbraun und knusprig ist."
+            "en": "Lay in the slices with room around them, in two batches if the pan is not large enough, and fry for 3 to 4 minutes, until golden and crisp underneath.",
+            "de": "Die Scheiben mit etwas Abstand hineinlegen, wenn die Pfanne nicht groß genug ist in zwei Portionen, und 3 bis 4 Minuten braten, bis die Unterseite goldbraun und knusprig ist."
           },
           "action": "cook",
           "uses": ["tofu"],
@@ -179,6 +179,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24. It changed only the frying step, which now says to fry in two batches when 600 g of tofu do not fit into the pan with room around the slices; amounts and times were left as they were."
   }
 }

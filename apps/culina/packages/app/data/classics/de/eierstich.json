@@ -151,6 +151,6 @@
   "settled": [],
   "check": {
     "method": "second-reader",
-    "note": "second reading pending, to be done by another agent"
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 (3 eggs to 150 ml milk, 25 to 30 minutes in a water bath kept below the boil, covered) and changed nothing."
   }
 }

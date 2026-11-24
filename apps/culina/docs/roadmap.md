@@ -71,7 +71,7 @@ app and finds quickly what they want to cook or can cook.
    (rice, a main, a vegetable, a pickle, a sauce, each with a choice)
    and the soup came with six recipes written for them (pan-fried tofu,
    spinach with sesame, edamame, a vegetable broth, semolina dumplings,
-   egg custard), whose second reading is still to be done. Open here: a
+   egg custard), each read a second time by another agent. Open here: a
    soup frame of another cuisine with more than one broth (the kit has
    no beef or chicken broth that can be a part), and taking the 31 older dishes
    apart into components. Decided by the owner on 2026-11-23

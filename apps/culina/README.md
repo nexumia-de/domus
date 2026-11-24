@@ -14,7 +14,7 @@ Status: in use, as a web app and a native Linux app. Built: one Cook
 screen over own and shipped dishes with a filter and the stock, the
 notebook with versions, ratio cards, 135 shipped dishes of which 94 are
 bases (67 are the app's own recipes, written by an AI model, read a
-second time, cooked by nobody; six of them await their second reading), technique notes, import and export. Thirteen frames (tacos, burrito,
+second time, cooked by nobody), technique notes, import and export. Thirteen frames (tacos, burrito,
 ramen, pizza, risotto, a rice bowl, a soup, plates of several cuisines) are put together from
 the app's recipes, some with a choice of filling. Not built yet: taste
 profiles of ingredients that say what a dish still needs. The plan is in

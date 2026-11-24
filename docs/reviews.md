@@ -21,6 +21,52 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: a rice bowl and a soup frame for Culina, six recipes for them
+
+Two agents under one lead, both on the second-largest model. One built
+the two frames and wrote the six recipes they needed; the other, which
+wrote none of it, read the six recipes a second time and reviewed the
+frames, the changed tests and the documents. The lead committed, made
+the review's small changes and wrote this entry.
+
+| Part                                                            | Done by       | Checked by                                                |
+| --------------------------------------------------------------- | ------------- | --------------------------------------------------------- |
+| Six recipes (tofu, spinach, edamame, broth, dumplings, custard) | agent 1       | agent 2, as second reader                                 |
+| The two frame files, the tests brought to the content           | agent 1       | agent 2, by reading; agent 1 saw both frames in a browser |
+| The reader's corrections, the note of the bowl                  | agent 2, lead | nobody but the validator and `check:culina`               |
+
+**What the checks found, and where it was fixed.**
+
+- _Recipes:_ the sesame dressing leaned salty (sugar 2 tsp to 1 tbsp);
+  12 dumplings from 200 g of dough are shaped with tablespoons, not
+  teaspoons; 600 g of tofu does not fit one pan with room between the
+  slices (two batches).
+- _A frame's note against its parts:_ the bowl poured teriyaki over the
+  salt-grilled salmon and over a stir-fry that has its own sauce. The
+  note puts the sauce on the tofu and on the table for the others.
+- _Seen in a browser by the builder:_ line notes that named a quantity
+  ("about two blocks") were wrong at two portions; the quantities left
+  the notes.
+- _A control that lost its ground:_ "one group left is one flat list"
+  used the filter Soup, which now leaves two groups because the soup
+  frame stands with the frames. The control uses Dessert, and a new
+  assertion pins the two groups under Soup. The reviewer read this as
+  the documented rule, not as a check bent.
+- _Documents that said the recipes were unread_ after they had been
+  read: brought up to date with the reading.
+- _Left as they are, on the reviewer's doubt:_ the dumplings and the
+  custard have the course "side" and stand among Cook's side dishes;
+  the bowl's cuisine is "us".
+
+**Test counts**: `npm run check` passes from the root after the
+reading (Culina: 1253 engine, 1111 app, 23 native tests); Culina's e2e
+passed with 2017 checks before the reading, which changed texts and
+one amount and no count.
+
+**What nobody verified.** Anything cooked. The bowl with each of its
+choices on a plate. The e2e after the reader's changes. The native app
+on a screen.
+
 ## 2026-11-24: Cook in groups, folded choices, the native app's choice of filling
 
 Six agents under one lead, the implementers and reviewers on the
