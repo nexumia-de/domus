@@ -21,6 +21,63 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: Cook in groups, folded choices, the native app's choice of filling
+
+Six agents under one lead, the implementers and reviewers on the
+second-largest model. Each of three changes was built by one agent and
+then read by another that had not written it and was given the diff
+and the task, not the builder's conclusions; the builder fixed what
+the reviewer found. The lead wrote the briefs, read the reports,
+committed and wrote this entry; it changed one style rule itself.
+
+| Part                                                   | Done by                 | Checked by                                                         |
+| ------------------------------------------------------ | ----------------------- | ------------------------------------------------------------------ |
+| Cook's list in groups (web)                            | agent 1                 | agent 2 (read the code, ran a subset of the e2e, looked at 360 px) |
+| The random pick and the editor: choices in folds (web) | agent 3                 | agent 4 (read the code, drove the built app)                       |
+| Native app: a frame as cooked, the choice, the groups  | agent 5                 | agent 6 (read the code; nobody could run GTK)                      |
+| The fixes after each review                            | the builder of the part | the lead read the reports; the tests and the e2e                   |
+
+**What the checks found, and where it was fixed.**
+
+- _A narrowing the screen no longer named:_ after the choices were
+  folded, the roll per role was still judged by the filter's character
+  and "without meat and fish", which stood in the other section's closed
+  fold; the roles' summary named only the roles. The summary and the
+  note above "Roll" now name them. Found by reading the code, with the
+  steps to see it.
+- _A defect already on main:_ the native dish page and cook page read
+  the full base, so a frame's alternative (the guacamole of the burrito)
+  stood among its parts and steps. Found by the builder, who had been
+  told to look; fixed in the page's source of the dish.
+- _Focus lost in the native app_ after a choice and after the portions'
+  buttons (the redraw unparents the focused widget); the widget takes it
+  back. Inferred from GTK's rules, seen by nobody.
+- _An invalid choice overwrote a valid one_ in `chooseFilling`, against
+  its own comment; neither app could reach it yet. Fixed in the function.
+- _The step reached while cooking_ pointed into another method after a
+  change of filling; it is set to 0.
+- _Two changelog fragments contradicted each other._
+- _A browser check that passed by construction_ ("opening the filter
+  does not move the result": the fold is below the result) was removed.
+- _A third style of group heading_ beside two existing ones; the lead
+  gave the new headings the existing size.
+- _Not fixed, written down:_ the way back from a dish lands at the top
+  of the list, not at the row (the shared shell scrolls every screen to
+  the top); a frame kept in the notebook stands in its course, not under
+  "Put together"; Cook's list judges a frame by its shipped filling;
+  `scripts/interact.mjs` of the native app clicks coordinates of the
+  flat list and must be set up again on a desktop
+  ([native app](../apps/culina/docs/native-linux.md)).
+
+**Test counts** (the agents' runs, the lead ran `check:culina` once
+between): `npm run check:culina` passes with 1253 engine, 1097 app and
+23 native tests; Culina's e2e passes with 2015 checks, run alone.
+
+**What nobody verified.** Anything of the native app on a screen: no
+display and no `gjs` in the container. A screen reader on the group
+headings and the folds. A real phone. Whether the order of the groups
+(main course, soup, starter, side, ...) suits a cook.
+
 ## 2026-11-24: a choice of filling in Culina's frames, five recipes for three more
 
 Two agents under one lead. One agent on a smaller model wrote five
