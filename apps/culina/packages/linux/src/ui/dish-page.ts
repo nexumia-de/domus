@@ -78,8 +78,9 @@ export function dishPage(ui: Ui, id: string): Page {
     row.add_suffix(plus);
     return { row, set: (n) => count.set_label(String(n)), minus, plus };
   }
-  stepper.minus.connect('clicked', () => change(portions - 1));
-  stepper.plus.connect('clicked', () => change(portions + 1));
+  // A redraw unparents the focused button (GTK 4 then unsets the window's focus): it takes it back.
+  stepper.minus.connect('clicked', () => change(portions - 1, stepper.minus));
+  stepper.plus.connect('clicked', () => change(portions + 1, stepper.plus));
 
   /** "Choose what goes in": a combo row per slot with alternatives, titled with its role. */
   const fillingGroup = ((): any => {
@@ -91,27 +92,35 @@ export function dishPage(ui: Ui, id: string): Page {
         title: roleLabel(choice.role),
         use_markup: false,
         model: Gtk.StringList.new(choice.options.map((option) => option.name)),
-        selected: Math.max(
-          0,
-          choice.options.findIndex((option) => option.id === choice.current),
-        ),
+        // `fillingChoices` puts the recipe in the dish first. The model is made once, so the
+        // options keep their places after a choice.
+        selected: 0,
       });
       row.connect('notify::selected', () => {
         const option = choice.options[row.get_selected()];
         if (option === undefined) return;
-        session.chooseFilling(classic.id, choice.slotIndex, option.id);
+        if (!session.chooseFilling(classic.id, choice.slotIndex, option.id)) return;
         dish = session.dish(classic.id) ?? dish;
         draw();
+        // The redraw unparented the group and with it the focus; the row takes it back.
+        row.grab_focus();
       });
       group.add(row);
     }
     return group;
   })();
 
-  function change(next: number): void {
+  function change(next: number, button: any): void {
     portions = Math.max(1, Math.min(MAX_PORTIONS, next));
     setPortions(dish.id, portions);
     draw();
+    // At 1 or 99 the button is insensitive and cannot hold the focus: the other one takes it.
+    (button.get_sensitive()
+      ? button
+      : button === stepper.minus
+        ? stepper.plus
+        : stepper.minus
+    ).grab_focus();
   }
 
   function sourceGroup(shown: DishView): any {

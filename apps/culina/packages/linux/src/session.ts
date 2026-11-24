@@ -146,8 +146,12 @@ export interface Session {
   dish(id: string): Classic | undefined;
   /** The slots of a dish that have a choice of filling, the one in the dish first (`fillingChoices`). */
   fillings(id: string): FillingChoice[];
-  /** Fills a slot with another of its recipes, for as long as the app runs (the web app's `chooseFilling`). */
-  chooseFilling(id: string, slotIndex: number, componentId: string): void;
+  /**
+   * Fills a slot with another of its recipes, for as long as the app runs (the web app's
+   * `chooseFilling`: the shipped filling clears the choice, an id that is no recipe of the slot
+   * changes nothing, a change sets the dish's step back to the first). @returns whether it changed.
+   */
+  chooseFilling(id: string, slotIndex: number, componentId: string): boolean;
   /** Marks an ingredient as there. @returns false when nothing could be written. */
   tick(ingredientId: string): Promise<boolean>;
   /** Marks it as not there. @returns what Undo needs, or undefined when it was not there or nothing could be written. */
@@ -314,7 +318,10 @@ export function createSession(options: SessionOptions): Session {
       const classic = classics().find((c) => c.id === id);
       return classic === undefined ? [] : fillingChoices(classic, lang);
     },
-    chooseFilling: (id, slotIndex, componentId) => chooseFilling(id, slotIndex, componentId),
+    chooseFilling(id, slotIndex, componentId) {
+      const classic = classics().find((c) => c.id === id);
+      return classic !== undefined && chooseFilling(classic, slotIndex, componentId);
+    },
     async tick(ingredientId) {
       if (!names.has(ingredientId)) return false;
       return (await change((records) => tickEdit(records, ingredientId, false))).ok;

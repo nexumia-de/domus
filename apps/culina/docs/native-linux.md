@@ -179,12 +179,29 @@ the recipes that can fill the slot, the one in the dish first and
 selected (`session.fillings`, the web app's `fillingChoices`). Choosing
 one calls the web app's `chooseFilling` and draws the page again: the
 ingredients, the method, the source (the frame's parts) and the line
-"with meat or fish" in the header follow the dish as chosen; the group of
-combo rows is the same widget after the redraw, so the row keeps its
-place. **Cook step by step** reads the same choice. The choice lasts
-while the app runs and is not stored, as on the web; the native app has
-no Keep. Nothing of the choice is written here: the module is the web
-app's, exported from `@culina/app/core`.
+"with meat or fish" in the header follow the dish as chosen. The group of
+combo rows is the same widget after the redraw and its model is made once
+when the page opens, so the options keep their places; the redraw
+unparents the focused row (GTK 4 then unsets the window's focus), so the
+row takes the focus back (`grab_focus`), as the web app's select does.
+The portions' minus and plus did lose the focus the same way before; they
+take it back now too (at 1 or 99, where the pressed button turns
+insensitive, the other one takes it). **Cook step by step** reads the
+same choice. `chooseFilling` takes the dish: the shipped filling clears
+the choice, an id that is no recipe of the slot changes nothing (an
+earlier choice stays), and a change sets the dish's step of cooking back
+to the first, since the method is another one (the native cook page
+starts at the first step anyway; the web app's cook screen could resume).
+The choice lasts while the app runs and is not stored, as on the web;
+the native app has no Keep. Nothing of the choice is written here: the
+module is the web app's, exported from `@culina/app/core`.
+
+**Known, shared with the web app:** Cook's list and **Only with what I
+have** judge a frame by its shipped filling, not by the cook's choice
+(`dishClassics()` and the entries are made from the shipped base). After
+choosing the omelette, the set meal's row on Cook still says "with meat
+or fish" while its page says "without meat and fish", and the switch
+asks the stock for the salmon.
 
 **A defect fixed with it.** Before, the dish page and the cook page read
 the full base (`classics()`), so a frame with an alternative listed the
@@ -273,13 +290,13 @@ On purpose, for the first release:
 
 # Build, run, checks
 
-| Command                             | What it does                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                                                                                                                                                                                                                      |
-| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                                                                                                                                                                             |
-| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter, Cook's switch and order against the web app's `readyKeysOf` and `useUpFrom`, a `bestBefore` the web app wrote, the kept choices, the day the answers are kept for, Cook's groups, a frame as it is cooked and its choice of filling), the filter's choices and words, the group headings, and the texts (23 tests); part of `npm run check:culina` |
-| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (17 checks)                                                                                                                                                                                                                                         |
-| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (32 checks of its own, the 10 shared create-and-leave steps of the Spaces group and one at 1000 x 700; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step                                                                                                                  |
+| Command                             | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                                                                                                                                                                                                                                             |
+| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                                                                                                                                                                                                    |
+| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter, Cook's switch and order against the web app's `readyKeysOf` and `useUpFrom`, a `bestBefore` the web app wrote, the kept choices, the day the answers are kept for, Cook's groups, a frame as it is cooked and its choice of filling with the step set back), the filter's choices and words, the group headings, and the texts (23 tests); part of `npm run check:culina` |
+| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (17 checks)                                                                                                                                                                                                                                                                |
+| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (32 checks of its own, the 10 shared create-and-leave steps of the Spaces group and one at 1000 x 700; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step                                                                                                                                         |
 
 # Releases
 
@@ -351,22 +368,43 @@ classics, the textbooks behind the notes). CI: `culina-linux-check`,
   screen.** The container they were built in has no display, no `gjs`
   and no Broadway, so neither the app nor `npm run smoke` and `npm run
 interact` were run; the bundle was built (`npm run build`) and the
-  types checked. What is proven is in Node
-  (`test/session.test.ts`: "a frame is shown as it is cooked …", "a slot
-  with alternatives offers its recipes …", "Cook's list by name stands in
-  the web app's groups …"; `test/dish-choices.test.ts`: the line under a
-  row in a group, the group headings): what the pages are given, not the
-  combo row, its popover, the redraw after a choice, the group headings
-  on screen or their size at 360 px. `scripts/interact.mjs` clicks the
-  first dish at coordinates read from screenshots of the flat list; with
-  the count above the groups the first dish now stands lower, so
-  `FIRST_DISH` very likely has to be read again from a new screenshot
-  before the next run. German was not looked at. The two new session
-  tests fail on the code before the change because `session.dish`,
+  types checked. What is proven is in Node (`test/session.test.ts`: "a
+  frame is shown as it is cooked …", "a slot with alternatives offers its
+  recipes …", "Cook's list by name stands in the web app's groups …";
+  `test/dish-choices.test.ts`: the line under a row in a group, the group
+  headings; the web app's `test/frames.test.ts` for `chooseFilling`).
+  **These tests prove what the session hands to the pages, nothing of
+  the pages:** they would still pass if the dish page or the cook page
+  read the full base again, never appended the group of combo rows,
+  passed a wrong slot index, lost the focus, or ignored the groups and
+  drew the flat list. The combo row, its popover, the redraw after a
+  choice, the focus, the group headings on screen and their size at
+  360 px were not seen. German was not looked at. The new session tests
+  fail on the code before the change because `session.dish`,
   `session.fillings`, `session.chooseFilling` and `cookView`'s `groups`
   did not exist; the first half of "a frame is shown as it is cooked"
   (the full burrito lists the guacamole) passes before and after and
   shows the defect.
+- **`scripts/interact.mjs` is out of date since the groups.** Its
+  coordinates were read from screenshots of the flat list. With the
+  count above the groups, `FIRST_DISH = [180, 325]` now lands on a
+  heading, a gap or the first frame. If it misses a dish, `PLUS [312,
+150]` hits the switch "Only with what I have" on Cook and check 04
+  ("one more portion changes the amounts") passes falsely, `BAR_BUTTON`
+  opens the stock and check 05 ("Cook step by step opens the first
+  step") passes falsely, and check 08 ("the back button returns to the
+  list as it was") then fails. The same y is used in the German block
+  (shot 31) and at 1000 x 700 (shot 42). Check 13 ("Use up first names
+  the dated item …") now compares a grouped list with a flat one and
+  passes for the headings alone. What a person with a desktop has to do
+  before the next release: run `SHOTS=<dir> npm run interact -w
+@culina/linux`; read the first dish row's y from `01-start.png` and set
+  `FIRST_DISH` (and decide which dish the flow opens: now the first frame,
+  "Put together" being first); look at shots 30/31 and 40/42; give check
+  13 a flat baseline (the order "Use up first" with the switch off, or
+  compare the rows below the headings); add a step that opens a frame,
+  picks the second option of its combo row and checks that the
+  ingredients change; and look at every screen at 360 x 720.
 - **The Flatpak was never built**: `culina-flatpak` runs first in CI on
   the pull request. Nobody installed or started a bundle, so the launcher,
   the sandbox and the installed icon are untried.

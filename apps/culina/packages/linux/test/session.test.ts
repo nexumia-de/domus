@@ -15,6 +15,8 @@ import {
   dishView,
   GROUP_COURSES,
   resetChoices,
+  setStep,
+  stepOf,
   techniques,
   portionsOf,
   readyKeysOf,
@@ -423,7 +425,12 @@ test('a slot with alternatives offers its recipes, and a choice changes the dish
     expect(before.parts).toContain(salmon);
     expect(before.parts).not.toContain(omelette);
 
-    session.chooseFilling('teishoku', must(choice).slotIndex, 'tamagoyaki-omelette');
+    // Cooking had reached step 3; a choice starts it again at the first step (another method).
+    setStep('teishoku', 3);
+    expect(session.chooseFilling('teishoku', must(choice).slotIndex, 'tamagoyaki-omelette')).toBe(
+      true,
+    );
+    expect(stepOf('teishoku')).toBe(0);
     const after = namesOf(must(session.dish('teishoku')));
     expect(after.parts).toContain(omelette);
     expect(after.parts).not.toContain(salmon);
@@ -432,8 +439,20 @@ test('a slot with alternatives offers its recipes, and a choice changes the dish
     expect(after.frameParts).toContain(omelette);
     // "Without meat and fish" follows the parts in the dish.
     expect(after.meatFree).toBe(true);
-    // The row shows the choice, the options stay in the same order.
+    // Asked again, the chosen recipe is the current one and comes first, as on the web; the page
+    // keeps the model it made when it opened, so its rows do not move.
     expect(must(session.fillings('teishoku')[0]).current).toBe('tamagoyaki-omelette');
+    expect(must(session.fillings('teishoku')[0]).options.map((o) => o.id)).toEqual([
+      'tamagoyaki-omelette',
+      'sake-no-shioyaki-salmon',
+    ]);
+    // An id that is no recipe of the slot changes nothing, the choice and the step included.
+    setStep('teishoku', 2);
+    expect(session.chooseFilling('teishoku', must(choice).slotIndex, 'not-a-recipe')).toBe(false);
+    expect(namesOf(must(session.dish('teishoku'))).parts).toEqual(after.parts);
+    expect(stepOf('teishoku')).toBe(2);
+    // An unknown dish changes nothing.
+    expect(session.chooseFilling('no-such-dish', 0, 'x')).toBe(false);
     // Control: another frame keeps its own filling.
     expect(must(session.fillings('burrito')[0]).current).toBe('crema-de-limon-sauce');
   } finally {

@@ -25,6 +25,7 @@ import {
 } from '../src/classics/choices';
 import { CLASSICS, FRAMES } from '../src/classics/index';
 import { dishView } from '../src/classics/dish-view';
+import { setStep, stepOf } from '../src/classics/session';
 import { must } from './must';
 
 const read = (path: string): unknown =>
@@ -154,7 +155,7 @@ describe('the shipped frames', () => {
       ['main', 2],
       ['sauce', 2],
     ]);
-    chooseFilling('tacos', at, 'frijoles-refritos-main');
+    chooseFilling(tacos, at, 'frijoles-refritos-main');
     expect(must(fillingChoices(tacos, 'en')[0]).current).toBe('frijoles-refritos-main');
     expect((asChosen(tacos).components ?? []).map((c) => c.id)).not.toContain(
       'pollo-deshebrado-en-jitomate-main',
@@ -163,6 +164,31 @@ describe('the shipped frames', () => {
     resetChoices();
     // Control: without a choice the frame is as shipped.
     expect(withChoices(tacos)).toBe(tacos);
+  });
+
+  test('a choice is kept against an id that is no recipe of the slot, and the shipped filling clears it', () => {
+    resetChoices();
+    const burrito = frame('burrito');
+    const at = burrito.slots.findIndex((s) => s.ref?.id === 'crema-de-limon-sauce');
+    const sauceOf = (): string | undefined => must(fillingChoices(burrito, 'en')[0]).current;
+    // Control: a valid choice works, and sets the step of cooking back to the first.
+    setStep('burrito', 5);
+    expect(chooseFilling(burrito, at, 'guacamole-sauce')).toBe(true);
+    expect(sauceOf()).toBe('guacamole-sauce');
+    expect(stepOf('burrito')).toBe(0);
+    // An id that is no alternative of the slot keeps the earlier choice (and the step).
+    setStep('burrito', 4);
+    expect(chooseFilling(burrito, at, 'nonsense')).toBe(false);
+    expect(sauceOf()).toBe('guacamole-sauce');
+    expect(stepOf('burrito')).toBe(4);
+    // A slot that has no component in it, or no such slot, changes nothing either.
+    expect(chooseFilling(burrito, 99, 'guacamole-sauce')).toBe(false);
+    // The same choice again is no change.
+    expect(chooseFilling(burrito, at, 'guacamole-sauce')).toBe(false);
+    // The shipped filling again: the choice is gone, the frame as shipped.
+    expect(chooseFilling(burrito, at, 'crema-de-limon-sauce')).toBe(true);
+    expect(withChoices(burrito)).toBe(burrito);
+    resetChoices();
   });
 
   test('the pizza has slots filled by plain ingredients', () => {
