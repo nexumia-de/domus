@@ -122,10 +122,21 @@ test('a slot with a unit that needs a density, a missing component or no amount 
   const rows = slotRows(nb, odd, 2);
   expect(rows[0]?.problem).toMatch(/needs a density/);
   expect(rows[1]?.problem).toMatch(/not in the notebook/);
+  // A component slot without an amount, in a dish that stores no portions, is not added up: how
+  // many portions one run makes is not known, and nothing is guessed.
   expect(rows[2]?.problem).toMatch(/no amount set/);
+  expect(rows[2]?.runs).toBeUndefined();
   expect(rows[3]?.problem).toMatch(/needs an amount by weight/);
   const raw = dishRaw(nb, rows);
   expect(raw.skipped.length).toBe(4);
   // the one slot that can be added up is: 160 g of a sauce that yields 800 g, a fifth of its recipe
   expect(raw.rows.find((r) => r.ingredientId === 'tomato')?.g).toBeCloseTo(140, 9);
+  // The same dish for 2 stored portions: that slot is one run for the 2 (since 2026-11-24), shown at
+  // 4 portions two runs of 700 g of tomato.
+  const stored = slotRows(nb, { ...odd, portions: 2 }, 4);
+  expect(stored[2]?.problem).toBeUndefined();
+  expect(stored[2]?.runs).toBe(2);
+  const four = dishRaw(nb, stored);
+  expect(four.skipped.length).toBe(3);
+  expect(four.rows.find((r) => r.ingredientId === 'tomato')?.g).toBeCloseTo(280 + 2 * 700, 9);
 });

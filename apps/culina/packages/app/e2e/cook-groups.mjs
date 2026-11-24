@@ -4,7 +4,8 @@
 // names the group and its number of dishes; a filter that leaves two groups shows two headings
 // with their counts, one that leaves one group none (the control); the order "Use up first" is one
 // flat list; a dish opened from a group leads back to the list in its groups; a frame kept in the
-// notebook stands under "Put together", a kept dish that is no frame in its course. Chromium at 360 px; no
+// notebook stands under "Put together", a kept dish that is no frame in its course, and a kept pizza
+// stays beside the shipped one under the filter "Cheesy". Chromium at 360 px; no
 // screen reader, no real phone, no own dish without a course (test/browse-groups.test.ts has it).
 import { check, watch } from './harness.mjs';
 import { formReady, layout, open } from './editor-helpers.mjs';
@@ -221,6 +222,23 @@ const keptFrame = async (browser, server) => {
   check(
     same(edited, ['Put together · 14 dishes', 'Put together · 14 dishes']),
     `${label}: the kept tacos, edited and saved, still stand under Put together (${edited.join(' | ')})`,
+  );
+  // A kept copy is judged like its shipped dish (docs/dish-characters.md): the kept pizza and the
+  // shipped one both stay under the filter "Cheesy". On f4f9f59 the kept pizza was dropped. The
+  // control: the tacos, shipped and kept, are not cheesy and leave.
+  await keep('pizza-margherita');
+  await open(page, server.origin, 'cook');
+  await page.locator('.dish-group').first().waitFor();
+  await openFilter(page);
+  await page.getByLabel('What it is like').selectOption({ label: 'Cheesy' });
+  const pizza = await groupOf('Pizza with tomato, mozzarella and basil');
+  check(
+    pizza.length === 2 && pizza.every((h) => h.startsWith('Put together ·')),
+    `${label}: under "Cheesy" the kept pizza stands beside the shipped one (${pizza.join(' | ')})`,
+  );
+  check(
+    (await groupOf('Tacos')).length === 0,
+    `${label}: under "Cheesy" neither tacos stand (the control)`,
   );
   check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
   await context.close();

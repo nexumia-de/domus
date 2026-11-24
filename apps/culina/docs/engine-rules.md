@@ -509,7 +509,33 @@ the tree to the raw ingredients.
 - `raw` lists `{ ingredientId, state?, role?, g }` aggregated by
   ingredient, state and role in first-seen order (a component reports its
   own lines first, then its sub-components in line order). The role is the
-  one on the line that names the ingredient. `rawG` is their sum.
+  one on the line that names the ingredient. `rawG` is their sum. With
+  `rawBy: 'line'` (since 2026-11-24) there is one entry per line of the
+  tree instead, for rules that count lines (the share of a dish that is
+  measured, in the app's character rules).
+- A line that names a sub-component without an amount is `unmeasured`,
+  unless the caller asks with `withoutAmount: 'run'` (since 2026-11-24):
+  then it is one run of that sub-component per run of the component naming
+  it, the way a shipped dish counts a component it names; a run taken as
+  its input (`withoutYield: 'input'`) then weighs that run too. The app
+  asks for it for an own dish's totals, nutrition and characters, together
+  with one run of a component slot without an amount at the dish's stored
+  portions ([dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)).
+  With `withoutYield: 'input'` a run with a line that cannot be weighed,
+  at any depth, is `no-yield` (since 2026-11-24; before, the line was left
+  out of the weight), and `notWeighedByLine` (ingredient ids, the app
+  passes tap water) makes a component named by mass `no-yield` when its
+  run, without a yield, holds one of them. **Open, owner questions:** the
+  water rule is too wide (water that stays in, as in a bread dough, a stock
+  or a batter named by mass, also makes the run unknown; it fails safe), and
+  the narrowed input rule leaves a dish with eggs by the piece unscalable
+  while eggs have no piece weight in the notebook (weighing them by the
+  group's 44 g, as the characters do, is the proposed next step); see
+  [dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24).
+  `runWeight(components, id, facts, options)` gives what one run weighs by
+  that same rule, so every reader that scales a run on a dish's page
+  divides by the same weight.
+  **Test:** `test/expand-without-amount.test.ts`.
 - `unmeasured` lists `{ path, index, ref }` for lines without amount
   anywhere in the tree, `unconverted` the same with the `cause` for lines
   whose amount lacks a fact to be weighed: the raw amounts then lack them
@@ -1086,7 +1112,10 @@ The rules are data files in `data/handling/`; the app gets them from
 newId, ingredientIds? })` returns the records the app writes: one component
 record per component and the dish, each version 1 of a new family (`family` is
 its own id), with the source named in `version.change` and in the vendor field
-`x-origin`. Amounts are the derived ones; a component's `ref` points at the new
+`x-origin`. Amounts are the derived ones, a component's lines for all the
+portions and a slot's amount per portion, as a dish record holds it (since
+2026-11-24; before, the slot held the total and a copy's ingredient slot
+counted `portions` times; vectors `copy-basic`, `copy-ingredient-remap`); a component's `ref` points at the new
 component ids, an ingredient `ref` at `ingredientIds[id]` where the ingredient
 was adopted under another id, else at the catalogue id. The source's own
 wording and a range go into the line's note (`(1 Pfund)`, `(125-150 ml)`), a

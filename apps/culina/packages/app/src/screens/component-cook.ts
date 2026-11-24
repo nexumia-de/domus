@@ -184,6 +184,8 @@ const cookScreen = (cooked: Cookable): HTMLElement => {
     if (step.lines.length > 0) {
       box.append(el('h3', undefined, t.usesHeading), lineList(step.lines, t.usesHeading, instead));
     }
+    if (step.amountsNote !== undefined)
+      box.append(el('p', 'note-quiet part-note', step.amountsNote));
     const facts = [
       step.time === undefined ? undefined : t.timeLabel(step.time),
       step.temperature === undefined ? undefined : t.temperatureLabel(step.temperature),

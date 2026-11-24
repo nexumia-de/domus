@@ -12,16 +12,18 @@ import { characterIds } from '../characters/view';
 import type { ComponentRef } from '@culina/engine';
 import type { DishRecord, Notebook, SlotRecord } from '../records';
 import { parseEntry } from '../shared/parse';
-import { asCourse, type DishForm } from './dish-form';
+import { asCourse, wholePortions, type DishForm } from './dish-form';
 
 /**
  * The dish as the draft stands, for the character rules only: the slots that have a filling, an
- * amount where one is typed and readable, the course, and the assembly steps that are stored
+ * amount where one is typed and readable, the portions and the course, and the assembly steps that are stored
  * (a draft's steps are not read: the techniques of the components' steps still count).
  */
 export const draftDish = (form: DishForm): DishRecord => ({
   id: form.id,
   name: form.name,
+  // A component slot without an amount is one run at the dish's portions (`runsWithoutAmount`).
+  ...(wholePortions(form.portions) === undefined ? {} : { portions: wholePortions(form.portions) }),
   ...(asCourse(form.course) === undefined ? {} : { course: asCourse(form.course) }),
   slots: form.slots.flatMap((slot): SlotRecord[] => {
     if (slot.ref === undefined) return [];

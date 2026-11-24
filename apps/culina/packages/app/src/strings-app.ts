@@ -106,6 +106,9 @@ export const appStrings = {
         `${line} is given in a unit that needs a density or a piece weight, which is not recorded.`,
       noYield: (name: string): string =>
         `The output of ${name} is not weighed yet, so it cannot be scaled.`,
+      /** A run taken as what goes in, with a line that cannot be weighed. */
+      lineUnweighed: (name: string, line: string): string =>
+        `${name} cannot be scaled: ${line} has no weight here. Weigh its output, or give ${line} a weight.`,
       noPercentBase: (role: string): string =>
         `Lines in percent need a base: no line with an amount has the role ${role}.`,
       needsMass: (name: string): string => `${name} is a component and needs an amount by weight.`,

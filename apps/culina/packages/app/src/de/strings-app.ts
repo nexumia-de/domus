@@ -111,6 +111,8 @@ export const appStringsDe: typeof appStrings = {
         `Für ${line} ist weder ein Stückgewicht noch eine Dichte erfasst.`,
       noYield: (name: string): string =>
         `Das Ergebnis von ${name} ist noch nicht gewogen, deshalb lässt es sich nicht skalieren.`,
+      lineUnweighed: (name: string, line: string): string =>
+        `${name} lässt sich nicht skalieren: ${line} hat hier kein Gewicht. Wiege das Ergebnis oder gib ${line} ein Gewicht.`,
       noPercentBase: (role: string): string =>
         `Zeilen in Prozent brauchen eine Basis: Keine Zeile mit Menge hat die Rolle ${role}.`,
       needsMass: (name: string): string =>

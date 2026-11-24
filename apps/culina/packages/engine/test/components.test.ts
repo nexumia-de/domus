@@ -158,15 +158,18 @@ describe('expandComponent', () => {
     expect(expandComponent([t, s], 's', {}, { outputG: 150 })).toMatchObject({
       error: { code: 'no-yield', componentId: 's' },
     });
-    // The egg has no piece weight: the run weighs its converted input, 300 g.
+    // The egg has no piece weight: the run's weight is not known, and nothing is scaled by a
+    // weight that leaves it out (until 2026-11-24 the run weighed 300 g without it).
     expect(expandComponent([t, s], 't', {}, { withoutYield: 'input' })).toMatchObject({
-      ok: true,
-      raw: [{ ingredientId: 'x', g: 100 }],
-      unweighed: ['s'],
+      error: { code: 'no-yield', componentId: 's' },
     });
     expect(expandComponent([t, s], 's', {}, { outputG: 150, withoutYield: 'input' })).toMatchObject(
-      { ok: true, factor: 0.5, raw: [{ ingredientId: 'x', g: 150 }], unweighed: ['s'] },
+      { error: { code: 'no-yield', componentId: 's' } },
     );
+    // Control: with the egg weighed, the run weighs its input, 344 g.
+    expect(
+      expandComponent([t, s], 't', { egg: { unitWeightG: 44 } }, { withoutYield: 'input' }),
+    ).toMatchObject({ ok: true, unweighed: ['s'] });
     // A recorded yield is used as before and nothing is listed.
     const weighed = { ...s, yield: yieldOf(200) };
     expect(

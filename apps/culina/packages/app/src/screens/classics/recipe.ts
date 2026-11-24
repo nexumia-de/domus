@@ -46,7 +46,9 @@ export const ingredientsBlock = (
   block.append(el('h2', undefined, t.ingredientsHeading));
   for (const c of components) {
     if (c.lines.length === 0) continue;
-    block.append(el('h3', undefined, c.name), lineList(c.lines, c.name, extra));
+    block.append(el('h3', undefined, c.name));
+    if (c.note !== undefined) block.append(el('p', 'note-quiet part-note', c.note));
+    block.append(lineList(c.lines, c.name, extra));
   }
   if (slots.length > 0)
     block.append(el('h3', undefined, t.dishHeading), lineList(slots, t.dishHeading, extra));
