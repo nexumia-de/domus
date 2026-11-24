@@ -79,9 +79,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "Enough water to make a very thick dough.",

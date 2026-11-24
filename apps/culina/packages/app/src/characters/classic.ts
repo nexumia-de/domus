@@ -7,6 +7,7 @@ import type { CharacterFacts, CharacterLine, Classic } from '@culina/engine';
 import { catalogueBelow } from './below';
 import { conversionOf, lineOf } from './classes';
 import type { Below, Lookup } from './classes';
+import { isNotCounted } from './table';
 
 /**
  * The facts of one classic; `undefined` when the engine cannot derive it.
@@ -29,6 +30,8 @@ export const factsOfClassic = (
       continue;
     }
     const id = line.ref.id;
+    // Kitchen water is no part of what a dish is like (the table's `notCounted`).
+    if (isNotCounted(id)) continue;
     const grams =
       line.amount === undefined ? undefined : toGrams(line.amount, conversionOf(id, lookup, below));
     lines.push(lineOf(id, grams?.ok === true ? grams.g : undefined, lookup, below));

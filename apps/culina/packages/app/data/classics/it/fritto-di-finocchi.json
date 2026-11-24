@@ -41,9 +41,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "note": {
             "en": "Salted water for cooking.",
@@ -219,14 +219,18 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Ice-cold water",
-            "de": "Eiskaltes Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "amountWord": "as-needed",
           "sourceNote": {
             "en": "Source wording: \"acqua diaccia quanto basta\".",
             "de": "Quellenwortlaut: „acqua diaccia quanto basta“."
+          },
+          "note": {
+            "en": "Ice-cold.",
+            "de": "Eiskalt."
           }
         }
       ],

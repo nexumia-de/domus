@@ -1,8 +1,13 @@
 {
   "format": "culina-ingredient-roles",
   "formatVersion": 1,
-  "note": "Which catalogue ingredients or groups fill a role of a ratio card (flour, water, egg, fat, sugar, oil, acid, liquid, salt: packages/engine/data/templates.json) or a role of a dish (crunch, garnish). A role on a group covers every food below it. Every entry is a judgement of the person who wrote it, stated in `basis`; none comes from the USDA data, which carries no roles. Water has no catalogue entry and is no row here: the finder treats the role water as the kitchen's.",
+  "note": "Which catalogue ingredients or groups fill a role of a ratio card (flour, water, egg, fat, sugar, oil, acid, liquid, salt: packages/engine/data/templates.json) or a role of a dish (crunch, garnish). A role on a group covers every food below it. Every entry is a judgement of the person who wrote it, stated in `basis`; none comes from the USDA data, which carries no roles. Tap water is a catalogue entry since 2026-11-24 and has the role water; the finder treats the role water as the kitchen's, so no stock is asked for it.",
   "entries": [
+    {
+      "id": "fdc-173647",
+      "roles": ["water"],
+      "basis": "Tap water is the water of every ratio card and of a recipe that names water; judgement."
+    },
     {
       "id": "fdc-group-wheat-flour",
       "roles": ["flour"],

@@ -14,7 +14,6 @@ const ALLOWED: readonly (readonly [string, number])[] = [
   ['Cheese (cacio)', 2],
   ['Chicken blood', 1],
   ['Chocolate', 1],
-  ['Cold water', 1],
   ['Dashi (kombu and bonito stock)', 1],
   ['Fatty ham (prosciutto grasso)', 1],
   ['Fine herbs', 1],
@@ -22,7 +21,6 @@ const ALLOWED: readonly (readonly [string, number])[] = [
   ['Fresh berries, sugared', 1],
   ['Fruit brandy (acquavite)', 1],
   ['Herring milt', 1],
-  ['Ice-cold water', 1],
   ['Juniper berries', 2],
   ['Kidney suet', 1],
   ['Meat broth', 2],
@@ -32,9 +30,7 @@ const ALLOWED: readonly (readonly [string, number])[] = [
   ['Shelled fresh beans', 1],
   ['Soup vegetables', 1],
   ['Tarragon', 1],
-  ['Water', 71],
   ['Water (the cooking water of the peas)', 1],
-  ['Water, cold', 1],
 ];
 
 describe('the wanted allow-list', () => {

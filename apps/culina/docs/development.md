@@ -263,7 +263,7 @@ files in `packages/app/data/` are committed and rebuilt, never edited:
 - `flavour-pairings.json`, derived from FlavorDB's entity documents
   (fetched on 2026-11-23: 936 entities, 1788 molecules, 606 kB);
 - `flavour-links.json`, which entity stands for an ingredient of the
-  catalogue (681 of 777), from the rule of `tools/flavordb/link.mjs` and
+  catalogue (681 of 778), from the rule of `tools/flavordb/link.mjs` and
   the corrections of `tools/flavordb/links-own.json`.
 
 To fetch again and rebuild, from `apps/culina`:

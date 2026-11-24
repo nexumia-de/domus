@@ -43,9 +43,9 @@
         },
         {
           "key": "water",
-          "wanted": {
-            "en": "Water",
-            "de": "Wasser"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
           },
           "sourceNote": {
             "en": "Original: la contenance d'un petit pot (the content of one small pot). The book gives no size for the small pot, so no amount.",

@@ -2,7 +2,7 @@
   "format": "culina-wikidata-de-snapshot",
   "formatVersion": 1,
   "source": "Wikidata, https://query.wikidata.org/sparql (CC0 1.0 Universal)",
-  "retrieved": "2026-11-23",
+  "retrieved": "2026-11-24",
   "property": "P1978 (USDA NDB number)",
   "query": "SELECT ?item ?ndb\n  (SAMPLE(?deL) AS ?de) (SAMPLE(?enL) AS ?en)\n  (GROUP_CONCAT(DISTINCT ?deA; separator=\"¦\") AS ?deAliases)\n  (GROUP_CONCAT(DISTINCT ?cls; separator=\"¦\") AS ?classes)\nWHERE {\n  ?item wdt:P1978 ?ndb .\n  OPTIONAL { ?item rdfs:label ?deL . FILTER(LANG(?deL) = \"de\") }\n  OPTIONAL { ?item rdfs:label ?enL . FILTER(LANG(?enL) = \"en\") }\n  OPTIONAL { ?item skos:altLabel ?deA . FILTER(LANG(?deA) = \"de\") }\n  OPTIONAL {\n    { ?item wdt:P31 ?c . BIND(CONCAT(\"i:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n    UNION\n    { ?item wdt:P279 ?c . BIND(CONCAT(\"s:\", STRAFTER(STR(?c), \"entity/\")) AS ?cls) }\n  }\n}\nGROUP BY ?item ?ndb\nORDER BY ?item ?ndb",
   "classesQuery": "SELECT ?c ?l WHERE { VALUES ?c { <the class ids of the P31 values of the first response> } ?c rdfs:label ?l . FILTER(LANG(?l) = \"en\") }",

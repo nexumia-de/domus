@@ -303,7 +303,9 @@ A line of a component, or a slot of the dish, names its ingredient in one of two
   `wanted` line can be read but not yet copied into the notebook. The finder
   never counts such a line as lacking and names it apart; a line whose English
   or German text is water ("Water", "Cold water", "Wasser") is not asked for at
-  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)). The
+  all ([engine rules](engine-rules.md#the-shipped-classics-in-the-finder)).
+  Plain water is no `wanted` line: it points at the catalogue's tap water
+  (`fdc-173647`), cold water with a note that says so. The
   names that remain are an explicit, reviewed list in
   `test/classics-wanted-list.test.ts`: a new unmatched line fails it until a
   reviewer adds the name there.

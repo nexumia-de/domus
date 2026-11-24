@@ -260,7 +260,7 @@ screen shows the store's message under the button. No test makes the store fail 
 way. A component whose lines, or those of a component it
 names, still have an ingredient the catalogue lacks shows "This component
 cannot be kept yet: the notebook does not know Water. The recipe stays here to
-cook." instead of the button (40 of the 59 on this day, mostly for water).
+cook." instead of the button (40 of the 59 on that day, mostly for water; since 2026-11-24 water is a catalogue ingredient and no recipe is held back for it).
 **Test:** `test/components-shipped.test.ts` (fictional example dishes,
 in-memory store), `e2e/components-shipped.mjs` (the real shipped content, 360
 and 1000 px, English and German). Not proved: a screen reader; a real phone.

@@ -25,6 +25,10 @@
       "fdc-171610"
     ]
   },
+  "notCounted": {
+    "basis": "Tap water as an ingredient line is left out of what a dish is judged by: a dish is not called light for the water its beans, potatoes or pasta boil in, most of which is poured away, and a tomato share is not lowered by it. The same held while a recipe's water was no catalogue ingredient. A judgement of the project.",
+    "classes": ["fdc-173647"]
+  },
   "characters": [
     {
       "id": "tomatoey",
