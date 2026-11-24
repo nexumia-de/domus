@@ -1,7 +1,8 @@
 // Which component fills a slot of a shipped base, where the base has alternatives for it (a
 // frame: the beans in place of the chicken). Chosen on the dish screen and kept while the app is
-// open; nothing is stored. The cook screen and Keep read the same choice; a choice sets the dish's
-// step back to the first (`classics/session.ts`).
+// open; nothing is stored, so after a reload every frame is shipped again. The cook screen and Keep
+// read the same choice, and so does every list that judges a dish (`dishClassics` in ./content.ts
+// asks `choiceKey`); a choice sets the dish's step back to the first (`classics/session.ts`).
 import { chooseAlternative, slotAlternatives, withoutAlternatives } from '@culina/engine';
 import type { Classic, Lang } from '@culina/engine';
 import { pickText } from '@culina/engine';
@@ -35,6 +36,19 @@ export const chooseFilling = (
   else chosen.set(classic.id, slots);
   setStep(classic.id, 0);
   return true;
+};
+
+/**
+ * What the cook chose for a dish, as a text that is the same while the choice is the same, and
+ * empty without one: what the caches of the lists compare, so that a choice redraws the one dish.
+ */
+export const choiceKey = (id: string): string => {
+  const slots = chosen.get(id);
+  if (slots === undefined) return '';
+  return [...slots]
+    .sort(([a], [b]) => a - b)
+    .map(([slotIndex, componentId]) => `${slotIndex}=${componentId}`)
+    .join(' ');
 };
 
 /** Forgets every choice (for tests). */

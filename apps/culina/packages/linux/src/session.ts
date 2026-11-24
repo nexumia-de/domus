@@ -149,7 +149,8 @@ export interface Session {
   /**
    * Fills a slot with another of its recipes, for as long as the app runs (the web app's
    * `chooseFilling`: the shipped filling clears the choice, an id that is no recipe of the slot
-   * changes nothing, a change sets the dish's step back to the first). @returns whether it changed.
+   * changes nothing, a change sets the dish's step back to the first). From then on the entries and
+   * Cook's list judge the frame as chosen, and the subscribers are told. @returns whether it changed.
    */
   chooseFilling(id: string, slotIndex: number, componentId: string): boolean;
   /** Marks an ingredient as there. @returns false when nothing could be written. */
@@ -171,22 +172,43 @@ export function createSession(options: SessionOptions): Session {
   let current: SessionState = { phase: 'loading', spaces: [], stock: [] };
   let content = true;
   let stopped = false;
-  let made: DishEntry[] | undefined;
-  let byKey: ReadonlyMap<string, DishEntry> | undefined;
   /**
-   * The finder's answers for one stock on one day, asked once: the stock list is replaced, never
-   * changed, when the records change, so its identity says whether to ask again.
+   * The entries, with the classics they were made of: `dishClassics` is a new array after a choice
+   * of filling, with every other dish the same object, so only the chosen frame is made again.
+   */
+  let made:
+    | { classics: readonly Classic[]; entries: DishEntry[]; byClassic: Map<Classic, DishEntry> }
+    | undefined;
+  let byKey: { entries: DishEntry[]; map: ReadonlyMap<string, DishEntry> } | undefined;
+  /**
+   * The finder's answers for one stock on one day and one set of dishes, asked once: the stock list
+   * is replaced, never changed, when the records change, and the dishes when a filling is chosen,
+   * so their identity says whether to ask again.
    */
   let asked:
-    | { stock: readonly StockRecord[]; today: string; ready?: Set<string>; useUp?: UseUpNow }
+    | {
+        stock: readonly StockRecord[];
+        today: string;
+        classics: readonly Classic[];
+        ready?: Set<string>;
+        useUp?: UseUpNow;
+      }
     | undefined;
   /** The entries, made once the catalogue is read (the characters need it). */
   const allEntries = (): DishEntry[] => {
-    if (made === undefined) {
+    const now = dishClassics();
+    if (made?.classics !== now) {
       const lookup = (id: string): IngredientRecord | undefined => names.get(id);
-      made = dishClassics().map((classic) => entryOfClassic(classic, lookup, lang));
+      const kept = made?.byClassic;
+      const byClassic = new Map<Classic, DishEntry>();
+      const entries = now.map((classic) => {
+        const entry = kept?.get(classic) ?? entryOfClassic(classic, lookup, lang);
+        byClassic.set(classic, entry);
+        return entry;
+      });
+      made = { classics: now, entries, byClassic };
     }
-    return made;
+    return made.entries;
   };
 
   const tell = (): void => {
@@ -279,8 +301,14 @@ export function createSession(options: SessionOptions): Session {
     cookView(filter, list) {
       const entries = allEntries();
       const today = options.today();
-      if (asked === undefined || asked.stock !== current.stock || asked.today !== today) {
-        asked = { stock: current.stock, today };
+      const classicsNow = dishClassics();
+      if (
+        asked === undefined ||
+        asked.stock !== current.stock ||
+        asked.today !== today ||
+        asked.classics !== classicsNow
+      ) {
+        asked = { stock: current.stock, today, classics: classicsNow };
       }
       // The native app has no notebook: the source is the stock alone, the dishes the shipped ones.
       const source: CookSource = {
@@ -289,11 +317,12 @@ export function createSession(options: SessionOptions): Session {
         dishes: [],
         stock: current.stock,
       };
-      const shipped = { classics: dishClassics(), catalogue: names, lang };
+      const shipped = { classics: classicsNow, catalogue: names, lang };
       if (list.have && asked.ready === undefined) asked.ready = readyKeysOf(source, today, shipped);
       if (list.order === 'use-up' && asked.useUp === undefined) {
-        byKey ??= new Map(entries.map((entry) => [entry.key, entry]));
-        asked.useUp = useUpFrom(source, today, byKey, shipped);
+        if (byKey?.entries !== entries)
+          byKey = { entries, map: new Map(entries.map((entry) => [entry.key, entry])) };
+        asked.useUp = useUpFrom(source, today, byKey.map, shipped);
       }
       const useUp = list.order === 'use-up' ? asked.useUp : undefined;
       const view = dishListView(entries, filter, '', lang, {
@@ -320,7 +349,10 @@ export function createSession(options: SessionOptions): Session {
     },
     chooseFilling(id, slotIndex, componentId) {
       const classic = classics().find((c) => c.id === id);
-      return classic !== undefined && chooseFilling(classic, slotIndex, componentId);
+      if (classic === undefined || !chooseFilling(classic, slotIndex, componentId)) return false;
+      // Cook's list judges the frame as chosen (`dishClassics`): the pages that show it draw again.
+      tell();
+      return true;
     },
     async tick(ingredientId) {
       if (!names.has(ingredientId)) return false;

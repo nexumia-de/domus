@@ -19,6 +19,11 @@ export interface CharacterFacts {
   lines: readonly CharacterLine[];
   /** Technique ids named by the steps. */
   techniques: readonly string[];
+  /**
+   * Plain action ids named by the steps (`heat`, `cook`, `serve`); absent counts as none. A step
+   * names a technique or an action, not both, so heat written as a plain action is only here.
+   */
+  actions?: readonly string[];
   /** Whether the dish has steps that name what is done; without them no technique rule is judged. */
   stepsKnown: boolean;
   /** The course the dish states (`main`, `soup`, `dessert`, ...); absent when it states none. */
@@ -48,6 +53,8 @@ export interface CharacterClause {
   techniques?: readonly string[];
   /** None of these techniques is named by a step; holds only when the steps are known. */
   withoutTechniques?: readonly string[];
+  /** None of these plain actions is named by a step; holds only when the steps are known. */
+  withoutActions?: readonly string[];
   /** The dish states one of these courses; a dish without a course never matches. */
   courses?: readonly string[];
   /** Fat in g per 100 g of the dish; judged only where `MIN_MEASURED_FIGURES` of the lines have a mass. */

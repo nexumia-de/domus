@@ -7,11 +7,20 @@ import { displayName } from '../shared/names';
 import type { IngredientRecord } from '../records';
 
 let catalogue: ReadonlyMap<string, IngredientRecord> = new Map();
+/** The list the map was built from: the loader hands out the same list until it is reset. */
+let builtFrom: readonly IngredientRecord[] | undefined;
 
-/** Loads the catalogue; resolves with its entries by id (empty when it cannot be read). */
+/**
+ * Loads the catalogue; resolves with its entries by id (empty when it cannot be read). Every
+ * screen calls it; while the loaded list is the same, the map is the same object, so the caches
+ * keyed by it (the dish entries, src/browse/entries.ts) are not made again on each screen.
+ */
 export const loadNames = async (): Promise<ReadonlyMap<string, IngredientRecord>> => {
   const entries = await loadCatalogue();
-  if (entries !== undefined) catalogue = new Map(entries.map((e) => [e.id, e]));
+  if (entries !== undefined && entries !== builtFrom) {
+    catalogue = new Map(entries.map((e) => [e.id, e]));
+    builtFrom = entries;
+  }
   return catalogue;
 };
 

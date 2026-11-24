@@ -4,7 +4,7 @@
 // origin has data for is absent on the other. Pure: no DOM; the notebook, the classic, the
 // ingredient lookup, the techniques and what is learned come in.
 import type { Classic, Lang, Technique } from '@culina/engine';
-import { entryOfClassic, entryOfDish, type Origin } from '../browse/entry';
+import { entryOfClassic, entryOfDish, type DishEntry, type Origin } from '../browse/entry';
 import type { Lookup } from '../characters/classes';
 import { cookView, type StepView } from '../classics/cook-view';
 import { dishView } from '../classics/dish-view';
@@ -43,6 +43,11 @@ export interface ShownDish {
   nutrition: NutritionViewResult;
   /** Shipped only: the source, what was settled and the remarks on the source. */
   source?: DishView;
+  /**
+   * The dish as an entry of the lists, of the dish as shown (a swap, a chosen filling): what
+   * "Dishes like this" compares, with the course only where the lists know it.
+   */
+  entry: DishEntry;
   /** Own only: the role slots (for the slot table and Swap) and the raw ingredients all the way down. */
   fillings?: { rows: SlotRow[]; raw: DishRaw };
 }
@@ -96,6 +101,7 @@ export function shownOfClassic(classic: Classic, portions: number, ctx: ShownCon
       steps: steps.ok ? steps.steps : [],
       nutrition: nutritionView(classic, portions, ctx.lang, ctx.nameOf, ctx.lookup),
       source: view,
+      entry,
     },
   };
 }
@@ -167,6 +173,7 @@ export function shownOfDish(
     slots: own === undefined ? [] : [...own.lines],
     steps: partSteps(parts, ctx.lang, ctx.known, ctx.learned),
     nutrition,
+    entry,
     fillings: { rows, raw: dishRaw(nb, rows) },
   };
 }

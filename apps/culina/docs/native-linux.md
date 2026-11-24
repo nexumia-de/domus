@@ -196,12 +196,20 @@ The choice lasts while the app runs and is not stored, as on the web;
 the native app has no Keep. Nothing of the choice is written here: the
 module is the web app's, exported from `@culina/app/core`.
 
-**Known, shared with the web app:** Cook's list and **Only with what I
-have** judge a frame by its shipped filling, not by the cook's choice
-(`dishClassics()` and the entries are made from the shipped base). After
-choosing the omelette, the set meal's row on Cook still says "with meat
-or fish" while its page says "without meat and fish", and the switch
-asks the stock for the salmon.
+**Cook's list follows the choice** (since 2026-11-24, as on the web,
+[behaviour](behaviour.md#cook)): the session's entries are made from the
+web app's `dishClassics()`, which lists a frame as chosen, and are kept
+per dish while its classic is the same object; the finder's answers for
+"Only with what I have" and "Use up first" are asked again when the
+dishes change. `chooseFilling` tells the session's subscribers, and
+Cook's list page draws again when a row's line changes (its signature
+holds the line). After choosing the omelette, the set meal's row says
+"without meat and fish", the filter lists it and the switch asks the
+stock for the eggs, not the salmon (`test/session.test.ts` "a choice of
+filling reaches Cook's list …", which fails on the session before).
+Not seen on a screen: no display and no `gjs` here. The filter's lists
+of characters are made once when the page is built and do not follow a
+choice.
 
 **A defect fixed with it.** Before, the dish page and the cook page read
 the full base (`classics()`), so a frame with an alternative listed the

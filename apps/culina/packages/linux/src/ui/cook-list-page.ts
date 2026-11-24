@@ -150,7 +150,8 @@ export function cookListPage(ui: Ui, menu: any): Page {
       list,
       cook.noStock,
       cook.useUp === undefined ? null : [cook.useUp.ok, cook.useUp.anyDated],
-      cook.rows.map((row) => [row.entry.key, row.meta.useUp ?? null]),
+      // The line under a row too: a choice of filling on a dish page changes "with meat or fish".
+      cook.rows.map((row) => [row.entry.key, rowLine(s, row), row.meta.useUp ?? null]),
     ]);
     if (signature === shown) return;
     shown = signature;

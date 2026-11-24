@@ -400,8 +400,10 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
   "Instead" where there are substitutes; for an own dish the role slots
   with Swap ([below](#dishes)); **Cook step by step**, where there are
   steps; **Method**, every step grouped by the part it belongs to; for an
-  own dish "What goes in, all the way down"; then behind a tap **Nutrition
-  per portion** and, for a shipped dish, **Source**.
+  own dish "What goes in, all the way down"; **Dishes like this**, only
+  where some dish is alike enough ([below](#dishes-like-this)); then behind
+  a tap **Goes with**, **Nutrition per portion** and, for a shipped dish,
+  **Source**.
 - **Portions** are kept in memory per dish while the app is open
   (`src/classics/session.ts`): a shipped dish starts at 2, an own dish at
   its stored `portions` or 1. The cook screen cooks the portions chosen on
@@ -1122,6 +1124,122 @@ dishes, 360 px; the ingredients there are the user's own, so only a
 technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
+## Dishes like this
+
+Since 2026-11-24, on the page of every dish (a shipped dish, a frame as
+the cook chose its filling, an own dish of the notebook as shown with a
+swap): a section **Dishes like this** ("Ähnliche Gerichte") under the
+recipe (after the method, and for an own dish after "What goes in, all
+the way down") and above the closed sections at the foot (Goes with,
+Nutrition per portion, Source). Up to five other dishes, each a row
+link to its page with its name and one quiet line of what it shares
+("Shares: Cheesy, From the oven, Creamy"). **When no dish is alike
+enough there is no section at all**: no heading, no sentence. Placed
+there because at 360 px the ingredients and the method fill the first
+screens and the list is a way on once the recipe is read; a link "Dishes
+like this" at the top was the plan's idea and was not taken, because on
+most dishes it would lead to nothing. Pure part `src/browse/alike.ts`
+(`dishesLike`, exported nowhere else yet; the native app does not show
+it), section `src/screens/dish-like.ts`, texts `strings.characters`.
+
+**The measure, the project's judgement:**
+
+- **What is compared**: the characters of the two dishes as the lists
+  have them ([characters](#characters): computed, with the cook's
+  correction on an own dish), without "with meat" and "with fish": they
+  say what is in a dish, not what it is like, and two dishes that share
+  only meat are not alike. The dish of the page is read as the entry of
+  the dish as shown (a swap, a chosen filling), with the course only
+  where the lists know it: an own dish whose course is a word of its own
+  ("Hauptgang") has no course here, as in the lists.
+- **Score**: the characters both have over the characters either has
+  (Jaccard). **A match needs at least two shared characters and a score
+  of at least one half.** One shared character is a weak match even when
+  it is all either dish has (red berry pudding and every other dish that
+  is only sweet); two of five is mostly unlike.
+- **Seasoning alone is no likeness.** Tomatoey, garlicky, lemony and
+  spicy say how a dish is seasoned (a tomato base, garlic, lemon,
+  chilli); they count in the score, but a match needs one shared
+  character outside them. Masoor dal and the tacos share tomatoey,
+  garlicky and lemony and nothing else: not alike. The four were chosen
+  from the table as the characters of a seasoning that runs through
+  unlike dishes; sweet, cheesy, eggy and mushroomy say what the dish is
+  made of and stay full characters. A judgement.
+- **Course**: a dish of another course is never like it, where both
+  state one (a dessert is not like a main; Napfkuchen is not like the
+  baked flan); a dish without a course is compared with every course.
+- **Ties**: more characters shared, then the same "without meat and
+  fish", then the same cuisine, then the order of the lists (own dishes
+  first).
+- **The dishes it chooses from** are those of the lists (`dishEntries`):
+  own (the head of each family) and shipped, never a sauce base that is
+  no dish, never the dish itself; for an older version the head of its
+  family counts as the dish itself. **The same dish under another key is
+  never offered**: a shipped dish and its copy kept in the notebook (the
+  record's `x-origin`, `copyOf` on the entry), two copies of one dish,
+  and a frame and a recipe that is one of its parts, chosen or an
+  alternative of a slot (`from.recipe` of its components, `parts` on the
+  entry): chana masala is not "like" the chickpea curry plate built on
+  it.
+- **No claim of taste**: the heading and the line say what was
+  compared, nothing more.
+
+Counted on 2026-11-24 (after the review below): **21 of the 121 dishes
+of Cook get a section.** What comes out: the cheese gratins together,
+the egg custards together, the two cakes, the two sweet baked desserts,
+the egg and cheese mains, the raw salads (çoban salatası with kachumber
+and horiatiki), ratatouille with pollo alla contadina (tomatoey, fried).
+
+**Review of the first version (2026-11-24).** An independent review
+computed all 29 pairs of the first version and found weak ones, some
+ranked first: a frame with the recipe it is built on (chana masala and
+its plate, souvlaki and its plate, pollo deshebrado and the tacos), and
+matches of seasoning alone (dal and tacos at 1.00, souvlaki with dal and
+tacos). Both are now excluded as above. "Uncooked", left out of the
+first version because it was said of 20 cooked dishes, is fixed in its
+rule ([dish characters](dish-characters.md#uncooked-reads-the-plain-actions-2026-11-24))
+and counted again. The page compared an own dish's unknown course word
+and found nothing; it now reads the course of the lists. Opening a dish
+page made every entry anew (the catalogue map was a new object on each
+`loadNames`); the map now keeps its identity
+(`test/browse-entries.test.ts`, "the names loaded again ... keep the
+entries", fails on the code before).
+
+**Test:** `test/dish-like.test.ts`: on written entries one shared
+character not enough, two of five not enough beside two of four
+(control), meat and fish left out and uncooked counted, seasoning alone
+not enough (control: with one other shared character), no characters no
+like, course, the dish itself and a kept copy (control: an own dish not
+kept from it), a frame and its part or a copy of its part (control: a
+recipe that is no part), the like input, the order of the ties, at most
+five; on the shipped dishes gratin dauphinois (the potato gratin, then
+the cauliflower), crème caramel (latte brûlé, then the three creamy egg
+custards), Napfkuchen (only the torta mantovana), the pairs that must
+not match (chana masala and its plate, souvlaki and its plate, pollo
+deshebrado with the tacos and the burrito; dal with the tacos, souvlaki
+with dal and tacos, pollo deshebrado with dal) beside the controls
+(gratin and potato gratin, œufs à la neige and huevos amerengados,
+Napfkuchen and torta mantovana), the raw salads, tomato eggs not like
+pizza, the controls pot-au-feu, cocido, Bratkartoffeln and rote Grütze
+(none), and invariants over every dish (never itself, never across
+courses, every match at or above both thresholds, never a frame with
+its part, symmetric). `test/dish-shown.test.ts` (a course word the app
+does not know: the like input has no course and finds a main; control:
+with the word it finds nothing). `e2e/dish-like.mjs` (English and German
+at 360 px: the heading, the two gratins in order with three shared
+characters each, its place between the recipe and the closed sections,
+a row opening the potato gratin whose page names the gratin back, the
+layout; the controls pot-au-feu and the tacos with no section; the copy
+kept in the notebook like the other gratins and the shipped gratin not
+naming its copy, which failed with the copy rule taken out; after a
+click the check reads a page only once its heading is there, since the
+address changes before `hashchange` reaches the app and the page left
+stands until then). Not
+proved: what a cook thinks of the matches; a real notebook (own dishes
+are compared by the same entries, tested only with written ones, one
+kept copy and one own dish with an unknown course); desktop width; a
+screen reader.
+
 # One filter over every dish
 
 Since 2026-11-21 the shipped classics and the dishes of the notebook are
@@ -1212,7 +1330,7 @@ own; the origin is only a choice of the filter.
 - **A sauce that is a base is no dish (since 2026-11-23).** The
   shipped bases of the course sauce (27 of them) are on no dish list, in
   the finder or the random pick; they are in the Components list. Cook
-  lists 108 of the 135 shipped files and the 13 frames, 121 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A choice starts cooking the dish again at its first step, since the method is another one (before 2026-11-24 the cook screen, reached by its address or the browser's way back rather than the Cook button, could resume at the same number of a different method); an id that is no recipe of the slot changes nothing, and the shipped filling clears the choice (`chooseFilling`, `test/frames.test.ts`: "a choice is kept against an id that is no recipe of the slot …"). Known: Cook's list and "Only with what I have" judge a frame by its shipped filling, not by the cook's choice: after choosing the omelette the set meal's row still says "with meat or fish" while its page says without, in this app and in the native one. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+  lists 108 of the 135 shipped files and the 13 frames, 121 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A choice starts cooking the dish again at its first step, since the method is another one (before 2026-11-24 the cook screen, reached by its address or the browser's way back rather than the Cook button, could resume at the same number of a different method); an id that is no recipe of the slot changes nothing, and the shipped filling clears the choice (`chooseFilling`, `test/frames.test.ts`: "a choice is kept against an id that is no recipe of the slot …"). **A frame is judged by the filling the cook chose, everywhere** (since 2026-11-24): Cook's list and everything computed for it read the frame as chosen on its page (`dishClassics` in `src/classics/content.ts` lists it through `asChosen`): its entry (the meat line of the native row, the characters, "complete"), the filter, "Only with what I have", "Use up first" and the random pick's pool; with no choice made nothing changes for any dish. Before, they judged a frame by its shipped filling: after choosing the omelette the set meal's page said "Without meat and fish" while "Without meat and fish" on Cook left it out and "Only with what I have" asked the stock for the salmon. A choice reaches the list on its next draw, coming back from the dish page: `dishClassics` compares each dish's choice (`choiceKey` in `src/classics/choices.ts`) and is a new array after a change, with every other dish the same object, and the cached entries (`src/browse/entries.ts`) keep the entry of every dish whose classic is the same object, so a choice makes one entry anew, not 121. Keep (`withChoices`, every alternative kept) and the Components list (`classics()`, every component of every shipped dish, alternatives too) are unchanged. The choice is not stored: after a reload the frame is shipped again, on its page and in the list alike. The web row names course and cuisine, not meat; the frame's name stays the shipped one ("… with rice, salmon and cucumber salad" with the omelette chosen; a name is data and was not changed here). **Test:** `test/frame-choice-list.test.ts` (on the real files and catalogue: the set meal with the omelette is without meat and fish, without "with fish", passes the filter and is in the random pick's pool; the shipped filling again brings it back; the stock with eggs and no salmon covers it as chosen and not as shipped; "Use up first" places it by the eggs as chosen and by the salmon as shipped; controls: the tacos' and the chickpea curry's entries are the same objects, one entry made anew; all four tests fail with the old `content.ts`), `linux/test/session.test.ts` "a choice of filling reaches Cook's list …", `e2e/frame-choice.mjs` (360 px, English: as shipped the filter leaves the set meal out; the omelette chosen on its page, back on Cook the filter lists it; controls: the tacos stay out, the rice bowl in, both rows' lines unchanged; on the code before, the check of the filter after the choice failed and the others passed). Not proved: a reload in a browser (the choice is in module memory only), the native list page on a screen. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1641,7 +1759,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   ingredients are on the first screen at 360 x 720: the name, the original
   name, the quiet line (course, cuisine, meat flag, "Shipped with the
   app"); Keep in my notebook; the characters; a portions stepper, default 2; the ingredient lines per component and
-  for the dish; "Cook step by step"; the whole method; then, each closed behind
+  for the dish; "Cook step by step"; the whole method; [Dishes like this](#dishes-like-this) where there are any; then, each closed behind
   a tap (`<details>`), **Goes with** (below), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
   rounded for display with the shared helpers (`formatMass` for grams,

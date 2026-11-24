@@ -542,7 +542,11 @@ Cook see the recipe that fills the slot and not the others. On the dish
 screen, a slot with alternatives has a choice under the ingredients
 ("Choose what goes in"); choosing puts that recipe into the slot
 (`chooseAlternative`), and the screen, the cook screen and Keep follow
-it. The choice lasts while the app is open and is not stored. Keep
+it, and so does every list that judges the dish: Cook's row, the
+filter, "Only with what I have", "Use up first" and the random pick
+(since 2026-11-24, [behaviour](behaviour.md#cook)). The choice lasts
+while the app is open and is not stored: after a reload the frame is
+shipped again, on its page and in the lists alike. Keep
 copies the base with every alternative, so Swap offers them in the
 notebook. A frame's "without meat and fish" follows the parts in the
 dish. A first build listed an alternative among the ingredients, seen in a
@@ -552,6 +556,13 @@ and offers the same choice as a combo row per slot under the
 ingredients, with the web app's module; its dish page had listed the
 alternative among the parts until then
 ([native app](native-linux.md#a-choice-of-filling)).
+
+**A frame's name names no part the cook can swap.** The name stands in
+the list, the search and the heading whatever is chosen, and the choice
+is not stored; a name that named the salmon stood under "Without meat
+and fish" once the omelette was chosen. A name names only parts of slots
+without alternatives, or a word that covers every option ("a stir-fry",
+"Einlage"). Five names were changed for this on 2026-11-24.
 
 **What a frame claims.** Its source section says that the app put it
 together and lists each part with where it comes from. Nobody read the

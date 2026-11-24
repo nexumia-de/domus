@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import { pickText } from '@culina/engine';
 import type { Classic, Technique } from '@culina/engine';
+import { dishesLike, likeInput } from '../src/browse/alike';
 import { entryOfClassic, entryOfDish } from '../src/browse/entry';
 import { cookView } from '../src/classics/cook-view';
 import { dishView } from '../src/classics/dish-view';
@@ -223,6 +224,21 @@ describe('a dish of the notebook as shown', () => {
     expect([shown.course, shown.cuisine]).toEqual(['main', 'it']);
     const odd = { ...PLATE, course: 3 } as unknown as DishRecord;
     expect(shownOfDish(nb, odd, 2, ctx, options).course).toBeUndefined();
+  });
+
+  test('a course word the app does not know is shown, and "like" reads the course of the lists', () => {
+    // The page shows "Hauptgang" as written; the lists keep only the courses they know, so for
+    // them the dish has no course and is compared with every course. Before 2026-11-24's review
+    // the page compared with "Hauptgang" and found nothing.
+    const written = { ...PLATE, course: 'Hauptgang' } as unknown as DishRecord;
+    const shown = shownOfDish(nb, written, 2, ctx, options);
+    expect(shown.course).toBe('Hauptgang');
+    expect(shown.entry.course).toBeUndefined();
+    const main = { key: 'shipped:m', characters: ['cheesy', 'baked'], course: 'main' };
+    const mine = { ...likeInput(shown.entry, 'own:u-plate'), characters: ['cheesy', 'baked'] };
+    expect(dishesLike(mine, [main]).map((a) => a.entry.key)).toEqual(['shipped:m']);
+    // Control: with the word of the page as its course, nothing would be found.
+    expect(dishesLike({ ...mine, course: shown.course }, [main])).toEqual([]);
   });
 
   test('a filling that cannot be added up is named as not counted, the rest still is', () => {

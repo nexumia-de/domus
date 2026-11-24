@@ -4,14 +4,18 @@
 // version, Edit and the rest; a shipped dish: Keep in my notebook); the characters; the portions
 // (kept in memory per dish, so the cook screen cooks them); the ingredient lines per component
 // and for the dish; for an own dish the role slots with Swap; "Cook step by step"; the method;
-// for an own dish what goes in, all the way down; then, closed behind a tap, what goes with the
-// dish, the nutrition per portion and, for a shipped dish, the source.
+// for an own dish what goes in, all the way down; up to five dishes like this one; then, closed
+// behind a tap, what goes with the dish, the nutrition per portion and, for a shipped dish, the
+// source.
 //
 // On the current version of an own dish a slot can be swapped for another component of its
 // role: that changes what is shown and cooked now (`src/dishes/session.ts`), and only "Keep as my
 // version" stores it, as a new version.
 import { wantedLines } from '@culina/engine';
 import type { Classic } from '@culina/engine';
+import { likeInput } from '../browse/alike';
+import { dishEntries, dishEntriesByKey } from '../browse/entries';
+import { entryKey } from '../browse/entry';
 import { characterLookup } from '../characters/lookup';
 import { characterChips } from '../characters/view';
 import { asChosen, chooseFilling, fillingChoices, withChoices } from '../classics/choices';
@@ -47,6 +51,7 @@ import { insteadFor } from './classics/substitute-block';
 import { backToList } from './list-return';
 import { detailActions } from './detail-actions';
 import { courseLabel, cuisineLabel } from './dish-filter';
+import { likeSection } from './dish-like';
 import { slotsSection } from './dish-slots';
 import { storeText } from './editor/store-text';
 import { rawBlock } from './raw-table';
@@ -85,6 +90,8 @@ interface DishPage {
   /** Under the method: what goes in, all the way down, for an own dish. */
   afterMethod?: (dish: ShownDish) => HTMLElement[];
   cookHref: string;
+  /** The key of the dish among the entries of the lists: an own dish's is that of its family's head. */
+  likeKey: string;
 }
 
 const dishPage = (page: DishPage): HTMLElement => {
@@ -106,6 +113,8 @@ const dishPage = (page: DishPage): HTMLElement => {
   // The source section is drawn again with the names (the catalogue loads after the first draw);
   // it keeps being open if the user opened it.
   const sourceHost = el('div', 'source-host');
+  // Dishes like this one, under the recipe and above the closed sections at its foot.
+  const likeHost = el('div', 'like-host');
   const instead = insteadFor(lang, (id) => ingredientLabel(id, lang));
   const cook = el('a', 'btn primary cook-start', t.cookButton);
   cook.href = page.cookHref;
@@ -134,6 +143,12 @@ const dishPage = (page: DishPage): HTMLElement => {
       ...(method === undefined ? [] : [method]),
       ...(page.afterMethod?.(dish) ?? []),
     );
+    const like = likeSection(
+      likeInput(dish.entry, page.likeKey, dishEntriesByKey().get(page.likeKey)),
+      dishEntries(),
+      lang,
+    );
+    likeHost.replaceChildren(...(like === undefined ? [] : [like]));
     nutrition.draw(dish.nutrition);
     pairing.draw(
       [...dish.components.flatMap((c) => c.lines), ...dish.slots].flatMap((line) =>
@@ -159,7 +174,15 @@ const dishPage = (page: DishPage): HTMLElement => {
       draw();
     },
   );
-  card.append(characterHost, control.wrap, results, pairing.element, nutrition.element, sourceHost);
+  card.append(
+    characterHost,
+    control.wrap,
+    results,
+    likeHost,
+    pairing.element,
+    nutrition.element,
+    sourceHost,
+  );
   draw();
   // The catalogue gives the ingredient names, groups and figures: drawn again once it is there.
   void loadNames().then(() => {
@@ -249,6 +272,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
       return [box];
     },
     cookHref: hashFor('classic', classic.id, 'cook'),
+    likeKey: entryKey('shipped', classic.id),
   });
 };
 
@@ -371,5 +395,7 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
       return [rawSection];
     },
     cookHref: hashFor('dishes', dish.id, 'cook'),
+    // An older version is the same dish as the head of its family, which the lists show.
+    likeKey: entryKey('own', headOfFamily('dishes', dish.id)?.id ?? dish.id),
   });
 };

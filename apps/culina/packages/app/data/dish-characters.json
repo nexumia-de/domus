@@ -302,6 +302,16 @@
             "thicken-with-starch",
             "warm-emulsion",
             "water-bath"
+          ],
+          "withoutActions": [
+            "cook",
+            "grill",
+            "heat",
+            "melt",
+            "preheat",
+            "remove-from-heat",
+            "roast",
+            "toast"
           ]
         }
       ]
