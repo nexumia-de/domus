@@ -55,6 +55,7 @@ import { courseLabel, cuisineLabel } from './dish-filter';
 import { likeSection } from './dish-like';
 import { slotsSection } from './dish-slots';
 import { storeText } from './editor/store-text';
+import { handOverOffer } from './hand-over/offer';
 import { rawBlock } from './raw-table';
 import { stepper } from './stepper';
 import { versionLines, versionSection } from './version-info';
@@ -86,6 +87,11 @@ interface DishPage {
   shown: (portions: number) => ShownResult;
   /** Under the name: the version and its actions, or Keep in my notebook. */
   head: (portions: () => number) => HTMLElement[];
+  /**
+   * Right under the ingredients: the offer to put what the stock lacks on the shopping list (a
+   * shipped dish, ./hand-over/offer.ts).
+   */
+  offer?: (portions: number, redraw: () => void) => HTMLElement[];
   /** Under the ingredients: the slots of an own dish with Swap. */
   afterIngredients?: (dish: ShownDish, redraw: () => void) => HTMLElement[];
   /** Under the method: what goes in, all the way down, for an own dish. */
@@ -139,6 +145,7 @@ const dishPage = (page: DishPage): HTMLElement => {
     const method = methodBlock(dish.steps);
     results.replaceChildren(
       ingredientsBlock(dish.components, dish.slots, instead),
+      ...(page.offer?.(portions, draw) ?? []),
       ...(page.afterIngredients?.(dish, draw) ?? []),
       ...(dish.steps.length > 0 ? [cook] : []),
       ...(method === undefined ? [] : [method]),
@@ -243,6 +250,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
       refillKeep = fill;
       return [box];
     },
+    offer: (portions, redraw) => handOverOffer(classic, portions, lang, redraw),
     afterIngredients: (_dish, redraw) => {
       const choices = fillingChoices(classic, lang);
       if (choices.length === 0) return [];

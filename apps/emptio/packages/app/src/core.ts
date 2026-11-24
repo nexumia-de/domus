@@ -18,6 +18,7 @@ export {
 } from './list/actions';
 export type { EntryEdit, ListDeps, NewEntry } from './list/actions';
 export { categoriesOf, orderOf } from './list/categories';
+export { appName, originText } from './list/origin';
 export type { Category } from './list/categories';
 export { CATEGORIES, COLLECTIONS } from './list/model';
 export { LIST } from '@nexumia-de/list';

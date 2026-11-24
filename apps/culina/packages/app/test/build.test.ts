@@ -152,6 +152,44 @@ test('the classics, technique notes, handling rules and substitutes are their ow
   }
 });
 
+test('the hand-over to the shopping list is its own module with the usual items, precached, and main.js carries neither', () => {
+  // The list package's usual items (data/usual-items.json): the English names of every category,
+  // as the bundle writes an array.
+  const usual = JSON.parse(
+    readFileSync(
+      new URL('../../../../../packages/list/data/usual-items.json', import.meta.url),
+      'utf8',
+    ),
+  ) as { items: Record<string, { en: string[] }> };
+  const handOver = readFileSync(new URL('hand-over.js', dist), 'utf8');
+  const main = readFileSync(new URL('main.js', dist), 'utf8');
+  const lists = Object.values(usual.items).map((c) => JSON.stringify(c.en));
+  expect(lists.length).toBeGreaterThan(0);
+  for (const list of lists) {
+    expect(handOver).toContain(list);
+    expect(main).not.toContain(list);
+  }
+  // Loaded by its name next to main.js, and it imports nothing of main.js (no shared state).
+  expect(main).toContain('./hand-over.js');
+  expect(handOver).not.toMatch(/from\s*"\.\//);
+  expect(builtFiles()).toContain('hand-over.js');
+});
+
+test('main.js and hand-over.js carry the same build id, which follows the sources', () => {
+  const ids = (file: string): string[] =>
+    [...readFileSync(new URL(file, dist), 'utf8').matchAll(/"([0-9a-f]{16})"/g)].map(
+      (m) => m[1] ?? '',
+    );
+  const shared = ids('hand-over.js').filter((id) => ids('main.js').includes(id));
+  // One id in both: what main.js compares with the module it loads (src/screens/hand-over).
+  expect(shared).toHaveLength(1);
+  const id = shared[0] ?? '';
+  // Built again from the same sources, the same id (the cache version test builds again too).
+  execFileSync('node', ['build.mjs'], { cwd: app, stdio: 'pipe' });
+  expect(ids('main.js')).toContain(id);
+  expect(ids('hand-over.js')).toContain(id);
+}, 60_000);
+
 test('built URLs are relative', () => {
   const html = readFileSync(new URL('index.html', dist), 'utf8');
   expect(html).not.toMatch(/(href|src)="(\/|https?:)/);

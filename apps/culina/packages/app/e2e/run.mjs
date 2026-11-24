@@ -22,6 +22,7 @@ import { editorMore } from './editor-more.mjs';
 import { everydayStock } from './everyday-stock.mjs';
 import { exportImport } from './export-import.mjs';
 import { frameChoice } from './frame-choice.mjs';
+import { handOver } from './hand-over.mjs';
 import { german } from './german.mjs';
 import { buildApp, check, distDir, failureCount, launch } from './harness.mjs';
 import { hostRedirect } from './host-redirect.mjs';
@@ -64,6 +65,7 @@ try {
   await editorPairing(browser, server);
   await kitParts(browser, server);
   await frameChoice(browser, server);
+  await handOver(browser, server);
   await cookGroups(browser, server);
   await listPlace(browser, server);
   await dishBrowse(browser, server);

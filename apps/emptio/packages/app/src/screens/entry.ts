@@ -1,12 +1,11 @@
 // One entry: name, amount, note, priority and category, and why it is on the list.
-import { PRIORITIES, type Entry, type Origin, type Priority } from '@nexumia-de/list';
+import { PRIORITIES, type Entry, type Priority } from '@nexumia-de/list';
 import { button, h } from '../dom';
 import { editEntry, removeEntries, restoreEntries } from '../list/actions';
 import { categoriesOf } from '../list/categories';
+import { originText } from '../list/origin';
 import { hashFor } from '../router';
 import type { Ctx, Screen } from './context';
-
-const APPS: Record<string, string> = { culina: "Cook's Workbench", mixtura: 'Drink Builder' };
 
 export function entryScreen(ctx: Ctx, id: string): Screen {
   const { app, t } = ctx;
@@ -17,12 +16,6 @@ export function entryScreen(ctx: Ctx, id: string): Screen {
   let built = false;
 
   const day = (time: string): string => time.slice(0, 10);
-  const originText = (origin: Origin, entry: Entry): string =>
-    origin.kind === 'typed'
-      ? t.entry.typed(day(entry.addedAt))
-      : origin.kind === 'recipe'
-        ? t.entry.recipe(APPS[origin.app] ?? origin.app, origin.title)
-        : t.entry.staple;
 
   function build(entry: Entry): void {
     built = true;
@@ -127,7 +120,7 @@ export function entryScreen(ctx: Ctx, id: string): Screen {
       h(
         'p',
         { class: 'muted origins' },
-        entry.origins.map((origin) => originText(origin, entry)).join(' '),
+        entry.origins.map((origin) => originText(origin, entry.addedAt, t)).join(' '),
         entry.bought === undefined ? null : ` ${t.entry.boughtOn(day(entry.bought.at))}`,
       ),
     );

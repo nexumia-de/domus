@@ -3,16 +3,15 @@
 // source wrote one (to the quarter, as on the page), and pieces rounded up to whole ones, since a
 // shop sells no half onion. No base-unit figure goes to the list. A spoon-sized amount of a staple
 // (salt, flour for dusting) is handed like any other line when it lacks, in the recipe's spoon; the
-// cook can leave it unticked once a screen offers the lines. The engine reads what lacks
-// (`classicReport`, `lackingLines`); no rule here.
-import { classicReport, freeLines, lackingLines, roundMeasure } from '@culina/engine';
-import type { Amount, Classic, HouseholdMeasure, Lang, LackingLines } from '@culina/engine';
+// cook can leave it unticked in the confirmation. The engine reads what lacks (./report.ts,
+// `lackingLines`); no rule here. `classicListLines` reaches the list package's usual items: the
+// dish page uses only `listAmountText` from here, and the bundler leaves the rest out of main.js
+// (test/build.test.ts); the confirmation (hand-over.js) calls `lackingLines` itself.
+import { freeLines, lackingLines, roundMeasure, type LackingLines } from '@culina/engine';
+import type { Amount, HouseholdMeasure, Lang } from '@culina/engine';
 import type { AddInput } from '@nexumia-de/list';
-import { withCatalogue } from '../cook/classic-finder';
-import { cookInput, type CookSource } from '../cook/input';
-import type { IngredientRecord } from '../records';
 import { formatMass, formatNumber } from '../shared/mass';
-import { displayName } from '../shared/names';
+import { classicLack, lineName, shippedDishKey, type ClassicLinesInput } from './report';
 import { fraction } from '../shared/units';
 import { stringsDe, stringsEn } from '../strings';
 
@@ -44,23 +43,6 @@ export const listAmountText = (amount: Amount, lang: Lang, measure?: HouseholdMe
   return `${formatNumber(amount.value, 3, lang)} ${unit(amount.unit)}`;
 };
 
-export interface ClassicLinesInput {
-  /** The dish as it is cooked: a frame with the cook's filling (`asChosen`). */
-  classic: Classic;
-  portions: number;
-  lang: Lang;
-  /** The notebook and the stock, as the finder reads them. */
-  source: CookSource;
-  catalogue: ReadonlyMap<string, IngredientRecord>;
-  today: string;
-  /** The cook's choice of filling (`choiceKey`), part of the dish's key; empty for none. */
-  choice?: string;
-}
-
-/** The key of a shipped dish in the list's origin: its id, and the filling where one was chosen. */
-export const shippedDishKey = (id: string, choice = ''): string =>
-  choice === '' ? `shipped:${id}` : `shipped:${id}#${choice}`;
-
 /**
  * The lines a shipped dish lacks for some portions, as list input, and the names the catalogue
  * lacks (`free`; `freeListLines` makes list input of those the cook ticks). Undefined when the
@@ -69,27 +51,12 @@ export const shippedDishKey = (id: string, choice = ''): string =>
 export const classicListLines = (
   input: ClassicLinesInput,
 ): (LackingLines & { title: string; dish: string }) | undefined => {
-  const ingredients = withCatalogue(input.source.ingredients, input.catalogue);
-  const base = cookInput({ ...input.source, ingredients }, input.today);
-  const report = classicReport({
-    ingredients: base.ingredients,
-    stock: base.stock,
-    today: base.today,
-    ...(base.facts === undefined ? {} : { facts: base.facts }),
-    ...(base.substitutes === undefined ? {} : { substitutes: base.substitutes }),
-    ...(base.parts === undefined ? {} : { parts: base.parts }),
-    classic: input.classic,
-    portions: input.portions,
-    lang: input.lang,
-  });
-  if (!report.ok) return undefined;
-  const byId = new Map(ingredients.map((i) => [i.id, i]));
+  const found = classicLack(input);
+  if (found === undefined) return undefined;
+  const { report } = found;
   const dish = shippedDishKey(input.classic.id, input.choice);
   const lines = lackingLines(report, {
-    nameOf: (ref) => {
-      const record = ref.kind === 'ingredient' ? byId.get(ref.id) : undefined;
-      return record === undefined ? ref.id : displayName(record, input.lang);
-    },
+    nameOf: lineName(found.byId, input.lang),
     amountText: (amount, measure) => listAmountText(amount, input.lang, measure),
     title: report.name,
     dish,
@@ -102,3 +69,5 @@ export const freeListLines = (
   names: readonly string[],
   dish: { title: string; dish: string },
 ): AddInput[] => freeLines(names, dish);
+
+export { shippedDishKey, type ClassicLinesInput } from './report';

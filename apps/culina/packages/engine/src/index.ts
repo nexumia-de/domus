@@ -415,8 +415,13 @@ export type {
   ClassicsMakeableResult,
 } from './classics/makeable';
 export { wantedLines } from './classics/wanted';
+// lackingLines and freeLines carry the list package's usual items: the app's main script uses only
+// lackingItems, and its hand-over module the two (the app's test/build.test.ts).
 export { freeLines, lackingLines } from './handover/lacking';
-export type { LackingLines, LackingOptions, LackingReport } from './handover/lacking';
+export type { LackingLines, LackingOptions } from './handover/lacking';
+export type { LackingReport } from './handover/reading';
+export { lackingItems } from './handover/reading';
+export type { LackingItem, LackingItems } from './handover/reading';
 export type { WantedLine } from './classics/wanted';
 export { COUNTRY_CODES, COURSE_IDS } from './classics/types';
 export type {

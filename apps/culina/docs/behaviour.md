@@ -1596,11 +1596,183 @@ Texts: `src/strings-stock.ts`. Since 2026-11-20 the stock is the collection
 
 # Handing what a dish lacks to the shopping list
 
-Built on 2026-11-24 below the screens: **no screen offers it yet**
-([roadmap](roadmap.md), goal 11, the screen is the next step). What
-exists is the engine's reading of a dish, the lines as the list will
-hold them, and the write into the list; Culina keeps no shopping list
-of its own (`AGENTS.md`).
+Built on 2026-11-24 in two steps ([roadmap](roadmap.md), goal 11): the
+engine's reading of a dish, the lines as the list will hold them and
+the write into the list; then the offer on the page of a **shipped dish
+or frame** in the web app. Culina keeps no shopping list of its own
+(`AGENTS.md`). The native Linux app has no screen for it
+([native app](native-linux.md)).
+
+## The offer on a dish's page
+
+- **Where and when.** Right under the ingredients of a shipped dish
+  (a frame with the filling the cook chose, at the portions shown), one
+  quiet line and a button: "The stock lacks 6 ingredients for this." /
+  "Put on the shopping list" ("Laut Vorrat sind dafür noch 6 Zutaten
+  nötig." / "Auf die Einkaufsliste"; 1: "The stock lacks 1 ingredient
+  for this.", "Laut Vorrat ist dafür noch 1 Zutat nötig."). It counts
+  the catalogue ingredients that lack (`lackingItems`, the same reading
+  `lackingLines` writes from), and follows a change of portions or
+  filling at once. **Nothing at all** when nothing lacks, when the
+  shared database cannot be opened, before the catalogue is loaded, and
+  when the stock holds **no item at all**: with an empty stock every
+  line lacks, so every dish would offer its whole list, which is noise
+  for a household that does not keep its stock in the app, not help
+  (an owner question, [roadmap](roadmap.md) goal 11). The names the
+  catalogue lacks (frikandelle's kidney suet) are not counted: no stock
+  can hold them, so they would lack on every visit.
+- **What this page put on the list counts.** After a hand-over the line
+  says "The stock lacks 6 ingredients for this; 4 of them on the
+  shopping list as needed now." ("…, 4 davon wie jetzt gebraucht auf
+  der Einkaufsliste."), and when all of them are there "The 6 ingredients the stock lacks for this are on
+  the shopping list." ("Die 6 Zutaten, die laut Vorrat dafür nötig
+  sind, stehen auf der Einkaufsliste.") **without a button**. Only what
+  this page handed over (or found there, `already`) **with the amount
+  needed now** counts: at other portions or with another filling a line
+  handed at another amount is not counted, the button stays and the
+  confirmation ticks that line again, so the hand-over says what
+  differs. After Undo, what it took off, put back as before this dish,
+  found removed or found ticked as bought in the shopping list no longer
+  counts; an entry edited there since is still on the list and counts; the list itself is not read on a draw (that would be one
+  database read on every draw of every dish page, for a line that the
+  hand-over's own `already` answers when it is made). On a later visit
+  the page offers again, and a second hand-over says "already". An
+  entry ticked or removed in Emptio while the page is open is not seen
+  by the line.
+- **Own dishes are not offered.** The finder can report one
+  (`dishReport`), but only at the dish's stored portions and without
+  the fillings swapped on its page, and its amounts have no spoon of a
+  source; the list would get other amounts than the page shows. A
+  later step, with the portions and the swaps passed to the report
+  (owner question).
+- **The confirmation** opens in place under the offer (an inline
+  section, as Swap and the closed sections of the dish page open; the
+  app has no dialog): "For the shopping list", one checkbox per line
+  with the amount as it will be written, ticked unless this page put it
+  on the list already; under "Not in the catalogue, no amount" the free
+  names, unticked; "Goes on the shopping list of the space “Home”."
+  ("Kommt auf die Einkaufsliste des Raums „Home“.") when the household
+  has more than one space; "The shopping list could not be synced
+  lately. What you put on it stays on this device until it can." when
+  the list's last cycle failed (`listStatus()`, the smallest honest
+  form: the cook is told before writing, the write itself is local and
+  works); one button "Put 6 on the list" ("6 auf die Liste setzen",
+  disabled with nothing ticked) and "Cancel". The focus goes to the
+  first line; Escape and Cancel close it and give the focus back to the
+  offer, whose button says `aria-expanded`. The cook's ticks are kept
+  while the screen is shown; a line handed over is unticked again.
+- **The message** after the write stands under the offer as the page's
+  status line (`role="status"`, focused; after a tap without a ring, as
+  the screen heading): "Put 6 on the shopping list."; with a line added
+  to an entry that was already there (rule 5, another dish's or a typed
+  one): "Put 6 on the shopping list, 1 of them added to an entry
+  already there." ("6 auf die Einkaufsliste gesetzt, 1 davon zu einem
+  schon vorhandenen Eintrag hinzugefügt."); "Put 1 on the shopping list.
+  5 were on it already." ("… 5 standen schon darauf."); "All 6 were on
+  the shopping list already." / "Salt: on the shopping list already."
+  ("Salz: schon auf der Einkaufsliste.", no verb that has to agree with
+  a plural name). Where lines on the list have another amount than the
+  dish asks now (other portions, or the household's own edit), one
+  sentence is added, "For 2 of them the list has a different amount
+  from what the dish needs now; the list was not changed." ("Bei 2 davon hat die
+  Liste eine andere Menge, als das Gericht jetzt braucht; die Liste
+  blieb unverändert."), and the lines follow **outside the status line**
+  in a plain list ("Breadcrumbs: on the list 28 g, needed now 85 g",
+  "Semmelbrösel: auf der Liste 28 g, jetzt gebraucht 85 g"), so a screen
+  reader announces one sentence, not sixteen. Beside it **Undo** (while
+  something this page wrote can be taken back) and **Open the shopping
+  list**, a link to `../emptio/` in a new tab, so the recipe and its
+  Undo stay (the Household links open in the same tab: an owner
+  question). It is not the app's toast: the toast goes after 10 seconds
+  and on every screen change and has one action, while the cook may look
+  at the list in Emptio first and then take the hand-over back. The
+  message, its Undo and the ticks live for **one screen shown**: a
+  redraw keeps them, another screen (a link, Back, another dish) and a
+  **reload** lose them, as the toast's Undo is lost. A refused write
+  says "The shopping list could not be written. Nothing was put on it."
+  ("… Es wurde nichts auf die Liste gesetzt.") and nothing is on the
+  list.
+- **Several hand-overs on one page.** A hand-over that wrote nothing
+  (all `already`) leaves the Undo of the ones before. Undo takes back
+  every hand-over of the page that wrote, the last first (so an entry
+  two of them wrote goes back step by step), and says it once, each
+  entry as it ends (the outcome of the oldest hand-over that wrote it):
+  the burrito's salt, made by the shipped sauce and joined by the
+  guacamole's, is "taken off", not "back as before".
+- **Undo** says what is true of the list afterwards: "Taken off the
+  list: Beef; Butter." (entries it had added), "Back as before, without
+  this dish: Salt." (an entry it had added this dish's amount to, which
+  stays), "Left on the list, ticked or changed since: Cream.", "No
+  longer on the list: Eggs." (removed in the shopping list since);
+  "Nothing was taken back." first when it took nothing. German: "Von
+  der Liste genommen: …", "Wieder wie vorher, ohne dieses Gericht: …",
+  "Auf der Liste gelassen, seither abgehakt oder geändert: …", "Nicht
+  mehr auf der Liste: …", "Es wurde nichts zurückgenommen.". A refused
+  Undo says "The shopping list could not be written. Nothing was taken
+  back." and keeps the button.
+- **The link to Emptio** is relative: on the one address (`/culina/`
+  next to `/emptio/`, [deployment](../../../docs/deployment.md)) it opens
+  the shopping list. In a development build, where Culina is served
+  alone at the root (`npm run e2e`, `serve.mjs`), `../emptio/` is
+  `/emptio/`, which is not there (404); the site build
+  (`npm run e2e:site`) is where it works. In the installed app the link
+  is outside Culina's scope and opens in the browser (or in the
+  installed Shopping List where the system hands such links to it; not
+  seen on a device).
+- **The code is loaded when it is used.** The confirmation, the write
+  and the list package's rules and usual items are a module of their
+  own, `hand-over.js` (`src/screens/hand-over/confirm.ts`, a second
+  entry of `build.mjs`), loaded when the cook first opens the
+  confirmation and precached with the rest. `main.js` carries neither
+  (`test/build.test.ts` › 'the hand-over to the shopping list is its own
+  module …', and 'the classics … main.js carries none' would find the
+  usual item "Noodles" otherwise: it guards that `main.js` holds no data
+  of its own files). The module shares no state with `main.js`: it
+  imports only pure code and gets the running space, the words and the
+  dish's report as arguments. esbuild's code splitting was tried and
+  not used: it moved half of `main.js` into a shared chunk, so the
+  check on `main.js` would no longer see everything loaded at start.
+- **A module that does not load, or of another build.** If
+  `hand-over.js` cannot be fetched (offline without the app's cache, a
+  failed request), a status line under the offer says "The shopping
+  This could not be opened. Try again." ("Das ließ sich nicht öffnen.
+  Bitte noch einmal versuchen.") and the button stays; the
+  next tap tries again. Both files carry the id of the build they come
+  from (a hash of every source file either is made of, `build.mjs`):
+  the service worker activates an update at once (`skipWaiting`,
+  `clients.claim`) and deletes the old cache, so a page still open with
+  the old `main.js` can get the new `hand-over.js`; `main.js` refuses a
+  module of another build and says "Cook’s Workbench was updated. Reload
+  it to use the shopping list." ("Cook’s Workbench wurde aktualisiert.
+  Lade die App neu, um die Einkaufsliste zu nutzen.").
+
+Tests: `test/hand-over-words.test.ts` (the offer for 0, 1 and n and
+with some or all listed, the message with joined, already and
+differing lines, Undo's four kinds, English and German; the `already`
+filter of Undo's names), `test/hand-over.test.ts` › 'an entry removed
+in Emptio in between …', `packages/engine/test/handover-lacking.test.ts`
+› 'lackingItems …' (the count is the lines written),
+`test/build.test.ts` (the module of its own; the same build id in both
+files), `e2e/hand-over.mjs` (English at 360 px, German at 1280 px, the
+real shipped files and four eggs in stock: no offer with an empty
+stock; the dish reached from the Cook list, by its address and by Back,
+each opened with one click; the offer under the ingredients, portions
+4 → 8 → 4 and the burrito's sauce, focus and Escape, one line unticked
+and a free name ticked by hand, the message and its focus without a
+ring, the list read from the database, the offer counting what was put
+on, a hand-over that writes nothing keeping Undo, one Undo for two, a
+refused write, other portions with the differing amount listed apart;
+in English the module that does not load and one of another build), and
+the site e2e (`scripts/site-e2e.mjs`: Emptio shows the entries with
+their amounts and the dish; Undo leaves the entry ticked there). Not
+proved: a screen reader, a real phone, two spaces and a failed list
+sync on the screen (both drawn from values the unit tests of the write
+pin, not seen in a browser), the installed app's link, a refused write
+by a full disk (the check makes IndexedDB's `put` throw), a real
+service worker update while a page is open (the check serves the
+module with its id changed).
+
+## Below the screen
 
 - **What lacks** (engine, `lackingLines`, from the finder's report of one
   dish: `classicReport` for a shipped dish, `dishReport` for an own one).
@@ -1623,7 +1795,7 @@ of its own (`AGENTS.md`).
   One ingredient in two lines in one unit is added up first ("Salt: 3
   tsp" for the burrito with guacamole). A spoon-sized amount of a staple
   (salt, flour for dusting) is handed like any other line when it lacks,
-  in the recipe's spoon; the screen will let the cook untick it. The
+  in the recipe's spoon; the confirmation lets the cook untick it. The
   priority is `soon` (Emptio's default), the origin
   `{ kind: 'recipe', app: 'culina', title: <dish in the cook's language>, dish: <key> }`
   with the key `shipped:<id>` (and `#<filling>` where one was chosen),
@@ -1659,8 +1831,8 @@ of its own (`AGENTS.md`).
   entries leave the device without Emptio open. The stock's status
   speaks of the collection `stock` alone (`status()`): a list never
   synced yet, or a list file that cannot be read, does not show on the
-  stock screen; the list's own status is `listStatus()`, for the
-  hand-over's screen.
+  stock screen; the list's own status is `listStatus()`, which the
+  confirmation reads (a failed cycle is said there).
 
 The orderings (a sync cycle, Emptio in another tab, Undo after a tick,
 a failing store, twice, two tabs, two spaces) are in the list package's

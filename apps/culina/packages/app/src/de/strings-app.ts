@@ -6,6 +6,7 @@ import { classicsStringsDe, pairingStringsDe } from './strings-classics';
 import { cookStringsDe } from './strings-cook';
 import { nutritionStringsDe } from './strings-nutrition';
 import { stockStringsDe } from './strings-stock';
+import { handOverStringsDe } from './strings-handover';
 
 export const appStringsDe: typeof appStrings = {
   appName: "Cook's Workbench",
@@ -939,6 +940,7 @@ export const appStringsDe: typeof appStrings = {
     },
   },
   stock: stockStringsDe,
+  handOver: handOverStringsDe,
   cook: cookStringsDe,
   classics: classicsStringsDe,
   // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.

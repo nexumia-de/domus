@@ -281,8 +281,10 @@ app are not known to it.
 
 Since 2026-11-24 the native app's loops keep the collection `list` in
 step too, as the web app's do (the same space code), for the hand-over
-of what a dish lacks to the shopping list; no screen offers the
-hand-over, here or on the web. Its spaces are in its own file store, not
+of what a dish lacks to the shopping list. **The native app has no
+screen for the hand-over**: the web app's dish page offers it since
+2026-11-24 (second step of roadmap goal 11); the native dish page does
+not, and building it there is a later step. Its spaces are in its own file store, not
 in the browser's database `domus`: native Culina and web Emptio on one
 machine meet only through a shared space's storage
 ([behaviour](behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)).

@@ -36,6 +36,8 @@ export {
 export { canonicalLines, familyView } from './family-view';
 export {
   chooseStockSpace,
+  listStatus,
+  listWriter,
   onStockStatus,
   stockSpaces,
   stockStatus,

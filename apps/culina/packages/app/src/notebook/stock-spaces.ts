@@ -30,3 +30,17 @@ export const wakeStock = (): void => state.stockSpace?.wake();
 
 /** The connection is back: a cycle now. */
 export const stockOnline = (): void => state.stockSpace?.online();
+
+/** The sync of the used space's shopping list (the collection `list`), for the hand-over. */
+export const listStatus = (): SyncStatus | undefined => state.stockSpace?.listStatus();
+
+/**
+ * What a hand-over writes through: the running space (undefined before the start or when the
+ * shared database cannot be opened), the clock and the ids of the notebook.
+ */
+export const listWriter = ():
+  | { space: NonNullable<typeof state.stockSpace>; now: () => string; newId: () => string }
+  | undefined =>
+  stockUnavailable() || state.stockSpace === undefined
+    ? undefined
+    : { space: state.stockSpace, now: () => state.now(), newId: () => state.newId() };

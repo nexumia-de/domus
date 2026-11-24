@@ -24,6 +24,17 @@ export interface Shell {
  * tell for a focus by script whether a key or a tap led to it, so the ring is drawn by this.
  */
 let lastInput: 'key' | 'pointer' = 'key';
+/** Whether the last input was a pointer: a focus set by script then shows no ring (`focus-quiet`). */
+export const pointerLast = (): boolean => lastInput === 'pointer';
+
+/**
+ * How many screens were shown on this page: one more on every change of screen (a link, Back),
+ * none on a redraw of the same screen after the notebook changed. What a screen keeps while it is
+ * shown (the hand-over on a dish's page) is kept for one count.
+ */
+let shownScreens = 0;
+export const screenShown = (): number => shownScreens;
+
 const trackInput = (): void => {
   document.addEventListener('keydown', () => (lastInput = 'key'), { capture: true });
   document.addEventListener('pointerdown', () => (lastInput = 'pointer'), { capture: true });
@@ -214,6 +225,7 @@ export const mountShell = (root: HTMLElement): Shell => {
       void refreshBackupBanner();
     },
     show(route, param, focusHeading, action) {
+      shownScreens += 1;
       // The place of the screen left, for the way back to it; the history has moved on already.
       // The link noted is the one left by only when this navigation goes to its address (not a
       // button pressed after it, nor the browser's back or forward); else the one noted earlier is

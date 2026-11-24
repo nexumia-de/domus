@@ -4,13 +4,8 @@
 // stand-ins here (the app gives the catalogue's kitchen names and its own amount words), and
 // nothing is written to a list (the app's handOver tests do that).
 import { describe, expect, test } from 'vitest';
-import {
-  chooseAlternative,
-  classicReport,
-  dishReport,
-  freeLines,
-  lackingLines,
-} from '../src/index';
+import { chooseAlternative, classicReport, dishReport, lackingItems } from '../src/index';
+import { freeLines, lackingLines } from '../src/handover/lacking';
 import type {
   Amount,
   Classic,
@@ -108,6 +103,30 @@ const item = (id: string, ingredient: string, amount?: Amount): MakeableStockIte
   id,
   ref: { kind: 'ingredient', id: ingredient },
   ...(amount === undefined ? {} : { amount }),
+});
+
+describe('lackingItems, the reading without the list package', () => {
+  test('gives one item per line lackingLines writes, in its order, and the same free names (what the dish page counts is what the confirmation lists)', () => {
+    for (const [stock, portions] of [
+      [[], 4],
+      [[item('s1', 'i-flour', { value: 50, unit: 'g' })], 4],
+      [[item('s1', 'i-flour'), item('s2', 'i-butter')], 8],
+    ] as const) {
+      const report = classicReport({
+        classic: frame(),
+        portions,
+        lang: 'en',
+        ingredients,
+        stock: [...stock],
+        today: '2026-11-24',
+      });
+      if (!report.ok) throw new Error(report.error.code);
+      const read = lackingItems(report, options.nameOf);
+      const written = lackingLines(report, options);
+      expect(read.items.map((i) => i.ref.id)).toEqual(written.lines.map((l) => l.ingredientId));
+      expect(read.free).toEqual(written.free);
+    }
+  });
 });
 
 describe('lackingLines', () => {

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (Culina's screen of the hand-over)
+
+- **Update** of the docs, no change of the package: Culina offers the hand-over on a dish's page; the [orderings](orderings.md) say what its screen pins (a refused write, a failed list sync said before writing) and what stays open (the page closing inside a transaction). Culina's main script no longer reaches `usualCategory` or `planAdds`: they load with its confirmation. First check that Emptio shows what Culina wrote: the site e2e, passed with no change to Emptio or this package.
+
 ## 2026-11-24 (after the review)
 
 - **Update**: a recipe origin may carry `dish`, the key of the dish in the app that handed it over ([entry](entry.md)); rule 5 keeps one origin per dish by that key where it is there, else by the title as before ([rules](rules.md#5-twice-the-same)); new vector `add-entry/recipe-origin-by-dish.json`, which fails with the key taken out. Safe for every reader: `isEntryValue` (unchanged since the list was built, 2026-11-20) checks `kind`, `app` and `title` only and lets other fields through; `valueFor` and `addEntry` keep an origin object as it is; Emptio's screens (web and native) show the title; the KitchenOwl bridge writes only typed origins and keeps stored fields; Emptio has no export. An older build that joins two origins of the same title keeps the first one, as before: nothing is dropped or refused. No entry Emptio writes has a `dish`, so Emptio's behaviour does not change (its tests and vectors unchanged).

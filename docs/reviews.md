@@ -21,6 +21,75 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: the offer on a dish's page to put what it lacks on the shopping list
+
+Two agents under one lead, both on the second-largest model. One built
+the screen of Culina's hand-over to Emptio (roadmap goal 11, second
+step): the offer under the ingredients, the confirmation, the message
+with Undo and the link, the second bundle loaded on demand, the site
+check that goes through both apps. The other, which wrote none of it
+and was given the task and the staged diff but not the builder's
+reasoning, used it in the site build as a cook would, compared every
+sentence with the store, and ran the suites. The builder fixed what was
+found; the reviewer drove it a second time and found more; the fixes to
+that second round were read by nobody else.
+
+| Part                                             | Done by | Checked by                                                              |
+| ------------------------------------------------ | ------- | ----------------------------------------------------------------------- |
+| The offer, the confirmation, the message, Undo   | agent 1 | agent 2, in a browser at 360 px and wide, English and German, twice     |
+| What each sentence says against what was written | agent 1 | agent 2, the store read after every step                                |
+| Emptio showing what Culina wrote                 | agent 1 | agent 2 (names, amounts, categories, origin; tick, edit, remove, Undo)  |
+| The second bundle, the build id                  | agent 1 | agent 2 (offline, a swapped module, a source change changes the id)     |
+| The bundle check not weakened                    | agent 1 | agent 2 (the usual items put into the main bundle in a copy: both fail) |
+| Emptio's native entry page naming the app        | agent 1 | agent 2 (its test fails on the old source); nobody on a screen          |
+| The fixes to the second round                    | agent 1 | nobody but the checks                                                   |
+
+**What the checks found, and where it was fixed.**
+
+- _The first tap did nothing_ on a dish reached inside the app (another
+  dish by a link, Back): the state of the hand-over was cleared by a
+  listener that ran after the router had drawn the page. The builder's
+  browser check missed it because it changed the sauce first, which
+  redraws. The state now lives for one screen shown by the shell; the
+  checks reach the dish by the app's own ways and tap once.
+- _Undo said things that were not so:_ an entry removed in Emptio was
+  "left on the list"; a line that had joined another dish's entry was
+  "taken back" though the entry stays; after two hand-overs of one
+  frame with different sauces "back as before" was said of an entry
+  that was gone. Undo now tells four cases apart and says of each entry
+  what finally became of it.
+- _A second hand-over silently took the first one's Undo;_ one that
+  writes nothing now keeps it, and Undo takes back all of the page's.
+- _The message:_ "the list keeps the first amount" was false after an
+  edit in Emptio; a singular verb stood with plural names ("Tomaten
+  bleibt"); sixteen sentences were announced at once. Now one sentence,
+  the differing lines in a plain list below, no verb that must agree.
+- _The offer after a hand-over_ went on offering the same lines, then
+  (first fix) counted lines as on the list that Undo had found removed
+  or bought, and lost its button when all lines were handed, so other
+  portions could not be handed. It now counts what this page handed at
+  the amount needed now, less what Undo learned.
+- _A module that cannot be loaded_ left a dead button; the cook is told.
+  The two bundles carry one build id, and a mismatch after an update
+  asks to reload.
+
+**Test counts** (builder's run after the last fixes; the reviewer's own
+runs after the first round gave the same parts with Culina's app at
+1257 and e2e 2181): `npm run check` passes: Culina 1279 / 1259 / 25,
+Emptio 23 / 66 / 4, list 45, host 259, the others unchanged. Culina's
+e2e 2187, the site e2e 46; Emptio's e2e 318 (before the last fixes,
+which touch no Emptio file).
+
+**What nobody verified.** The fixes to the second round by a second
+reader. A screen reader, a real phone, the link to Emptio from the
+installed app, a real update of the service worker with a page open, a
+full disk. The way from "Dishes like this" and a list beside the page
+were not driven. The native apps on a screen. The offer counts only
+what this page handed: a later visit offers again, and a tick in Emptio
+while the page stays open is not seen (both documented, the first asked
+of the owner). Own dishes get no offer; with an empty stock there is
+none.
+
 ## 2026-11-24: the shopping list's format becomes a shared package, and Culina can write the list
 
 Three agents under one lead, all on the second-largest model. One only

@@ -3,7 +3,13 @@
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import { PRIORITIES } from '@nexumia-de/list';
-import { categoriesOf, editEntry, removeEntries, restoreEntries } from '@emptio/app/core';
+import {
+  categoriesOf,
+  editEntry,
+  originText,
+  removeEntries,
+  restoreEntries,
+} from '@emptio/app/core';
 import { editOnTap } from '@nexumia-de/gjs';
 import type { Page, Ui } from './context';
 
@@ -42,15 +48,8 @@ export function entryPage(ui: Ui, id: string): Page {
   for (const line of [name, amount, note, pressing, category]) fields.add(line);
 
   const day = (time: string): string => time.slice(0, 10);
-  const origins = entry.origins
-    .map((origin) =>
-      origin.kind === 'typed'
-        ? t.entry.typed(day(entry.addedAt))
-        : origin.kind === 'recipe'
-          ? t.entry.recipe(origin.app, origin.title)
-          : t.entry.staple,
-    )
-    .join(' ');
+  // The app a recipe came from by its visible name, as the web entry screen says it.
+  const origins = entry.origins.map((origin) => originText(origin, entry.addedAt, t)).join(' ');
   const why = new Gtk.Label({
     label:
       entry.bought === undefined ? origins : `${origins} ${t.entry.boughtOn(day(entry.bought.at))}`,

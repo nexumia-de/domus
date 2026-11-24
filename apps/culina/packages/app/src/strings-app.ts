@@ -3,6 +3,7 @@ import { classicsStrings, pairingStrings } from './strings-classics';
 import { cookStrings } from './strings-cook';
 import { nutritionStrings } from './strings-nutrition';
 import { stockStrings } from './strings-stock';
+import { handOverStrings } from './strings-handover';
 
 export const appStrings = {
   appName: "Cook's Workbench",
@@ -916,6 +917,7 @@ export const appStrings = {
   },
   // The Stock screens and the finder, each in their own file.
   stock: stockStrings,
+  handOver: handOverStrings,
   cook: cookStrings,
   classics: classicsStrings,
   // The one filter over every dish (browse/filter.ts): the list, the finder and the pick.

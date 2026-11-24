@@ -17,7 +17,7 @@ import { LIST, entriesOf, planAdd, type AddInput, type Entry } from '@nexumia-de
 import { IDBFactory } from 'fake-indexeddb';
 import { describe, expect, test } from 'vitest';
 import { freeLines } from '@culina/engine';
-import { handOver, handOverEdit, undoHandOver } from '../src/shared-list/hand-over';
+import { finalOutcome, handOver, handOverEdit, undoHandOver } from '../src/shared-list/hand-over';
 import { SPACE_KEY } from '../src/prefs';
 import { createStockSpace, type StockSpace } from '../src/shared-stock/space';
 import { memoryPrefs, memoryStorage, noTimers } from './stock-helpers';
@@ -337,11 +337,83 @@ describe('undoHandOver', () => {
     const done = await handOver(space, SHORTBREAD, { now: clock(), newId: ids() });
     if (!done.ok) throw new Error('hand-over failed');
     const undone = await undoHandOver(space, done.outcome.undo);
-    expect(undone.ok && undone.outcome).toEqual({ undone: ['typed', 'h2'], kept: [] });
+    expect(undone.ok && undone.outcome).toEqual({
+      undone: ['typed', 'h2'],
+      kept: [],
+      restored: ['typed'],
+      gone: [],
+      bought: [],
+    });
     expect(await listOf(shared, space)).toEqual([typed]);
     // The added entry is a removal marker, so the removal reaches the other devices.
     const records = (await shared.readCollection(spaceId, LIST)).records;
     expect(records.find((r) => r.key === 'h2')?.deleted).toBe(true);
+  });
+
+  test('two hand-overs of one page undone, the last first: an entry the second joined and the first made is removed, and said so', async () => {
+    const shared = createMemoryStore();
+    const space = await spaceOn(shared);
+    const first = await handOver(space, SHORTBREAD, { now: clock(), newId: ids() });
+    // The same dish with another filling is another dish: its butter joins the entry made above.
+    const other = { title: 'Shortbread', dish: 'shipped:shortbread#0=x' };
+    const second = await handOver(space, [line('Butter', 'fdc-173410', '50 g', other)], {
+      now: clock(),
+      newId: ids(),
+    });
+    if (!first.ok || !second.ok) throw new Error('hand-over failed');
+    expect(second.outcome.lines.map((l) => l.outcome)).toEqual(['joined']);
+    const undoneSecond = await undoHandOver(space, second.outcome.undo);
+    const undoneFirst = await undoHandOver(space, first.outcome.undo);
+    if (!undoneSecond.ok || !undoneFirst.ok) throw new Error('undo failed');
+    // Each Undo alone: the second put the butter back as before, the first removed it.
+    expect(undoneSecond.outcome.restored).toEqual(['h1']);
+    expect(undoneFirst.outcome.undone).toContain('h1');
+    expect(finalOutcome([undoneSecond.outcome, undoneFirst.outcome])).toEqual({
+      undone: ['h1', 'h2'],
+      kept: [],
+      restored: [],
+      gone: [],
+      bought: [],
+    });
+    expect(await listOf(shared, space)).toEqual([]);
+  });
+
+  test('finalOutcome keeps per entry the state of the oldest Undo, ticked and removed apart from edited', () => {
+    const none = { undone: [], kept: [], restored: [], gone: [], bought: [] };
+    const newer = {
+      ...none,
+      undone: ['a', 'b'],
+      restored: ['a'],
+      kept: ['c', 'd', 'e'],
+      gone: ['d'],
+      bought: ['e'],
+    };
+    const older = { ...none, kept: ['b'], bought: ['b'] };
+    expect(finalOutcome([newer, older])).toEqual({
+      undone: ['a'],
+      kept: ['b', 'c', 'd', 'e'],
+      restored: ['a'],
+      gone: ['d'],
+      bought: ['b', 'e'],
+    });
+  });
+
+  test('an entry removed in Emptio in between is left and said to be gone, not left on the list', async () => {
+    const shared = createMemoryStore();
+    const space = await spaceOn(shared);
+    const spaceId = space.state().space?.id ?? '';
+    const done = await handOver(space, SHORTBREAD, { now: clock(), newId: ids() });
+    if (!done.ok) throw new Error('hand-over failed');
+    await localChange(shared, spaceId, LIST, clock(), () => ({ remove: ['h1'] }));
+    const undone = await undoHandOver(space, done.outcome.undo);
+    expect(undone.ok && undone.outcome).toEqual({
+      undone: ['h2'],
+      kept: ['h1'],
+      restored: [],
+      gone: ['h1'],
+      bought: [],
+    });
+    expect(await listOf(shared, space)).toEqual([]);
   });
 
   test('leaves an entry ticked or edited in Emptio in between, and undoes the others', async () => {
@@ -361,7 +433,13 @@ describe('undoHandOver', () => {
     );
     await inEmptio(shared, spaceId, (v) => ({ ...v, amount: '500 g' }), 'h2');
     const undone = await undoHandOver(space, done.outcome.undo);
-    expect(undone.ok && undone.outcome).toEqual({ undone: ['h3'], kept: ['h1', 'h2'] });
+    expect(undone.ok && undone.outcome).toEqual({
+      undone: ['h3'],
+      kept: ['h1', 'h2'],
+      restored: [],
+      gone: [],
+      bought: ['h1'],
+    });
     const list = await listOf(shared, space);
     expect(list.map((e) => [e.id, e.amount, e.bought !== undefined])).toEqual([
       ['h1', '200 g', true],
