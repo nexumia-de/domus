@@ -82,6 +82,207 @@
       "id": 170054,
       "why": "tomato sauce, 1 dish line, and with the paste the group of 2 dish lines"
     },
-    { "id": 170459, "why": "tomato paste, with the sauce the group of 2 dish lines" }
+    { "id": 170459, "why": "tomato paste, with the sauce the group of 2 dish lines" },
+    {
+      "id": 174277,
+      "why": "own recipes of 2026-11-23: soy sauce (shoyu), the seasoning of the Chinese, Japanese and Thai dishes"
+    },
+    {
+      "id": 171284,
+      "why": "own recipes of 2026-11-23: plain whole-milk yogurt, for raita, tzatziki, marinades and doughs",
+      "volume": [{ "modifier": "cup (8 fl oz)", "unit": "cup" }]
+    },
+    {
+      "id": 171304,
+      "why": "own recipes of 2026-11-23: Greek yogurt, plain, whole milk, for tzatziki and dips"
+    },
+    { "id": 173420, "why": "own recipes of 2026-11-23: feta, for Greek salad and baked dishes" },
+    { "id": 173414, "why": "own recipes of 2026-11-23: cheddar, for the British and US dishes" },
+    {
+      "id": 169094,
+      "why": "own recipes of 2026-11-23: ripe (black) olives, for salads, pizza and braises"
+    },
+    {
+      "id": 171705,
+      "why": "own recipes of 2026-11-23: avocado, for guacamole and bowls",
+      "piece": "avocado, NS as to Florida or California"
+    },
+    {
+      "id": 167746,
+      "why": "own recipes of 2026-11-23: whole lemon (flesh without peel), where a dish names a lemon and not its juice",
+      "piece": "fruit (2-1/8\" dia)"
+    },
+    {
+      "id": 168156,
+      "why": "own recipes of 2026-11-23: lime juice, for the Mexican and Thai dishes"
+    },
+    {
+      "id": 170923,
+      "why": "own recipes of 2026-11-23: cumin seed, for the Indian, Mexican and Turkish dishes",
+      "volume": [
+        { "modifier": "tbsp, whole", "unit": "tbsp" },
+        { "modifier": "tsp, whole", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 171328,
+      "why": "own recipes of 2026-11-23: dried oregano, for the Greek, Italian and Mexican dishes",
+      "volume": [{ "modifier": "tsp, leaves", "unit": "tsp" }]
+    },
+    {
+      "id": 170919,
+      "why": "own recipes of 2026-11-23: ground cardamom, for the Indian dishes and for baking",
+      "volume": [
+        { "modifier": "tbsp, ground", "unit": "tbsp" },
+        { "modifier": "tsp, ground", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 168570,
+      "why": "own recipes of 2026-11-23: dried hot chilli (the dataset has no chilli flakes besides cayenne)"
+    },
+    {
+      "id": 169396,
+      "why": "own recipes of 2026-11-23: dried ancho chilli, for the Mexican sauces"
+    },
+    {
+      "id": 172234,
+      "why": "own recipes of 2026-11-23: prepared mustard, for dressings, sauces and sandwiches"
+    },
+    { "id": 168556, "why": "own recipes of 2026-11-23: ketchup, for the US sauces and glazes" },
+    {
+      "id": 171610,
+      "why": "own recipes of 2026-11-23: Worcestershire sauce, for the British and US dishes"
+    },
+    {
+      "id": 168833,
+      "why": "own recipes of 2026-11-23: brown sugar, for baking, glazes and the Thai and Chinese sauces",
+      "volume": [
+        { "modifier": "cup packed", "unit": "cup" },
+        { "modifier": "tsp packed", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 172470,
+      "why": "own recipes of 2026-11-23: peanut butter, smooth, without salt, for satay and peanut sauces"
+    },
+    {
+      "id": 174531,
+      "why": "own recipes of 2026-11-23: fish sauce, the seasoning of the Thai dishes"
+    },
+    { "id": 174529, "why": "own recipes of 2026-11-23: oyster sauce, for the Chinese stir-fries" },
+    {
+      "id": 172886,
+      "why": "own recipes of 2026-11-23: hoisin sauce, for the Chinese glazes and dips"
+    },
+    { "id": 172442, "why": "own recipes of 2026-11-23: miso, for miso soup and marinades" },
+    {
+      "id": 172475,
+      "why": "own recipes of 2026-11-23: firm tofu, for the Chinese, Japanese and Thai dishes"
+    },
+    {
+      "id": 167723,
+      "why": "own recipes of 2026-11-23: sake, for the Japanese sauces and marinades (the dataset has no mirin)",
+      "volume": [{ "modifier": "fl oz", "unit": "tbsp", "per": 2 }]
+    },
+    { "id": 168458, "why": "own recipes of 2026-11-23: laver (nori), for the Japanese dishes" },
+    {
+      "id": 170390,
+      "why": "own recipes of 2026-11-23: pak-choi, for the Chinese stir-fries and soups"
+    },
+    {
+      "id": 169979,
+      "why": "own recipes of 2026-11-23: Chinese cabbage (pe-tsai, napa), for stir-fries, dumpling fillings and kimchi-style salads"
+    },
+    {
+      "id": 168573,
+      "why": "own recipes of 2026-11-23: lemon grass, for the Thai curries and soups"
+    },
+    {
+      "id": 171077,
+      "why": "own recipes of 2026-11-23: chicken breast without skin and bone, the cut most of the chicken dishes name"
+    },
+    {
+      "id": 173627,
+      "why": "own recipes of 2026-11-23: chicken thigh, meat only, for curries, stir-fries and braises",
+      "piece": "thigh without skin"
+    },
+    {
+      "id": 172884,
+      "why": "own recipes of 2026-11-23: chicken stock, the liquid of soups, risotti, curries and sauces"
+    },
+    {
+      "id": 172883,
+      "why": "own recipes of 2026-11-23: beef stock, for braises, gravies and soups"
+    },
+    {
+      "id": 171583,
+      "why": "own recipes of 2026-11-23: vegetable broth, the liquid of the meatless soups and stews"
+    },
+    {
+      "id": 175199,
+      "why": "own recipes of 2026-11-23: dry pinto beans, for the Mexican bean dishes"
+    },
+    {
+      "id": 172238,
+      "why": "own recipes of 2026-11-23: capers, for the Italian and Greek sauces and salads",
+      "volume": [{ "modifier": "tbsp, drained", "unit": "tbsp" }]
+    },
+    {
+      "id": 170162,
+      "why": "own recipes of 2026-11-23: raw cashews, for the Indian sauces and the Chinese and Thai stir-fries"
+    },
+    {
+      "id": 170187,
+      "why": "own recipes of 2026-11-23: walnuts, for baking, salads and the Turkish and Greek dishes",
+      "volume": [{ "modifier": "cup shelled (50 halves)", "unit": "cup" }]
+    },
+    {
+      "id": 168165,
+      "why": "own recipes of 2026-11-23: raisins, for baking, pilaf and the Indian and Turkish dishes"
+    },
+    {
+      "id": 170273,
+      "why": "own recipes of 2026-11-23: dark chocolate, for baking, desserts and mole",
+      "piece": "bar"
+    },
+    {
+      "id": 168482,
+      "why": "own recipes of 2026-11-23: sweet potato, for curries, oven dishes and the US sides",
+      "piece": "sweetpotato, 5\" long"
+    },
+    {
+      "id": 169228,
+      "why": "own recipes of 2026-11-23: aubergine (eggplant), for the Turkish, Greek, Italian, Indian and Chinese dishes",
+      "piece": "eggplant, unpeeled (approx 1-1/4 lb)"
+    },
+    {
+      "id": 170379,
+      "why": "own recipes of 2026-11-23: broccoli (the whole vegetable; the catalogue had only the stalks), for stir-fries and oven dishes"
+    },
+    {
+      "id": 172233,
+      "why": "own recipes of 2026-11-23: fresh dill, for the Greek, Turkish and German dishes"
+    },
+    {
+      "id": 169994,
+      "why": "own recipes of 2026-11-23: chives, for the German dishes, egg dishes and garnishes",
+      "volume": [
+        { "modifier": "tbsp chopped", "unit": "tbsp" },
+        { "modifier": "tsp chopped", "unit": "tsp" }
+      ]
+    },
+    {
+      "id": 171257,
+      "why": "own recipes of 2026-11-23: full-fat sour cream, for the Mexican, US and German dishes"
+    },
+    {
+      "id": 170845,
+      "why": "own recipes of 2026-11-23: whole-milk mozzarella, for pizza and caprese"
+    },
+    {
+      "id": 171249,
+      "why": "own recipes of 2026-11-23: Romano cheese, for the Italian pasta dishes"
+    }
   ]
 }

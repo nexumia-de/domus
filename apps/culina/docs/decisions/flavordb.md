@@ -99,9 +99,9 @@ about automated access (looked for on 2026-11-23, none found).
   languages. The flavour words of the shared molecules are computed and
   not shown: they are English only.
 - **The link to the catalogue** is this project's, not FlavorDB's:
-  `packages/app/data/flavour-links.json`, from a rule on names and 86
-  corrections with their reasons (`tools/flavordb/links-own.json`). 630
-  of the 720 ingredients are linked; fats, most oils and mixtures are
+  `packages/app/data/flavour-links.json`, from a rule on names and 103
+  corrections with their reasons (`tools/flavordb/links-own.json`). 681
+  of the 777 ingredients are linked; fats, most oils and mixtures are
   not.
 - **What it does not answer**: what a dish still needs ("flat, try
   acid"). The molecules describe aroma; sweet, sour, salty, bitter,

@@ -207,7 +207,7 @@ merges it into the shipped file offline and gives the same bytes. A new
 catalogue entry needs a line in the overlay, or the test
 `catalogue-german-own.test.ts` fails with its id.
 
-Hosts tested on 2026-11-18, both answered 200 through the proxy:
+Hosts tested on 2026-11-18 and again on 2026-11-23 (the catalogue was rebuilt and the snapshot refreshed that day), all answered 200 through the proxy:
 
 ```
 fdc.nal.usda.gov
@@ -263,7 +263,7 @@ files in `packages/app/data/` are committed and rebuilt, never edited:
 - `flavour-pairings.json`, derived from FlavorDB's entity documents
   (fetched on 2026-11-23: 936 entities, 1788 molecules, 606 kB);
 - `flavour-links.json`, which entity stands for an ingredient of the
-  catalogue (630 of 720), from the rule of `tools/flavordb/link.mjs` and
+  catalogue (681 of 777), from the rule of `tools/flavordb/link.mjs` and
   the corrections of `tools/flavordb/links-own.json`.
 
 To fetch again and rebuild, from `apps/culina`:

@@ -208,6 +208,31 @@ crust is rye bread. "Cacio" (a sheep's cheese: the dataset's Romano is not
 that), tarragon (only dried is in the dataset), chocolate (the dataset's baking
 chocolate is unsweetened) and shallot-for-onion were not forced.
 
+**For the project's own recipes (48 named foods, 2026-11-23).** The own
+recipes of 13 cuisines ([own recipes](decisions/own-recipes.md)) need foods
+the rule leaves out. A first agent proposed the list; the lead of a later
+session read every id, description and portion in SR Legacy 2018-04 before
+it was taken (all 48 are the food the reason names). They are: soy sauce
+(shoyu), plain and Greek yogurt, feta, cheddar, ripe olives, avocado, lemon
+without peel, lime juice, cumin seed, dried oregano, cardamom, sun-dried hot
+chilli, dried ancho, prepared yellow mustard, ketchup ("Catsup"),
+Worcestershire sauce, brown sugar, smooth peanut butter, fish sauce, oyster
+sauce, hoisin sauce, miso, firm tofu, sake, laver (nori), pak-choi, Chinese
+cabbage (pe-tsai), lemon grass, chicken breast without skin and bone,
+chicken thigh meat only, home-prepared chicken and beef stock, vegetable
+broth, dry pinto beans, capers, raw cashews, walnuts, raisins, dark
+chocolate (70-85 %), sweet potato, aubergine, broccoli, fresh dill, chives,
+sour cream, whole-milk mozzarella and Romano. The lemon was left out by the
+rule because USDA gives two sizes of fruit; the entry names the smaller
+(2-1/8", 58 g), a judgement. The two chicken cuts are in "Poultry Products",
+so the named meat, poultry and fish are now 28. Nine parents are new
+(alcoholic beverage, mozzarella, chicken, sour cream, walnuts, sauce, soup,
+stock, yogurt). The dataset has no mirin, rice vinegar, curry paste, dashi,
+kombu or bonito, garam masala, galangal or tamarind paste; a recipe that
+needs one keeps a `wanted` line. Not verified: nobody compared the
+portions' weights with a kitchen scale; the stocks are USDA's
+"home-prepared" rows, the vegetable broth a ready-to-serve one.
+
 **Savoy cabbage, tomato sauce and tomato paste (3 named foods,
 2026-11-21, second pass).** The dish lines still `wanted` were looked up
 again in SR Legacy 2018-04 (the downloaded JSON, SHA-256 as in the envelope;
@@ -315,8 +340,8 @@ fewer than the name has).
    `x-group: { rows }`, the number of food rows below it, and, for a parent
    named in `tools/catalogue/usual.json`, `usual` ([usual member](#usual-member)).
 
-Result for SR Legacy 2018-04, counted on the file on 2026-11-21: 589 food rows (539 by the rule, 50 [named foods](#named-foods)) and 131 parents, 720 entries (a file of 479 kB, 61 kB gzipped; 716 entries before savoy and the tomato products, 681 before the meat and fish).
-420 food rows have a parent, 162 stand alone and 7 food rows are
+Result for SR Legacy 2018-04, counted on the file on 2026-11-23: 637 food rows (539 by the rule, 98 [named foods](#named-foods)) and 140 parents, 777 entries (a file of 518 kB, 68 kB gzipped; 720 entries before the foods for the own recipes, 716 before savoy and the tomato products, 681 before the meat and fish).
+449 food rows have a parent. The figures of the tree that follow were counted on 2026-11-21 at 720 entries and not again: 420 food rows had a parent, 162 stood alone and 7 food rows were
 roots of a group. The tree has 6 levels (233 entries at the top, 316, 122,
 37, 10 and 2 below). 64 parents are at the top, 47, 16 and 4 at the next
 levels. 19 food rows are parents of a variant. 55 parents carry a density
@@ -544,9 +569,11 @@ they are kept because a search by them is right.
 
 ### Own translation
 
-The 556 entries without a Wikidata name (foods 437, groups 119) have a
+The 595 entries without a Wikidata name (foods 467, groups 128) have a
 German name that the project translated from the USDA description on
-2026-11-19. They are a hand-kept overlay,
+2026-11-19 (556 of them; 40 were added on 2026-11-23 with the foods for the
+own recipes, and savoy cabbage left the overlay because Wikidata names it
+since the snapshot of 2026-11-23; the head's one date stays 2026-11-19). They are a hand-kept overlay,
 `tools/catalogue/names-de-own.json`: an id maps to `{ name, aliases? }`, the
 head names the data set (`Own German names for the catalogue: translation of
 the USDA description by the project`), its date and its licence
@@ -632,7 +659,7 @@ USDA's `foodCategory.description` of the SR Legacy JSON (for example "Dairy
 and Egg Products", "Spices and Herbs") is written out for every food
 row as `x-fdc.category`, as USDA gives it. A generated parent takes it as
 `x-group.category` only when every food row below it has the same one
-(122 of 131 parents). It is not mapped to shop aisles or anything else.
+(131 of 140 parents). It is not mapped to shop aisles or anything else.
 
 ## Nutrition
 
@@ -655,7 +682,7 @@ likewise, each on its own, and only when every row has them. The value is the
 median, and the parent's `source` names the rule. Many parents do not agree
 (milk holds skimmed, dry and human milk; eggs hold fresh and dried), so a dish
 line that names such a parent has no nutrition and is reported as not counted.
-36 of 131 parents and all 589 foods carry nutrition.
+36 of 140 parents and all 637 foods carry nutrition.
 
 ## What the catalogue does not have
 
@@ -679,7 +706,7 @@ line that names such a parent has no nutrition and is reported as not counted.
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English as the canonical language; a German name for every entry, 164 from Wikidata and 556 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
+- English as the canonical language; a German name for every entry, 170 from Wikidata, 12 derived and 595 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
   only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added
   vitamins, margarines, oils); the source's variants are kept, and the

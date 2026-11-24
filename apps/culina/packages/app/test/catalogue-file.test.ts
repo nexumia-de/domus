@@ -96,8 +96,9 @@ describe('rows recomputed from the fixture excerpt', () => {
   const rows = buildRows(excerpt, shipped.dataset.release);
   const byId = (id: string) => rows.find((r) => r.id === id);
 
-  test('only basic foods with a usable portion become rows', () => {
+  test('only basic foods with a usable portion, and the named lemon, become rows', () => {
     expect(rows.map((r) => r.id)).toEqual([
+      'fdc-167746',
       'fdc-168894',
       'fdc-169230',
       'fdc-171265',
@@ -131,10 +132,18 @@ describe('rows recomputed from the fixture excerpt', () => {
       unitWeightG: { value: 182 },
     });
   });
-  test('lemons (two sizes of fruit), cooked rice, a brand and beef give no row', () => {
-    for (const id of ['fdc-167746', 'fdc-168935', 'fdc-171002', 'fdc-168605']) {
+  test('cooked rice, a brand and beef give no row', () => {
+    for (const id of ['fdc-168935', 'fdc-171002', 'fdc-168605']) {
       expect(byId(id), id).toBeUndefined();
     }
+  });
+  test('the lemon (two sizes of fruit, no row by the rule) is a named food: the size named', () => {
+    // extras.json names the portion of 2-1/8" (58 g); the rule alone gives no piece weight.
+    expect(byId('fdc-167746')).toMatchObject({
+      name: 'Lemons, without peel',
+      unitWeightG: { value: 58 },
+    });
+    expect(byId('fdc-167746')?.unitWeightG?.source).toContain('fruit (2-1/8" dia) = 58 g');
   });
   test('the rows equal the shipped rows, and the serialisation is stable', () => {
     for (const row of rows) {

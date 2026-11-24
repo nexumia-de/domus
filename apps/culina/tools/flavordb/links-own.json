@@ -32,6 +32,91 @@
       "why": "The rule finds the grain; the bread is meant."
     },
     {
+      "name": "Soy sauce made from soy and wheat",
+      "entity": "Soybean Sauce",
+      "why": "The rule finds nothing under USDA's wording; FlavorDB's soybean sauce is soy sauce."
+    },
+    {
+      "name": "Lemons",
+      "entity": "Lemon",
+      "why": "The rule does not join the plural; the fruit is meant."
+    },
+    {
+      "name": "Lime juice",
+      "entity": "Lime",
+      "why": "The juice of the fruit; the data has the fruit only, as for lemon juice."
+    },
+    {
+      "name": "Spices, cumin seed",
+      "entity": "Cumin",
+      "why": "The rule finds nothing under \"cumin seed\"; the seed is the spice the data names."
+    },
+    {
+      "name": "Spices, oregano",
+      "entity": "Oregano",
+      "why": "The rule finds nothing under the dried herb; the data does not tell dried from fresh."
+    },
+    {
+      "name": "Mustard, prepared",
+      "entity": "Mustard",
+      "why": "Prepared mustard is made from the seed the data names; vinegar and salt are not counted."
+    },
+    {
+      "name": "Catsup",
+      "entity": "Ketchup",
+      "why": "USDA's word for ketchup."
+    },
+    {
+      "name": "Seaweed, laver",
+      "entity": "Purple laver",
+      "why": "Laver (nori) is Porphyra, FlavorDB's purple laver."
+    },
+    {
+      "name": "Dill weed",
+      "entity": "Dill",
+      "why": "The herb; the rule does not find it under \"dill weed\"."
+    },
+    {
+      "name": "Sauce, fish",
+      "entity": null,
+      "why": "The rule finds the general entity Sauce; a fermented fish sauce is neither that nor fresh fish, so no pairing is claimed."
+    },
+    {
+      "name": "Sauce, oyster",
+      "entity": null,
+      "why": "The rule finds the general entity Sauce; an oyster sauce is a cooked, sweetened extract, not the oyster, so no pairing is claimed."
+    },
+    {
+      "name": "Sauce, hoisin",
+      "entity": null,
+      "why": "The rule finds the general entity Sauce; the data has no hoisin sauce."
+    },
+    {
+      "name": "Sauce, worcestershire",
+      "entity": null,
+      "why": "The rule finds the general entity Sauce; the data has no Worcestershire sauce."
+    },
+    {
+      "name": "Soup, stock, chicken",
+      "entity": "Chicken",
+      "why": "The rule finds the general entity Soup; a chicken stock tastes of the chicken it is made from."
+    },
+    {
+      "name": "Soup, stock, beef",
+      "entity": "Beef",
+      "why": "The rule finds the general entity Soup; a beef stock tastes of the beef it is made from."
+    },
+    {
+      "name": "Soup, vegetable broth",
+      "entity": null,
+      "why": "The rule finds the general entity Soup; a vegetable broth is no single food of the data."
+    },
+    {
+      "name": "Alcoholic beverage, rice",
+      "entity": "Sake",
+      "why": "The rule finds the grain; USDA's rice beverage is sake, which the data has."
+    },
+    {
       "name": "Beans",
       "entity": "Beans",
       "why": "Kinds of common bean the data does not tell apart.",

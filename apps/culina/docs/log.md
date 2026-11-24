@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-23 (48 foods for the own recipes)
+
+- **Update**: the catalogue has the 48 named foods the own recipes need ([ingredient catalogue](ingredient-catalogue.md#named-foods)): every id of the proposed list read in SR Legacy 2018-04 before it was taken, the Wikidata snapshot fetched again, 40 own German names, 777 entries. FlavorDB's links rebuilt with 17 corrections for the new foods (681 of 777). The stocks, the fish, oyster and Worcestershire sauce count as food of an animal for "without meat and fish" ([dish characters](dish-characters.md)). `drafts/catalogue/` is gone.
+
 ## 2026-11-23 (proven pairings, drafts, handover)
 
 - **Creation**: proven pairings before the computed ones. `packages/app/data/affinities.json` (built by `tools/affinities/build.py`: 53 ingredients, 324 pairs, each holding in both directions) is the project's own judgement of what cooks commonly combine, written by the lead agent from its own knowledge under the owner's [own recipes](decisions/own-recipes.md) decision, point 6, and read by nobody else. "Goes with" in the dish editor and on the dish shows "Proven together" first, there at once, then "From the flavour data" without what stands above (`src/pairing/affinity.ts`). With tomatoes the editor now offers basil, garlic, olive oil, onion, mozzarella and parmesan. Tests: `test/pairing-affinity.test.ts`, the proven list in `e2e/editor-pairing.mjs` and `e2e/dish-pairing.mjs`. The [pairing sources](pairing-sources.md) research (CulinaryDB) was not taken up.

@@ -378,11 +378,13 @@ describe('without meat and fish, a dish of the notebook', () => {
   });
 
   test('the list covers every catalogue food of an animal body outside meat and fish', () => {
-    // Read on 2026-11-21: what USDA files outside its meat, poultry and fish categories. A new
-    // entry matching this must be covered by the list (or be added to the plant-based exceptions).
+    // Read on 2026-11-21 and, for the sauces and stocks, on 2026-11-23: what USDA files outside
+    // its meat, poultry and fish categories. A new entry matching this must be covered by the list
+    // (or be added to the plant-based exceptions).
     const animalName =
-      /\b(lard|tallow|suet|bacon|grease|gelatin|broth|bouillon|anchov|fish|meat extract)\b|^fat, (beef|chicken|turkey|goose|duck|pork|mutton)/i;
-    const plant = new Set(['fdc-170169', 'fdc-170577']); // coconut meat
+      /\b(lard|tallow|suet|bacon|grease|gelatin|broth|bouillon|stock|anchov|fish|oyster|worcestershire|meat extract)\b|^fat, (beef|chicken|turkey|goose|duck|pork|mutton)/i;
+    // coconut meat (two rows) and the vegetable broth
+    const plant = new Set(['fdc-170169', 'fdc-170577', 'fdc-171583']);
     const covered = (id: string) =>
       classesOf(id, lookup, below).some((c) => MEAT_AND_FISH.classes.includes(c));
     const missed = file.ingredients
