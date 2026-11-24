@@ -1421,8 +1421,9 @@ shipped, under the one filter, with:
   the pan dish's quiet line without its course). Not proved: a screen
   reader reading the headings, a real phone, an own dish without a course
   in a browser (only in the unit test), that the order of the courses is
-  the one a cook wants. The native Linux app's Cook list is still one list
-  by name; `groupRows` is pure and could serve it.
+  the one a cook wants. The native Linux app's Cook list has the same
+  groups since 2026-11-24, from the same `groupRows`, one preferences
+  group each ([native app](native-linux.md#cooks-list)).
 - Both are kept on the device under `culina.cookList` (`{ have, order }`,
   `src/prefs.ts`; anything unreadable falls back field by field).
 - **The stock** is one tap away: "What is there" (German "Vorrat") beside

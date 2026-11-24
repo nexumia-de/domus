@@ -3,10 +3,12 @@
 // (the web app's stock space on the host package's loop), the ticks of a person, the one filter
 // over the dishes (the web app's `DishFilter` on the web app's entries) and Cook's one list with
 // "Only with what I have" and the order "Use up first" (the web app's `dishListView`, asked of the
-// finder with `readyKeysOf` and `useUpFrom`, kept under the web app's `culina.cookList`). The
-// screens read `state()` and are told when it changed.
+// finder with `readyKeysOf` and `useUpFrom`, kept under the web app's `culina.cookList`), in the
+// web app's groups (`groupRows`), and a shipped dish as it is cooked with the cook's choice of
+// filling (the web app's `classics/choices.ts`). The screens read `state()` and are told when it
+// changed.
 // No `gi://` here, so Node tests run it.
-import type { Lang } from '@culina/engine';
+import type { Classic, Lang } from '@culina/engine';
 import type { SpaceView, Store, SyncStatus } from '@nexumia-de/hospes';
 import {
   CHARACTER_TABLE,
@@ -15,7 +17,12 @@ import {
   COURSE_ORDER,
   DISH_FILTER_KEY,
   SPACE_KEY,
+  asChosen,
+  chooseFilling,
+  classics,
   dishClassics,
+  fillingChoices,
+  groupRows,
   createStockSpace,
   dishListView,
   entryOfClassic,
@@ -35,10 +42,12 @@ import {
   type CookSource,
   type DishEntry,
   type DishFilter,
+  type FillingChoice,
   type IngredientRecord,
   type ListRow,
   type KeyValueStore,
   type Offered,
+  type RowGroup,
   type StockRecord,
   type StockSpace,
   type StockSpaceOptions,
@@ -68,6 +77,11 @@ export interface SessionState {
 export interface CookView {
   /** The dishes that pass, by name, or in the order "Use up first". */
   rows: ListRow[];
+  /**
+   * By name, the same rows in the web app's groups (the frames, then by course); undefined where
+   * the list stays flat: the order "Use up first", or fewer than two groups left.
+   */
+  groups?: RowGroup[];
   /** How many dishes there are before any choice. */
   total: number;
   /** In the order "Use up first": the finder's answer (the marks, whether any item is dated, names). */
@@ -124,6 +138,16 @@ export interface Session {
   setCookList(list: CookList): void;
   /** Cook's one list: the dishes that pass the filter and the choices, in the chosen order. */
   cookView(filter: DishFilter, list: CookList): CookView;
+  /**
+   * A shipped dish as it is cooked: without the alternatives of its slots, each slot filled as the
+   * cook chose (the web app's `asChosen`); what the dish page and the cook page show. Undefined
+   * for an id the content lacks.
+   */
+  dish(id: string): Classic | undefined;
+  /** The slots of a dish that have a choice of filling, the one in the dish first (`fillingChoices`). */
+  fillings(id: string): FillingChoice[];
+  /** Fills a slot with another of its recipes, for as long as the app runs (the web app's `chooseFilling`). */
+  chooseFilling(id: string, slotIndex: number, componentId: string): void;
   /** Marks an ingredient as there. @returns false when nothing could be written. */
   tick(ingredientId: string): Promise<boolean>;
   /** Marks it as not there. @returns what Undo needs, or undefined when it was not there or nothing could be written. */
@@ -272,13 +296,25 @@ export function createSession(options: SessionOptions): Session {
         ...(list.have && asked.ready !== undefined ? { ready: asked.ready } : {}),
         ...(useUp === undefined ? {} : { useUp: useUp.marks }),
       });
+      // By name the list stands in the web app's groups; "Use up first" is one list in its order.
+      const groups = list.order === 'name' ? groupRows(view.rows) : undefined;
       return {
         rows: view.rows,
+        ...(groups === undefined ? {} : { groups }),
         total: view.total,
         ...(useUp === undefined ? {} : { useUp }),
         noStock: list.have && current.stock.length === 0,
       };
     },
+    dish(id) {
+      const classic = classics().find((c) => c.id === id);
+      return classic === undefined ? undefined : asChosen(classic);
+    },
+    fillings(id) {
+      const classic = classics().find((c) => c.id === id);
+      return classic === undefined ? [] : fillingChoices(classic, lang);
+    },
+    chooseFilling: (id, slotIndex, componentId) => chooseFilling(id, slotIndex, componentId),
     async tick(ingredientId) {
       if (!names.has(ingredientId)) return false;
       return (await change((records) => tickEdit(records, ingredientId, false))).ok;

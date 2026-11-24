@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Native Linux app
-description: Cook's Workbench as a GTK 4 and libadwaita app on GJS for Phosh and the desktop (packages/linux, app id de.nexumia.Culina) - what it shares with the web app, which screens it has (Cook, the one list with the switch and the order, since 2026-11-23) and what version 0.1 leaves out, the ingredient list's alignment, the stock of the shown space, joining a space by invitation link, how it is built, run, released and packaged, what the checks prove and what nobody verified.
+description: Cook's Workbench as a GTK 4 and libadwaita app on GJS for Phosh and the desktop (packages/linux, app id de.nexumia.Culina) - what it shares with the web app, which screens it has (Cook, the one list with the switch and the order, since 2026-11-23, in groups, and a frame's choice of filling, since 2026-11-24) and what version 0.1 leaves out, the ingredient list's alignment, the stock of the shown space, joining a space by invitation link, how it is built, run, released and packaged, what the checks prove and what nobody verified.
 tags: [linux, gtk, libadwaita, gjs, phosh, flatpak, native]
 generated: { by: claude-code, at: 2026-11-23 }
 sources:
@@ -33,14 +33,14 @@ Everything but the screens. The native app bundles the engine
 (`@culina/engine`), the web app's screen-free core (`@culina/app/core`),
 the host package and the web app's shipped content:
 
-| From                     | What the native app uses                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@culina/engine`         | `deriveClassic` (every amount for the portions), `classicsMakeable` (what the stock allows), `techniqueNotes`, the units and rounding                                                                                                                                                                                                                                                                                                          |
-| `@culina/app/core`       | The dish view (`dishView`), the steps (`cookView`), the one filter over the dishes (`entryOfClassic`, `matchesFilter`, `offeredBy`, `parseDishFilter`, the character table), Cook's one list (`dishListView`, `readyKeysOf`, `useUpFrom`, `useUpNote`, `useUpWords`, `parseCookList`), the readers of `classics.json` and the catalogue, the stock space (`createStockSpace`, the edits that tick and untick), the web app's texts (`strings`) |
-| `make-classics.mjs`      | The shipped content (the 48 dishes, the techniques, handling rules and substitutes): the web app's own `classics.json`, compiled into the bundle at build time                                                                                                                                                                                                                                                                                 |
-| the ingredient catalogue | `ingredient-catalogue.json` (USDA FoodData Central, German names), compiled in                                                                                                                                                                                                                                                                                                                                                                 |
-| `@nexumia-de/hospes`     | Spaces, the file store, the collection loop                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `@nexumia-de/gjs`        | What GJS lacks, joining by link, the preferences file, the build and the checks; new for this app: `language` (the device's language, see below) and `texts` (the texts the three native apps have in common)                                                                                                                                                                                                                                  |
+| From                     | What the native app uses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@culina/engine`         | `deriveClassic` (every amount for the portions), `classicsMakeable` (what the stock allows), `techniqueNotes`, the units and rounding                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `@culina/app/core`       | The dish view (`dishView`), the steps (`cookView`), the one filter over the dishes (`entryOfClassic`, `matchesFilter`, `offeredBy`, `parseDishFilter`, the character table), Cook's one list (`dishListView`, `readyKeysOf`, `useUpFrom`, `useUpNote`, `useUpWords`, `parseCookList`) and its groups (`groupRows`), a frame's choice of filling (`asChosen`, `fillingChoices`, `chooseFilling`, `roleLabel`), the readers of `classics.json` and the catalogue, the stock space (`createStockSpace`, the edits that tick and untick), the web app's texts (`strings`) |
+| `make-classics.mjs`      | The shipped content (the 48 dishes, the techniques, handling rules and substitutes): the web app's own `classics.json`, compiled into the bundle at build time                                                                                                                                                                                                                                                                                                                                                                                                        |
+| the ingredient catalogue | `ingredient-catalogue.json` (USDA FoodData Central, German names), compiled in                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `@nexumia-de/hospes`     | Spaces, the file store, the collection loop                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `@nexumia-de/gjs`        | What GJS lacks, joining by link, the preferences file, the build and the checks; new for this app: `language` (the device's language, see below) and `texts` (the texts the three native apps have in common)                                                                                                                                                                                                                                                                                                                                                         |
 
 `@culina/app/core` (`packages/app/src/core.ts`) is new: the files it
 exports were in the web app already and have no DOM. The one change in
@@ -67,9 +67,10 @@ dishes, ingredients and notes come in both languages from the data.
 
 - **Cook** (German "Kochen"; since 2026-11-23, issue 44, as the web app's
   Cook screen, [decision](decisions/cook-screen.md)): the first page.
-  Every dish in one list by name (the number of dishes is the group's
-  title), each with its course, its cuisine and whether it has meat or
-  fish, under one boxed list of three rows: the filter **What you feel
+  Every dish in one list (the number of dishes is the title above it), by
+  name in the web app's groups (since 2026-11-24, see
+  [Cook's list](#cooks-list)), each with its course, its cuisine and
+  whether it has meat or fish, under one boxed list of three rows: the filter **What you feel
   like** (see [the filter](#the-filter-over-the-dishes)), a switch row
   **Only with what I have** and a combo row **Order** (**By name**, **Use
   up first**); see [Cook's list](#cooks-list). The bottom bar has **What
@@ -79,11 +80,13 @@ dishes, ingredients and notes come in both languages from the data.
 - **Dish**: the name, the original name, a portions stepper (minus and
   plus, 44 px, 1 to 99, default 2), the ingredients per component and for
   the dish with the amounts for those portions (the engine's numbers,
-  rounded once for display), the method, and **Source** (author, title,
+  rounded once for display), for a frame **Choose what goes in** (see
+  [a choice of filling](#a-choice-of-filling)), the method, and **Source** (author, title,
   year, place, licence where there is one, the link, the persons the
   source states or the number we took, how it was checked, and the remarks
   on the source). **Cook step by step** is in the bottom bar.
-- **Cooking**: one step at a time with "Step 3 of 8", where it comes from,
+- **Cooking**: the dish as the dish page shows it, with its choice of
+  filling; one step at a time with "Step 3 of 8", where it comes from,
   the text, the lines it uses with their amounts, time and temperature as
   the source gives them, a progress bar, and the note of a technique the
   first time it comes (what to watch, behind a tap why and the sources).
@@ -142,8 +145,54 @@ nothing of it is judged here:
 - The finder's answers are asked once per stock and day (the stock list is
   replaced when the records change), not on every redraw for a status.
 
+- **Groups** (since 2026-11-24, as the web app's, [behaviour](behaviour.md#cook)):
+  in the order by name the session's `cookView` also gives the rows in
+  the web app's groups (`groupRows` of `src/browse/groups.ts`, unchanged):
+  the frames first (**Put together**), then the courses in the web app's
+  order (main course, soup, starter, side dish, sauce, breakfast, snack,
+  dessert, baking). Each group is an `AdwPreferencesGroup` titled with its
+  name and count, "Main course · 37 dishes"; above them an empty
+  preferences group keeps the count of the whole list as its title, with
+  **Show all** beside it. An empty group is not shown; with one group
+  left (a course that no frame has, such as soup) and in the order **Use
+  up first** the list is one group under the count, as before. In a
+  course's group the line under a dish drops the course, which the title
+  says; in the frames group it keeps it (`rowLine` in
+  `src/dish-choices.ts`). The group names are the web app's
+  (`strings.browse.groupFrames`, `groupNoCourse`, the course names).
+
 The texts are the web app's (`strings.cook`: title, switch, order,
 "Use up first", the empty state, the note).
+
+## A choice of filling
+
+A frame ([format](classic-format.md#a-frame)) may have slots with
+alternatives (the refried beans in place of the chicken). Since
+2026-11-24 the dish page and the cook page are given the dish as it is
+cooked, through the session's `dish(id)`: the web app's `asChosen`
+(`src/classics/choices.ts`: the cook's choices, then the engine's
+`withoutAlternatives`). Under the ingredients an `AdwPreferencesGroup`
+**Choose what goes in** (the web app's `fillingHeading`) holds an
+`AdwComboRow` per slot with alternatives, titled with the role's name
+(the web app's `roleLabel`: "Main element", "Sauce", "Starch"), listing
+the recipes that can fill the slot, the one in the dish first and
+selected (`session.fillings`, the web app's `fillingChoices`). Choosing
+one calls the web app's `chooseFilling` and draws the page again: the
+ingredients, the method, the source (the frame's parts) and the line
+"with meat or fish" in the header follow the dish as chosen; the group of
+combo rows is the same widget after the redraw, so the row keeps its
+place. **Cook step by step** reads the same choice. The choice lasts
+while the app runs and is not stored, as on the web; the native app has
+no Keep. Nothing of the choice is written here: the module is the web
+app's, exported from `@culina/app/core`.
+
+**A defect fixed with it.** Before, the dish page and the cook page read
+the full base (`classics()`), so a frame with an alternative listed the
+alternative's recipe among its parts with its ingredients, and its steps
+in the method and while cooking (the burrito: the guacamole beside the
+lime sour cream). The list on Cook was right (`dishClassics()` drops the
+alternatives). Found by reading the code and a run of the web app's
+`dishView` on the full burrito in Node, not on a screen.
 
 ## The filter over the dishes
 
@@ -224,13 +273,13 @@ On purpose, for the first release:
 
 # Build, run, checks
 
-| Command                             | What it does                                                                                                                                                                                                                                                                                                                                |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                                                                                                                                |
-| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                                                                                       |
-| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter, Cook's switch and order against the web app's `readyKeysOf` and `useUpFrom`, a `bestBefore` the web app wrote, the kept choices, the day the answers are kept for), the filter's choices and words, and the texts (19 tests); part of `npm run check:culina` |
-| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (17 checks)                                                                                                                                                   |
-| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (32 checks of its own, the 10 shared create-and-leave steps of the Spaces group and one at 1000 x 700; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step                            |
+| Command                             | What it does                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build -w @culina/linux`    | Generates the validators, techniques and substitutes, then esbuild makes `dist/de.nexumia.Culina.js` (about 1.6 MB with the content); `gi://` stays imported                                                                                                                                                                                                                                                                      |
+| `gjs -m dist/de.nexumia.Culina.js`  | Runs it; needs `gjs`, GTK 4, libadwaita 1.5 and the libsoup 3 typelib. `CULINA_DATA_DIR=<folder>` uses a folder of recorded data (`scripts/seed.mjs`)                                                                                                                                                                                                                                                                             |
+| `npm test -w @culina/linux`         | The session on the real content and the shared database in memory (the filter, Cook's switch and order against the web app's `readyKeysOf` and `useUpFrom`, a `bestBefore` the web app wrote, the kept choices, the day the answers are kept for, Cook's groups, a frame as it is cooked and its choice of filling), the filter's choices and words, the group headings, and the texts (23 tests); part of `npm run check:culina` |
+| `npm run smoke -w @culina/linux`    | In real GJS: the fixed vector, random bytes, the file store and two folders as two devices through sync cycles of the collection `stock` against the fake GitHub on localhost (17 checks)                                                                                                                                                                                                                                         |
+| `npm run interact -w @culina/linux` | Drives the app through GTK's Broadway backend with Playwright and checks the data files after each step (32 checks of its own, the 10 shared create-and-leave steps of the Spaces group and one at 1000 x 700; screenshots at 360 x 720 and 1000 x 700 to look at); `SHOTS=<folder>` keeps a screenshot per step                                                                                                                  |
 
 # Releases
 
@@ -298,6 +347,26 @@ classics, the textbooks behind the notes). CI: `culina-linux-check`,
   its next event (a sync status, a tick, a choice, a page popped back
   to); left open over midnight, its days left are yesterday's until then.
 
+- **The choice of filling and Cook's groups (2026-11-24) were never on a
+  screen.** The container they were built in has no display, no `gjs`
+  and no Broadway, so neither the app nor `npm run smoke` and `npm run
+interact` were run; the bundle was built (`npm run build`) and the
+  types checked. What is proven is in Node
+  (`test/session.test.ts`: "a frame is shown as it is cooked …", "a slot
+  with alternatives offers its recipes …", "Cook's list by name stands in
+  the web app's groups …"; `test/dish-choices.test.ts`: the line under a
+  row in a group, the group headings): what the pages are given, not the
+  combo row, its popover, the redraw after a choice, the group headings
+  on screen or their size at 360 px. `scripts/interact.mjs` clicks the
+  first dish at coordinates read from screenshots of the flat list; with
+  the count above the groups the first dish now stands lower, so
+  `FIRST_DISH` very likely has to be read again from a new screenshot
+  before the next run. German was not looked at. The two new session
+  tests fail on the code before the change because `session.dish`,
+  `session.fillings`, `session.chooseFilling` and `cookView`'s `groups`
+  did not exist; the first half of "a frame is shown as it is cooked"
+  (the full burrito lists the guacamole) passes before and after and
+  shows the defect.
 - **The Flatpak was never built**: `culina-flatpak` runs first in CI on
   the pull request. Nobody installed or started a bundle, so the launcher,
   the sandbox and the installed icon are untried.

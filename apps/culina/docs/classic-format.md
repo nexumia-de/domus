@@ -545,9 +545,13 @@ screen, a slot with alternatives has a choice under the ingredients
 it. The choice lasts while the app is open and is not stored. Keep
 copies the base with every alternative, so Swap offers them in the
 notebook. A frame's "without meat and fish" follows the parts in the
-dish. The native app shows a frame as shipped and has no choice yet.
-A first build listed an alternative among the ingredients, seen in a
+dish. A first build listed an alternative among the ingredients, seen in a
 browser; `e2e/kit-parts.mjs` pins the list before and after a choice.
+The native Linux app (since 2026-11-24) shows a frame as it is cooked
+and offers the same choice as a combo row per slot under the
+ingredients, with the web app's module; its dish page had listed the
+alternative among the parts until then
+([native app](native-linux.md#a-choice-of-filling)).
 
 **What a frame claims.** Its source section says that the app put it
 together and lists each part with where it comes from. Nobody read the

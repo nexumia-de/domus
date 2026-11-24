@@ -1,8 +1,16 @@
-// The choices and words of the filter's rows, on the web app's English texts. Proves the lists
-// and the summary; does not prove the rows on screen (no GTK here).
+// The choices and words of the filter's rows and of Cook's group headings, on the web app's
+// English texts. Proves the lists, the summary and the headings; does not prove the rows on screen
+// (no GTK here).
 import { expect, test } from 'vitest';
-import { stringsEn as s, type DishEntry, type Offered } from '@culina/app/core';
-import { choicesOf, entryLine, summaryOf, withChoice } from '../src/dish-choices';
+import { stringsEn as s, type DishEntry, type Offered, type RowGroup } from '@culina/app/core';
+import {
+  choicesOf,
+  entryLine,
+  groupTitle,
+  rowLine,
+  summaryOf,
+  withChoice,
+} from '../src/dish-choices';
 
 const offered: Offered = {
   origins: ['shipped'],
@@ -56,4 +64,20 @@ test('the line under a dish: course, cuisine, meat; what is not stated is left o
   delete bare.course;
   delete bare.meatFree;
   expect(entryLine(s, bare)).toBe(s.classics.countries.de);
+  // In a course's group the row carries no course (groupRows takes it out) and the line drops it;
+  // the control, a row with its course, keeps it.
+  expect(rowLine(s, { entry, meta: { cuisine: 'de' } })).toBe(
+    `${s.classics.countries.de} · ${s.classics.withMeat}`,
+  );
+  expect(rowLine(s, { entry, meta: { course: 'main', cuisine: 'de' } })).toBe(entryLine(s, entry));
+});
+
+test('a group of Cook is headed by its name and count, as on the web', () => {
+  const group = (id: RowGroup['id'], n: number): RowGroup => ({
+    id,
+    rows: Array.from({ length: n }, () => ({ entry: {} as DishEntry, meta: {} })),
+  });
+  expect(groupTitle(s, group('main', 37))).toBe(`${s.classics.course.main} · 37 dishes`);
+  expect(groupTitle(s, group('frames', 1))).toBe(`${s.browse.groupFrames} · 1 dish`);
+  expect(groupTitle(s, group('none', 2))).toBe(`${s.browse.groupNoCourse} · 2 dishes`);
 });

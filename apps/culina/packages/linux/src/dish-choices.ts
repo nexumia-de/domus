@@ -1,13 +1,16 @@
 // What the filter's rows offer and say, without a widget: the choices of each list (the web app's
 // `offeredBy`, plus a kept choice the dishes no longer offer, so that it can be seen and dropped),
-// the names of the choices, the line under a dish and the summary of a closed filter. No `gi://`,
+// the names of the choices, the line under a dish, the summary of a closed filter and the heading
+// of a group of Cook's list. No `gi://`,
 // so Node tests run it; the rows themselves are in `ui/dish-filter.ts`.
 import type { Lang } from '@culina/engine';
 import {
   characterLabel,
   type DishEntry,
   type DishFilter,
+  type ListRow,
   type Offered,
+  type RowGroup,
   type Strings,
 } from '@culina/app/core';
 
@@ -76,12 +79,34 @@ export const summaryOf = (s: Strings, lang: Lang, filter: DishFilter): string =>
   return parts.length === 0 ? s.browse.characterAny : parts.join(' · ');
 };
 
-/** The line under a dish in the list: course, cuisine and whether it has meat or fish. */
-export const entryLine = (s: Strings, entry: DishEntry): string =>
+/**
+ * The line under a dish in the list: course, cuisine and whether it has meat or fish.
+ * @param withCourse - False in a course's group, whose heading says the course.
+ */
+export const entryLine = (s: Strings, entry: DishEntry, withCourse = true): string =>
   [
-    ...(entry.course === undefined ? [] : [courseName(s, entry.course)]),
+    ...(entry.course === undefined || !withCourse ? [] : [courseName(s, entry.course)]),
     ...(entry.cuisine === undefined ? [] : [cuisineName(s, entry.cuisine)]),
     ...(entry.meatFree === undefined
       ? []
       : [entry.meatFree ? s.classics.withoutMeat : s.classics.withMeat]),
   ].join(' · ');
+
+/**
+ * The line under a row of Cook's list: as `entryLine`, the course said only where the row still
+ * carries it (`groupRows` takes it out of the rows of a course's group, as on the web).
+ */
+export const rowLine = (s: Strings, row: ListRow): string =>
+  entryLine(s, row.entry, row.meta.course !== undefined);
+
+/** The name of a group of Cook's list: "Put together", a course, or "No course given". */
+export const groupName = (s: Strings, group: RowGroup): string =>
+  group.id === 'frames'
+    ? s.browse.groupFrames
+    : group.id === 'none'
+      ? s.browse.groupNoCourse
+      : courseName(s, group.id);
+
+/** The heading of a group with its count, as on the web: "Main course · 37 dishes". */
+export const groupTitle = (s: Strings, group: RowGroup): string =>
+  `${groupName(s, group)} · ${s.browse.count(group.rows.length)}`;

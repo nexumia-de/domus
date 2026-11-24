@@ -2,7 +2,7 @@
 // app's own compositions (tacos, ramen, pizza), then the other dishes by course in a cook's order,
 // main courses first, then the dishes that state no course. The order within a group is the order
 // the rows come in (by name, from `dishListView`). Pure: no DOM and no texts; the screen names the
-// groups (screens/dish-list.ts). The native app's Cook list could take the same groups later.
+// groups (screens/dish-list.ts, and the native app's Cook page in packages/linux).
 import type { Course } from '@culina/engine';
 import type { ListRow, RowMeta } from './list-view';
 

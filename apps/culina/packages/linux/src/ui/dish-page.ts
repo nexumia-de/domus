@@ -1,14 +1,17 @@
 // A classic: the portions, the ingredients with the amounts for them (the engine's numbers), the
-// method, and the source. "Cook step by step" is in the bottom bar. Nutrition and the handling
-// and substitute notes of the web app are not here (docs/native-linux.md).
+// method, and the source. "Cook step by step" is in the bottom bar. A shipped dish is shown as it
+// is cooked (the session's `dish`: without the alternatives of its slots); a slot with
+// alternatives (a frame: the beans in place of the chicken) has a combo row under the ingredients,
+// and choosing draws the dish again as chosen; the cook page reads the same choice. Nutrition and
+// the handling and substitute notes of the web app are not here (docs/native-linux.md).
 import { pickText, type Classic } from '@culina/engine';
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import {
-  classics,
   cookView,
   dishView,
   portionsOf,
+  roleLabel,
   setPortions,
   techniques,
   type DishView,
@@ -22,8 +25,9 @@ const MAX_PORTIONS = 99;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function dishPage(ui: Ui, id: string): Page {
-  const { t, s } = ui;
-  const classic = classics().find((c) => c.id === id);
+  const { session, t, s } = ui;
+  // As it is cooked: the full base would list its alternatives among the ingredients.
+  const classic = session.dish(id);
   const head = titled(classic ? pickText(classic.name, ui.lang) : id);
   const { scrolled, body } = column();
   const view = new Adw.ToolbarView({ content: scrolled });
@@ -35,7 +39,8 @@ export function dishPage(ui: Ui, id: string): Page {
     return { page, update: () => undefined };
   }
 
-  const dish: Classic = classic;
+  /** The dish with the cook's choices of filling; read again after a choice. */
+  let dish: Classic = classic;
   const cook = barButton(t.dish.cook, true, () => ui.push(cookPage(ui, classic.id)));
   const bar = new Gtk.Box({ spacing: 6, css_classes: ['toolbar'] });
   bar.append(cook);
@@ -46,7 +51,7 @@ export function dishPage(ui: Ui, id: string): Page {
   portionGroup.add(stepper.row);
   let portions = portionsOf(classic.id);
   const stepsOf = (): StepView[] => {
-    const steps = cookView(classic, portions, ui.lang, ui.nameOf, techniques(), new Set());
+    const steps = cookView(dish, portions, ui.lang, ui.nameOf, techniques(), new Set());
     return steps.ok ? steps.steps : [];
   };
 
@@ -75,6 +80,33 @@ export function dishPage(ui: Ui, id: string): Page {
   }
   stepper.minus.connect('clicked', () => change(portions - 1));
   stepper.plus.connect('clicked', () => change(portions + 1));
+
+  /** "Choose what goes in": a combo row per slot with alternatives, titled with its role. */
+  const fillingGroup = ((): any => {
+    const choices = session.fillings(classic.id);
+    if (choices.length === 0) return undefined;
+    const group = new Adw.PreferencesGroup({ title: s.classics.fillingHeading });
+    for (const choice of choices) {
+      const row = new Adw.ComboRow({
+        title: roleLabel(choice.role),
+        use_markup: false,
+        model: Gtk.StringList.new(choice.options.map((option) => option.name)),
+        selected: Math.max(
+          0,
+          choice.options.findIndex((option) => option.id === choice.current),
+        ),
+      });
+      row.connect('notify::selected', () => {
+        const option = choice.options[row.get_selected()];
+        if (option === undefined) return;
+        session.chooseFilling(classic.id, choice.slotIndex, option.id);
+        dish = session.dish(classic.id) ?? dish;
+        draw();
+      });
+      group.add(row);
+    }
+    return group;
+  })();
 
   function change(next: number): void {
     portions = Math.max(1, Math.min(MAX_PORTIONS, next));
@@ -176,6 +208,8 @@ export function dishPage(ui: Ui, id: string): Page {
       box.append(lineList(ui, shown.slots));
       lists.append(box);
     }
+    // Under the ingredients, as on the web; the same widget after a redraw.
+    if (fillingGroup !== undefined) body.append(fillingGroup);
 
     const steps = stepsOf();
     if (steps.length > 0) {
