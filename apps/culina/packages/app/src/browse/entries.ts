@@ -9,7 +9,8 @@
 //   same, a dish whose classic is the same object keeps its entry: a choice derives one entry anew,
 //   not 121;
 // - the notebook's entries: its ingredients, components and dishes (every write of the notebook
-//   cache replaces the list it changes) and the catalogue.
+//   cache replaces the list it changes), the catalogue, and the shipped content (a copy kept from a
+//   frame reads its frame mark and parts from there).
 // Nothing here is written by a screen; the arrays handed out must not be changed.
 import type { Classic, Lang } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
@@ -17,7 +18,7 @@ import { classics, dishClassics } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { catalogueEntries } from '../classics/names';
 import { allVersions, listDishes, listIngredients, notebook } from '../notebook';
-import { entryOfClassic, entryOfDish } from './entry';
+import { entryOfClassic, entryOfDish, withKeptOrigin } from './entry';
 import type { DishEntry } from './entry';
 
 /** How often each half was derived (for the tests of the cache). */
@@ -68,11 +69,19 @@ const shippedEntries = keptWhile(
 );
 
 const ownEntries = keptWhile(
-  () => [listIngredients(), allVersions('components'), allVersions('dishes'), catalogueEntries()],
+  // The shipped content too: a copy kept from a frame is a frame only once its shipped dish is read.
+  () => [
+    listIngredients(),
+    allVersions('components'),
+    allVersions('dishes'),
+    catalogueEntries(),
+    classics(),
+  ],
   (): readonly DishEntry[] => {
     derivations.own++;
     const nb = notebook();
-    return listDishes().map((d) => entryOfDish(nb, d, characterLookup));
+    const versions = allVersions('dishes');
+    return listDishes().map((d) => entryOfDish(nb, withKeptOrigin(d, versions), characterLookup));
   },
 );
 

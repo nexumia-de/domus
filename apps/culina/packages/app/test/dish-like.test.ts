@@ -147,6 +147,19 @@ describe('the measure on written entries', () => {
   });
 });
 
+// A version saved by the editor before 2026-11-24 lost `x-origin`; the lists read it from the
+// family (`withKeptOrigin`), and the page takes it from the listed entry.
+test('the page of a kept dish whose own record lost its origin does not offer its shipped dish', () => {
+  const shipped = e('shipped:gratin', ['cheesy', 'baked', 'creamy']);
+  const shown = e('own:v2', ['cheesy', 'baked', 'creamy']);
+  const listed = e('own:v2', ['cheesy', 'baked', 'creamy'], { copyOf: 'gratin' });
+  const input = likeInput(shown, 'own:v2', listed);
+  expect(input.copyOf).toBe('gratin');
+  expect(dishesLike(input, [shipped])).toEqual([]);
+  // Control: a listed entry that was kept from nothing leaves the shipped dish alike.
+  expect(dishesLike(likeInput(shown, 'own:v2', e('own:v2', [])), [shipped])).toHaveLength(1);
+});
+
 test('a dish kept from a shipped dish carries its id in the entry; others do not', () => {
   const nb: Notebook = {
     ingredients: [],

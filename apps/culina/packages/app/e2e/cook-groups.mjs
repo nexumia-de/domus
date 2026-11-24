@@ -3,10 +3,11 @@
 // together", then the courses with the main course first, each under a heading of level 2 that
 // names the group and its number of dishes; a filter that leaves two groups shows two headings
 // with their counts, one that leaves one group none (the control); the order "Use up first" is one
-// flat list; a dish opened from a group leads back to the list in its groups. Chromium at 360 px; no
+// flat list; a dish opened from a group leads back to the list in its groups; a frame kept in the
+// notebook stands under "Put together", a kept dish that is no frame in its course. Chromium at 360 px; no
 // screen reader, no real phone, no own dish without a course (test/browse-groups.test.ts has it).
 import { check, watch } from './harness.mjs';
-import { layout, open } from './editor-helpers.mjs';
+import { formReady, layout, open } from './editor-helpers.mjs';
 
 const headings = (page) => page.locator('.dish-group-heading').allInnerTexts();
 const hashOf = (page) => new URL(page.url()).hash;
@@ -164,7 +165,69 @@ const oneLanguage = async (browser, server, lang) => {
   await context.close();
 };
 
+// A frame kept in the notebook stands under "Put together" beside the shipped one, after a reload
+// (read from the stored copy); a kept dish that is no frame stands in its course (the control).
+const keptFrame = async (browser, server) => {
+  const label = '360px cook groups, a kept frame';
+  const context = await browser.newContext({ viewport: { width: 360, height: 720 } });
+  const problems = watch(context, server.origin);
+  const page = await context.newPage();
+  const keep = async (id) => {
+    await open(page, server.origin, `classic/${id}`);
+    await page
+      .locator('.classic-copy')
+      .getByRole('button', { name: 'Keep in my notebook' })
+      .click();
+    await page.waitForURL(/#\/dishes\//);
+    await page.locator('.dish-card .version-lines').waitFor();
+  };
+  await keep('tacos');
+  await keep('gratin-dauphinois');
+  await open(page, server.origin, 'cook');
+  await page.locator('.dish-group').first().waitFor();
+  const groupOf = (name) =>
+    page
+      .locator('.dish-group')
+      .evaluateAll(
+        (groups, wanted) =>
+          groups.flatMap((g) =>
+            [...g.querySelectorAll('.dish-row')]
+              .filter((r) => r.querySelector('.entry-name')?.textContent?.trim() === wanted)
+              .map(() => g.querySelector('.dish-group-heading').textContent.replace(/\s+/g, ' ')),
+          ),
+        name,
+      );
+  const tacos = await groupOf('Tacos');
+  check(
+    same(tacos, ['Put together · 14 dishes', 'Put together · 14 dishes']),
+    `${label}: the kept tacos stand under Put together beside the shipped ones (${tacos.join(' | ')})`,
+  );
+  const gratin = await groupOf('Potato gratin, Dauphiné style');
+  check(
+    gratin.length === 2 && gratin.every((h) => h.startsWith('Side dish ·')),
+    `${label}: a kept dish that is no frame stands in its course (${gratin.join(' | ')})`,
+  );
+
+  // Edited and saved with nothing changed: the new version is still kept from the tacos.
+  await page.locator('.dish-group').first().locator('.dish-row-own').click();
+  await page.locator('.dish-card .version-lines').waitFor();
+  await page.getByRole('link', { name: 'Edit', exact: true }).click();
+  await formReady(page);
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'Tacos' }).waitFor();
+  await open(page, server.origin, 'cook');
+  await page.locator('.dish-group').first().waitFor();
+  const edited = await groupOf('Tacos');
+  check(
+    same(edited, ['Put together · 14 dishes', 'Put together · 14 dishes']),
+    `${label}: the kept tacos, edited and saved, still stand under Put together (${edited.join(' | ')})`,
+  );
+  check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
+  await context.close();
+};
+
 export const cookGroups = async (browser, server) => {
   await oneLanguage(browser, server, 'en');
   await oneLanguage(browser, server, 'de');
+  await keptFrame(browser, server);
 };

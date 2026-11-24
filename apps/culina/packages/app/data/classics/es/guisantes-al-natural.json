@@ -191,7 +191,7 @@
             "en": "Add the butter kneaded with the flour, and stir hard for two minutes.",
             "de": "Die mit dem Mehl verknetete Butter dazugeben und zwei Minuten kräftig rühren."
           },
-          "technique": "thicken-with-starch",
+          "action": "stir",
           "uses": ["butter-flour", "flour"],
           "time": {
             "value": 2,

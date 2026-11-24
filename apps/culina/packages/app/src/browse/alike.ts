@@ -75,7 +75,8 @@ const sameDish = (a: LikeEntry, b: LikeEntry): boolean => {
 /**
  * The dish of a page as the measure reads it: the entry of the dish as shown (a swap, a chosen
  * filling), under the key the lists know it by, with the parts of a frame from the lists' entry
- * (which reads the file with the alternatives of its slots).
+ * (which reads the file with the alternatives of its slots) and the shipped dish it was kept from
+ * as the lists read it (`withKeptOrigin`: a version saved by an earlier editor lost `x-origin`).
  *
  * @param shown - The entry of the dish as shown.
  * @param key - Its key in the lists (an own dish's family head).
@@ -83,7 +84,13 @@ const sameDish = (a: LikeEntry, b: LikeEntry): boolean => {
  */
 export const likeInput = (shown: LikeEntry, key: string, listed?: LikeEntry): LikeEntry => {
   const parts = listed?.parts ?? shown.parts;
-  return { ...shown, key, ...(parts === undefined ? {} : { parts }) };
+  const copyOf = listed?.copyOf ?? shown.copyOf;
+  return {
+    ...shown,
+    key,
+    ...(parts === undefined ? {} : { parts }),
+    ...(copyOf === undefined ? {} : { copyOf }),
+  };
 };
 
 /**

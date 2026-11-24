@@ -48,14 +48,18 @@ test('a second call derives nothing again and hands out the same entries', () =>
   expect(counts()).toEqual(before);
 });
 
-test('a load of the shipped content drops the shipped entries, not the own ones', async () => {
+// Since 2026-11-24 the own entries too: a copy kept from a frame reads its frame mark from the
+// shipped content (test/kept-frame.test.ts). The content loads once at start.
+test('a load of the shipped content drops both halves once', async () => {
   state.dishes = [dish('mine')];
   dishEntries();
   const before = counts();
   await loadContent(() => Promise.resolve(content(EXAMPLE_CLASSICS.slice(0, 1))));
   const after = dishEntries();
   expect(after.map((e) => e.key)).toEqual(['own:mine', `shipped:${EXAMPLE_CLASSICS[0]?.id}`]);
-  expect(counts()).toEqual({ own: before.own, shipped: before.shipped + 1 });
+  expect(counts()).toEqual({ own: before.own + 1, shipped: before.shipped + 1 });
+  dishEntries();
+  expect(counts()).toEqual({ own: before.own + 1, shipped: before.shipped + 1 });
 });
 
 test('a change of the notebook drops the own entries, and the shipped ones (their lookup)', () => {
