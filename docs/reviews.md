@@ -21,6 +21,44 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: Culina's list judges a frame by the chosen filling
+
+Two agents under one lead, both on the second-largest model. One made
+the lists and the finder follow the cook's choice of filling (web and
+the native session); the other, which wrote none of it, read the code,
+put the old files back to see the new tests fail, and looked at the
+frames' names. The lead changed five names on its finding.
+
+| Part                                        | Done by | Checked by                                                               |
+| ------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| The list, the finder and the native session | agent 1 | agent 2 (traced every cache and consumer, ran the tests on the old code) |
+| Five frame names, the rule in the format    | lead    | nobody but `check:culina` and the e2e                                    |
+
+**What the checks found, and where it was fixed.**
+
+- _Nothing that had to be fixed in the code._ Every cache rebuilds on a
+  change of language or catalogue, every place that must see each
+  alternative (Keep, the Components list) still reads the full base,
+  and the new tests fail with the old files.
+- _A name that contradicts the list:_ with the omelette chosen, the
+  "Japanese set meal with rice, salmon and cucumber salad" stood under
+  "Without meat and fish". Five frames named a part of a slot with
+  alternatives; their names now name only what stays, and the format
+  has the rule.
+- _Written down, not changed:_ on a dish page the bottom navigation
+  marks the Notebook, not Cook, also for a dish opened from Cook (a
+  decision of 2026-11-22 in the router, noticed again today); the
+  native filter's list of characters is built once (no choice changes
+  it on today's content); the random pick's "nothing found" stays until
+  the next roll after a choice, as after a change of stock.
+
+**Test counts**: `npm run check:culina` passes with 1253 engine, 1124
+app and 24 native tests; Culina's e2e passes with 2037 checks, run by
+the lead after the names changed.
+
+**What nobody verified.** The native pages on a screen. A reload in a
+browser after a choice. Firefox and Safari.
+
 ## 2026-11-24: the place on the way back in Culina
 
 Two agents under one lead, both on the second-largest model. One built

@@ -557,6 +557,13 @@ ingredients, with the web app's module; its dish page had listed the
 alternative among the parts until then
 ([native app](native-linux.md#a-choice-of-filling)).
 
+**A frame's name names no part the cook can swap.** The name stands in
+the list, the search and the heading whatever is chosen, and the choice
+is not stored; a name that named the salmon stood under "Without meat
+and fish" once the omelette was chosen. A name names only parts of slots
+without alternatives, or a word that covers every option ("a stir-fry",
+"Einlage"). Five names were changed for this on 2026-11-24.
+
 **What a frame claims.** Its source section says that the app put it
 together and lists each part with where it comes from. Nobody read the
 combination as a whole and nobody cooked it; `check.note` says so.
