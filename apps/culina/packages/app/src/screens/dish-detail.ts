@@ -14,10 +14,12 @@ import { wantedLines } from '@culina/engine';
 import type { Classic } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
 import { characterChips } from '../characters/view';
+import { asChosen, chooseFilling, fillingChoices, withChoices } from '../classics/choices';
 import { classicOf, techniques } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { ingredientLabel, loadNames } from '../classics/names';
 import { portionsOf, setPortions, setStep } from '../classics/session';
+import { roleLabel } from '../components/names';
 import { cookInput } from '../cook/input';
 import { lookupOf } from '../cook/lookup';
 import { offersFor } from '../cook/offers';
@@ -193,20 +195,56 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
     return card;
   }
   const lang = currentLang();
+  let refillKeep: () => void = () => undefined;
   return dishPage({
     id: classic.id,
     card,
     back: backToList('family-link', 'cook'),
     title: classic.id,
     startPortions: portionsOf(classic.id),
-    shown: (portions) => shownOfClassic(classic, portions, context()),
+    // Shown as it is cooked with the fillings chosen; Keep copies the base with its alternatives.
+    shown: (portions) => shownOfClassic(asChosen(classic), portions, context()),
     head: (portions) => {
       // A classic with an ingredient the catalogue lacks cannot be kept; the end of cooking says why.
       if (wantedLines(classic).length > 0) return [];
       const box = el('div', 'actions classic-copy');
       const status = el('p', 'note-quiet');
       status.setAttribute('role', 'status');
-      box.append(keepButton(classic, portions, lang, '.classic-copy', 'quiet'), status);
+      const fill = (): void =>
+        box.replaceChildren(
+          keepButton(withChoices(classic), portions, lang, '.classic-copy', 'quiet'),
+          status,
+        );
+      fill();
+      refillKeep = fill;
+      return [box];
+    },
+    afterIngredients: (_dish, redraw) => {
+      const choices = fillingChoices(classic, lang);
+      if (choices.length === 0) return [];
+      const box = el('section', 'filling-choices');
+      box.append(el('h2', undefined, t.fillingHeading));
+      for (const choice of choices) {
+        const label = el('label', 'field filling-choice');
+        const select = el('select');
+        select.dataset['slot'] = String(choice.slotIndex);
+        for (const option of choice.options) {
+          const item = el('option', undefined, option.name);
+          item.value = option.id;
+          item.selected = option.id === choice.current;
+          select.append(item);
+        }
+        select.addEventListener('change', () => {
+          chooseFilling(classic.id, choice.slotIndex, select.value);
+          refillKeep();
+          redraw();
+          card
+            .querySelector<HTMLElement>(`.filling-choice select[data-slot="${choice.slotIndex}"]`)
+            ?.focus();
+        });
+        label.append(el('span', 'field-label', roleLabel(choice.role)), select);
+        box.append(label);
+      }
       return [box];
     },
     cookHref: hashFor('classic', classic.id, 'cook'),

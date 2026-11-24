@@ -21,6 +21,44 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: a choice of filling in Culina's frames, five recipes for three more
+
+Two agents under one lead. One agent on a smaller model wrote five
+recipes for the new frames; a second, which wrote none of them, read
+them. The lead built the choice of filling (two functions of the engine,
+the choice on the dish screen), wrote the frame files and the tests.
+
+| Part                                                       | Done by      | Checked by                                   |
+| ---------------------------------------------------------- | ------------ | -------------------------------------------- |
+| Five recipes (ramen broth, eggs, stir-fry, risotto, crema) | one agent    | a second agent, as second reader             |
+| The reader's two corrections                               | second agent | nobody but the validator and the lead's runs |
+| `chooseAlternative`, `withoutAlternatives`, the choice     | lead         | nobody but the tests and the e2e             |
+| Eleven frame files, four more kitchen names                | lead         | nobody but the tests; the names by nobody    |
+
+**What the checks found, and where it was fixed.**
+
+- _Too salty:_ the risotto's added salt, with ready-made broth, salted
+  butter and Parmesan; 0.5 to 0.25 tsp.
+- _A stand-in that was not needed:_ the lime cream used reduced-fat sour
+  cream because only that row had a kitchen name; the reader put the
+  plain sour cream in, and the lead gave it its name.
+- _Frames' ingredients without a kitchen name:_ the pizza's mozzarella
+  and the ramen's noodles; the test read the recipes only and now reads
+  the frames too.
+- _The lead's own slip:_ the browser check of the source section asked
+  for the chicken after the beans had been chosen. The section names the
+  parts of the dish as chosen, which is right; the check follows it and
+  a control asks that the chicken is gone.
+
+**Test counts** (the lead's runs): `npm run check:culina` passes with
+1253 engine, 1083 app and 19 native tests; Culina's e2e passes with 1974
+checks, run alone.
+
+**What nobody verified.** Any of the five recipes or eleven frames
+cooked; the quick ramen broth and the egg noodles in place of ramen
+noodles are the app's own compromises and say so. The choice with a
+keyboard or a screen reader beyond the focus check. The native app.
+
 ## 2026-11-24: water, kitchen names and frames in Culina
 
 Three agents under one lead. The lead (the largest model) made water a

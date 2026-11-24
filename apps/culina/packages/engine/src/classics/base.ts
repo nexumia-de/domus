@@ -65,3 +65,45 @@ export const componentsUsed = (classic: Classic): Set<string> => {
   const alternatives = classic.slots.flatMap((s) => slotAlternatives(classic, s).map((c) => c.id));
   return new Set([...inDish, ...componentsReached(classic, alternatives)]);
 };
+
+/**
+ * The base with another component in a slot: `componentId` must be an alternative of the slot at
+ * `slotIndex` (`slotAlternatives`); the component that filled the slot becomes an alternative in
+ * its turn, by the same rule. In a frame, where every component says whether its recipe is
+ * vegetarian, the flag follows the components now in the dish. Anything else returns the base
+ * unchanged.
+ */
+export const chooseAlternative = (
+  classic: Classic,
+  slotIndex: number,
+  componentId: string,
+): Classic => {
+  const slot = classic.slots[slotIndex];
+  if (slot === undefined || !slotAlternatives(classic, slot).some((c) => c.id === componentId))
+    return classic;
+  const slots = classic.slots.map((s, i) =>
+    i === slotIndex ? { ...s, ref: { kind: 'component' as const, id: componentId } } : s,
+  );
+  const chosen: Classic = { ...classic, slots };
+  const inDish = componentsInDish(chosen);
+  const parts = (chosen.components ?? []).filter((c) => inDish.has(c.id));
+  const known = parts.every((c) => c.from?.vegetarian !== undefined);
+  return classic.frame === true && known
+    ? { ...chosen, vegetarian: parts.every((c) => c.from?.vegetarian === true) }
+    : chosen;
+};
+
+/**
+ * The base as it is cooked: without its alternatives. What a screen shows of a shipped dish (the
+ * ingredients, the steps, the nutrition, the characters) is this; Keep takes the whole base, so
+ * that Swap offers the alternatives in the notebook. A dish, and a base without alternatives, is
+ * returned as it is.
+ */
+export const withoutAlternatives = (classic: Classic): Classic => {
+  if (!isBase(classic)) return classic;
+  const inDish = componentsInDish(classic);
+  const components = classic.components ?? [];
+  return components.every((c) => inDish.has(c.id))
+    ? classic
+    : { ...classic, components: components.filter((c) => inDish.has(c.id)) };
+};

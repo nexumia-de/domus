@@ -1,0 +1,254 @@
+{
+  "id": "chao-shi-cai",
+  "kind": "base",
+  "name": {
+    "en": "Stir-fried vegetables with chicken",
+    "de": "Gemüse-Pfanne mit Hähnchen"
+  },
+  "originalName": "Chao shi cai",
+  "country": "cn",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "chao-shi-cai-main",
+      "name": {
+        "en": "Stir-fried vegetables with chicken",
+        "de": "Gemüse-Pfanne mit Hähnchen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "chicken",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171077"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Breast or boneless thigh, cut in strips.",
+            "de": "Brust oder Schenkel ohne Knochen, in Streifen geschnitten."
+          }
+        },
+        {
+          "key": "broccoli",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170379"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "In small florets.",
+            "de": "In kleinen Röschen."
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170108"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "scallion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170005"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cloves.",
+            "de": "Zehen."
+          }
+        },
+        {
+          "key": "ginger",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169231"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "soy",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Half of it for the chicken, half for the sauce.",
+            "de": "Die Hälfte für das Hähnchen, die Hälfte für die Sauce."
+          }
+        },
+        {
+          "key": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Half for the chicken, half for the sauce.",
+            "de": "Die Hälfte für das Hähnchen, die Hälfte für die Sauce."
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the chicken into thin strips and toss with half of the soy sauce and half of the cornstarch. Leave for 10 minutes.",
+            "de": "Das Hähnchen in dünne Streifen schneiden und mit der Hälfte der Sojasauce und der Hälfte der Maisstärke vermengen. 10 Minuten stehen lassen."
+          },
+          "action": "mix",
+          "uses": ["chicken", "soy", "starch"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cut the carrots into thin slices, the pepper into strips, the scallions into pieces 3 cm long, and the garlic and the ginger into thin slices. Divide the broccoli into small florets.",
+            "de": "Karotten in dünne Scheiben, die Paprika in Streifen, die Lauchzwiebeln in 3 cm lange Stücke, Knoblauch und Ingwer in dünne Scheiben schneiden. Den Brokkoli in kleine Röschen teilen."
+          },
+          "technique": "knife-cuts",
+          "uses": ["carrot", "pepper", "scallion", "garlic", "ginger", "broccoli"]
+        },
+        {
+          "text": {
+            "en": "Stir the water with the rest of the soy sauce and the rest of the cornstarch in a small bowl.",
+            "de": "Das Wasser mit der übrigen Sojasauce und der übrigen Maisstärke in einer kleinen Schüssel verrühren."
+          },
+          "action": "mix",
+          "uses": ["water", "soy", "starch"]
+        },
+        {
+          "text": {
+            "en": "Heat a wok or a large pan over high heat with half of the oil. Fry the chicken for 3 to 4 minutes, stirring, until it is cooked through. Take it out.",
+            "de": "Einen Wok oder eine große Pfanne mit der Hälfte des Öls stark erhitzen. Das Hähnchen 3 bis 4 Minuten unter Rühren braten, bis es durchgegart ist. Herausnehmen."
+          },
+          "technique": "saute",
+          "uses": ["oil", "chicken"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Heat the rest of the oil, add the garlic, the ginger and the white parts of the scallions and stir for 15 seconds. Add the carrots and the broccoli and stir-fry for 3 minutes, then the pepper for 2 minutes more.",
+            "de": "Das übrige Öl erhitzen, Knoblauch, Ingwer und die weißen Teile der Lauchzwiebeln dazugeben und 15 Sekunden rühren. Karotten und Brokkoli dazugeben und 3 Minuten unter Rühren braten, dann die Paprika weitere 2 Minuten."
+          },
+          "technique": "saute",
+          "uses": ["oil", "garlic", "ginger", "scallion", "carrot", "broccoli", "pepper"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Return the chicken to the pan, stir the sauce again and pour it in. Stir for 1 minute, until the sauce is glossy and thickens, and sprinkle with the green parts of the scallions. Serve with rice.",
+            "de": "Das Hähnchen zurück in die Pfanne geben, die Sauce nochmals verrühren und angießen. 1 Minute rühren, bis die Sauce glänzt und bindet, und mit dem Grün der Lauchzwiebeln bestreuen. Mit Reis servieren."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["chicken", "water", "soy", "starch", "scallion"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "chao-shi-cai-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing (about 0.6% salt in the stir-fry, chicken cooked through before the vegetables, which go in by cooking time)."
+  }
+}

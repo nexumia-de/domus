@@ -191,6 +191,10 @@
       "en": "Coconut milk",
       "de": "Kokosmilch"
     },
+    "fdc-170379": {
+      "en": "Broccoli",
+      "de": "Brokkoli"
+    },
     "fdc-170388": {
       "en": "Savoy cabbage",
       "de": "Wirsing"
@@ -246,6 +250,10 @@
     "fdc-170688": {
       "en": "Bulgur",
       "de": "Bulgur"
+    },
+    "fdc-170845": {
+      "en": "Mozzarella",
+      "de": "Mozzarella"
     },
     "fdc-170859": {
       "en": "Heavy whipping cream",
@@ -311,6 +319,10 @@
       "en": "Sour cream, reduced fat",
       "de": "Saure Sahne, fettreduziert"
     },
+    "fdc-171257": {
+      "en": "Sour cream",
+      "de": "Saure Sahne"
+    },
     "fdc-171284": {
       "en": "Plain yogurt",
       "de": "Naturjoghurt"
@@ -366,6 +378,10 @@
     "fdc-171447": {
       "en": "Chicken, with skin",
       "de": "Hähnchen mit Haut"
+    },
+    "fdc-171583": {
+      "en": "Vegetable broth",
+      "de": "Gemüsebrühe"
     },
     "fdc-171610": {
       "en": "Worcestershire sauce",
@@ -614,6 +630,10 @@
     "fdc-group-mushrooms": {
       "en": "Mushrooms",
       "de": "Pilze"
+    },
+    "fdc-group-noodles-egg-dry": {
+      "en": "Dried egg noodles",
+      "de": "Eiernudeln, getrocknet"
     },
     "fdc-group-oil": {
       "en": "Oil",

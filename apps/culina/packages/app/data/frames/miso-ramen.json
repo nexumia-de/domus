@@ -1,0 +1,42 @@
+{
+  "id": "miso-ramen",
+  "name": {
+    "en": "Miso ramen with egg and spring onion",
+    "de": "Miso-Ramen mit Ei und Frühlingszwiebeln"
+  },
+  "originalName": "Miso ramen",
+  "country": "jp",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "soup",
+      "parts": ["miso-ramen-no-supu"]
+    },
+    {
+      "role": "starch",
+      "ingredient": "fdc-group-noodles-egg-dry",
+      "amount": {
+        "value": 400,
+        "unit": "g"
+      }
+    },
+    {
+      "role": "garnish",
+      "parts": ["yude-tamago"]
+    },
+    {
+      "role": "crunch",
+      "ingredient": "fdc-170005",
+      "amount": {
+        "value": 4,
+        "unit": "count"
+      }
+    }
+  ],
+  "note": {
+    "en": "Boil the eggs first, then make the broth. Cook the noodles in their own water as the packet says, drain them, put them into four bowls and pour the hot broth over them; halved eggs and sliced spring onions go on top. The catalogue has no ramen noodles: dried egg noodles stand in, and wheat noodles made for ramen are the better choice where a shop has them.",
+    "de": "Zuerst die Eier kochen, dann die Brühe zubereiten. Die Nudeln nach Packungsangabe in eigenem Wasser kochen, abgießen, auf vier Schalen verteilen und mit der heißen Brühe übergießen; halbierte Eier und Frühlingszwiebeln in Ringen kommen obenauf. Der Katalog kennt keine Ramen-Nudeln: Getrocknete Eiernudeln stehen an ihrer Stelle, und wo ein Laden Weizennudeln für Ramen führt, sind diese die bessere Wahl."
+  }
+}

@@ -16,11 +16,11 @@
     },
     {
       "role": "main",
-      "parts": ["pollo-deshebrado-en-jitomate"]
+      "parts": ["pollo-deshebrado-en-jitomate", "frijoles-refritos"]
     },
     {
       "role": "sauce",
-      "parts": ["guacamole"]
+      "parts": ["guacamole", "crema-de-limon"]
     },
     {
       "role": "acid",
@@ -28,7 +28,7 @@
     }
   ],
   "note": {
-    "en": "Warm the tortillas, fill each with a spoonful of the chicken and top with guacamole and salsa at the table. For tacos without meat, the refried beans of this app can take the chicken's place once the dish is kept in the notebook; the tortillas of this app are made with lard.",
-    "de": "Die Tortillas erwärmen, jede mit einem Löffel Hähnchen belegen und am Tisch Guacamole und Salsa daraufgeben. Für Tacos ohne Fleisch kann das Bohnenmus dieser App an die Stelle des Hähnchens treten, sobald das Gericht im Notizbuch liegt; die Tortillas dieser App sind mit Schmalz gemacht."
+    "en": "Warm the tortillas, fill each with a spoonful of the filling and top with the sauce and the salsa at the table. The refried beans can take the chicken's place; the tortillas of this app are made with lard, so the tacos are not vegetarian with the beans either.",
+    "de": "Die Tortillas erwärmen, jede mit einem Löffel Füllung belegen und am Tisch Sauce und Salsa daraufgeben. Das Bohnenmus kann an die Stelle des Hähnchens treten; die Tortillas dieser App sind mit Schmalz gemacht, die Tacos sind also auch mit Bohnen nicht vegetarisch."
   }
 }

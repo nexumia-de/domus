@@ -16,7 +16,7 @@
     },
     {
       "role": "starch",
-      "parts": ["basmati-chawal"]
+      "parts": ["basmati-chawal", "chapati"]
     },
     {
       "role": "sauce",
@@ -28,7 +28,7 @@
     }
   ],
   "note": {
-    "en": "Start the chickpeas the day before: they soak overnight. Cook the rice while the curry simmers; the raita and the salad are made last and served cold beside it. The chapati of this app go with it as well as rice.",
-    "de": "Die Kichererbsen am Vortag ansetzen: Sie weichen über Nacht. Den Reis kochen, während das Curry köchelt; Raita und Salat zuletzt zubereiten und kalt dazu reichen. Statt Reis passen auch die Chapati dieser App."
+    "en": "Start the chickpeas the day before: they soak overnight. Cook the rice or bake the chapati while the curry simmers; the raita and the salad are made last and served cold beside it.",
+    "de": "Die Kichererbsen am Vortag ansetzen: Sie weichen über Nacht. Den Reis kochen oder die Chapati backen, während das Curry köchelt; Raita und Salat zuletzt zubereiten und kalt dazu reichen."
   }
 }

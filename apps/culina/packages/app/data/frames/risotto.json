@@ -1,0 +1,31 @@
+{
+  "id": "risotto",
+  "name": {
+    "en": "Risotto with Parmesan",
+    "de": "Risotto mit Parmesan"
+  },
+  "originalName": "Risotto bianco",
+  "country": "it",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "main",
+      "parts": ["risotto-bianco"]
+    },
+    {
+      "role": "garnish",
+      "ingredient": "fdc-170416",
+      "amount": {
+        "value": 10,
+        "unit": "g"
+      },
+      "optional": true
+    }
+  ],
+  "note": {
+    "en": "The risotto is the whole dish; chopped parsley at the end is the app's own addition. Serve it at once: it thickens as it stands.",
+    "de": "Das Risotto ist das ganze Gericht; gehackte Petersilie zum Schluss ist eine Zutat der App. Sofort servieren: Es dickt beim Stehen nach."
+  }
+}

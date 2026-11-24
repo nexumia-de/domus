@@ -5,7 +5,7 @@
 // may carry its own on `globalThis.__culinaContent` (set before the app loads), so the browser
 // tests run on a fictional example; without that query nothing is read from there.
 import type { Classic, HandlingRule, Substitute, Technique } from '@culina/engine';
-import { isDishOfItsOwn } from '@culina/engine';
+import { isDishOfItsOwn, withoutAlternatives } from '@culina/engine';
 
 const FORMAT = 'culina-classics';
 
@@ -80,7 +80,9 @@ let dishesOf: { all: readonly Classic[]; dishes: readonly Classic[] } | undefine
  */
 export const dishClassics = (): readonly Classic[] => {
   const all = classics();
-  if (dishesOf?.all !== all) dishesOf = { all, dishes: all.filter(isDishOfItsOwn) };
+  // A base is listed as it is cooked: without the alternatives held for its slots.
+  if (dishesOf?.all !== all)
+    dishesOf = { all, dishes: all.filter(isDishOfItsOwn).map(withoutAlternatives) };
   return dishesOf.dishes;
 };
 

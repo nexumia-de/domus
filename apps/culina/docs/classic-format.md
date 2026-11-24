@@ -534,15 +534,20 @@ every reason. A part with a `wanted` line would keep the whole frame out
 of the notebook, so none is used (the miso soup is left out of the
 Japanese set meal and its note says so).
 
-**One recipe per slot for now.** The composer makes alternatives (a
-second recipe in `parts`), and the engine's rules accept them, but the
-screens of a shipped dish list every component as a part of the dish:
-the ingredients, the steps, the nutrition and the characters would count
-the beans beside the chicken. No shipped base had an alternative before,
-so this was never seen. Until the views tell an alternative from a part,
-a shipped frame names one recipe per slot (`test/frames.test.ts` pins
-it), and its note says which other recipe of the app fits the slot; in
-the notebook, Swap offers every own component of the role.
+**A slot may have a choice.** A second recipe in `parts` is an
+alternative of the slot, by the rule of a base. A shipped base is shown
+as it is cooked, without its alternatives (`withoutAlternatives`): the
+ingredients, the steps, the nutrition, the characters and the list on
+Cook see the recipe that fills the slot and not the others. On the dish
+screen, a slot with alternatives has a choice under the ingredients
+("Choose what goes in"); choosing puts that recipe into the slot
+(`chooseAlternative`), and the screen, the cook screen and Keep follow
+it. The choice lasts while the app is open and is not stored. Keep
+copies the base with every alternative, so Swap offers them in the
+notebook. A frame's "without meat and fish" follows the parts in the
+dish. The native app shows a frame as shipped and has no choice yet.
+A first build listed an alternative among the ingredients, seen in a
+browser; `e2e/kit-parts.mjs` pins the list before and after a choice.
 
 **What a frame claims.** Its source section says that the app put it
 together and lists each part with where it comes from. Nobody read the

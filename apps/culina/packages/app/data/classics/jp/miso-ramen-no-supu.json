@@ -1,0 +1,188 @@
+{
+  "id": "miso-ramen-no-supu",
+  "kind": "base",
+  "name": {
+    "en": "Miso ramen broth",
+    "de": "Miso-Ramen-Brühe"
+  },
+  "originalName": "Miso ramen no supu",
+  "country": "jp",
+  "vegetarian": false,
+  "course": "soup",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "miso-ramen-no-supu-soup",
+      "name": {
+        "en": "Miso ramen broth",
+        "de": "Miso-Ramen-Brühe"
+      },
+      "role": "soup",
+      "lines": [
+        {
+          "key": "stock",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172884"
+          },
+          "amount": {
+            "value": 1400,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "miso",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172442"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "About 70 g.",
+            "de": "Etwa 70 g."
+          }
+        },
+        {
+          "key": "soy",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Cloves.",
+            "de": "Zehen."
+          }
+        },
+        {
+          "key": "ginger",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169231"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "A piece about as long as a thumb, peeled.",
+            "de": "Ein daumenlanges Stück, geschält."
+          }
+        },
+        {
+          "key": "sesame",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171016"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the garlic and the ginger and slice them thinly.",
+            "de": "Knoblauch und Ingwer schälen und in dünne Scheiben schneiden."
+          },
+          "action": "prepare",
+          "uses": ["garlic", "ginger"]
+        },
+        {
+          "text": {
+            "en": "Warm the sesame oil in a pot over medium heat, add the garlic and the ginger and stir for about 1 minute until they smell fragrant but have not browned.",
+            "de": "Das Sesamöl in einem Topf bei mittlerer Hitze erwärmen, Knoblauch und Ingwer dazugeben und etwa 1 Minute rühren, bis sie duften, aber nicht braun werden."
+          },
+          "technique": "sweat",
+          "uses": ["sesame", "garlic", "ginger"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the chicken stock, add the soy sauce and the sugar, and bring to a gentle simmer. Simmer for 10 minutes.",
+            "de": "Die Hühnerbrühe angießen, Sojasauce und Zucker dazugeben und zum leichten Köcheln bringen. 10 Minuten köcheln lassen."
+          },
+          "technique": "simmer",
+          "uses": ["stock", "soy", "sugar"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat. Stir the miso with a ladle of the hot broth in a small bowl until smooth, then stir it into the pot. Do not boil the broth again, or the miso loses its flavour.",
+            "de": "Den Topf vom Herd nehmen. Das Miso in einer kleinen Schüssel mit einer Kelle der heißen Brühe glatt rühren und dann in den Topf rühren. Die Brühe nicht mehr kochen, sonst verliert das Miso sein Aroma."
+          },
+          "action": "stir",
+          "uses": ["miso"]
+        },
+        {
+          "text": {
+            "en": "Strain out the garlic and the ginger if you like. Taste, and keep the broth hot for 4 bowls of ramen.",
+            "de": "Knoblauch und Ingwer nach Belieben abseihen. Abschmecken und die Brühe für 4 Schalen Ramen heiß halten."
+          },
+          "action": "taste"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "soup",
+      "ref": {
+        "kind": "component",
+        "id": "miso-ramen-no-supu-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing (about 1.1% salt in the broth, miso added off the heat)."
+  },
+  "note": {
+    "en": "A ramen shop cooks its broth from bones for many hours; this is the quick home version, made from chicken stock in about 20 minutes, without dashi. It makes about 1.4 l, enough for 4 bowls.",
+    "de": "Eine Ramen-Küche kocht ihre Brühe viele Stunden aus Knochen; das hier ist die schnelle Hausversion aus Hühnerbrühe in etwa 20 Minuten, ohne Dashi. Es ergibt etwa 1,4 l, genug für 4 Schalen."
+  }
+}

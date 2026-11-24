@@ -316,8 +316,8 @@ test('every dish is an entry of the web app, and the one filter narrows the list
   await session.load();
   const all = session.entries();
   expect(all).toHaveLength(dishClassics().length);
-  // 26 shipped files are sauce bases, which are parts and no dishes.
-  expect(dishClassics().length).toBe(classics().length - 26);
+  // 27 shipped files are sauce bases, which are parts and no dishes.
+  expect(dishClassics().length).toBe(classics().length - 27);
   expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
   // What is offered comes from the dishes: the countries in the app's order, courses, characters.
   const offered = session.offered();

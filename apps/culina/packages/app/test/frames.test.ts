@@ -6,14 +6,23 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
 import {
   TECHNIQUES,
+  chooseAlternative,
   componentsInDish,
   copyClassic,
   slotAlternatives,
   validateClassic,
+  withoutAlternatives,
 } from '@culina/engine';
 import type { Classic } from '@culina/engine';
 import { composeFrame, composeFrames } from '../compose-frames.mjs';
 import type { FrameFile } from '../compose-frames.mjs';
+import {
+  asChosen,
+  chooseFilling,
+  fillingChoices,
+  resetChoices,
+  withChoices,
+} from '../src/classics/choices';
 import { CLASSICS, FRAMES } from '../src/classics/index';
 import { dishView } from '../src/classics/dish-view';
 import { must } from './must';
@@ -33,13 +42,16 @@ const recipes = new Map(CLASSICS.map((c) => [c.id, c]));
 const frame = (id: string): Classic => must(FRAMES.find((f) => f.id === id));
 
 describe('the shipped frames', () => {
-  test('there are eight, each a base marked as a frame, with an id no recipe has', () => {
+  test('there are eleven, each a base marked as a frame, with an id no recipe has', () => {
     expect(FRAMES.map((f) => f.id)).toEqual([
       'burger-plate',
+      'burrito',
       'chana-masala-plate',
       'fried-egg-rice-plate',
       'kofte-plate',
+      'miso-ramen',
       'pizza-margherita',
+      'risotto',
       'souvlaki-plate',
       'tacos',
       'teishoku',
@@ -73,13 +85,84 @@ describe('the shipped frames', () => {
     }
   });
 
-  test('no shipped frame has an alternative yet: the dish screen would list it as a part of the dish', () => {
-    // The composer can make alternatives (below); the views of a shipped dish cannot mark one
-    // (docs/classic-format.md, A frame). Until they can, a frame names one recipe per slot.
-    for (const f of FRAMES) {
-      expect(componentsInDish(f).size, f.id).toBe((f.components ?? []).length);
-      for (const slot of f.slots) expect(slotAlternatives(f, slot), f.id).toEqual([]);
-    }
+  test('tacos: the chicken fills the slot, the beans are its alternative', () => {
+    const tacos = frame('tacos');
+    const main = must(tacos.slots.find((s) => s.role === 'main'));
+    expect(main.ref).toEqual({ kind: 'component', id: 'pollo-deshebrado-en-jitomate-main' });
+    expect(slotAlternatives(tacos, main).map((c) => c.from?.recipe)).toEqual(['frijoles-refritos']);
+    // Control: a slot with one part has no alternative.
+    const acid = must(tacos.slots.find((s) => s.role === 'acid'));
+    expect(slotAlternatives(tacos, acid)).toEqual([]);
+  });
+
+  test('as it is cooked, a frame is without its alternatives: the screens see the chicken, not the beans', () => {
+    const tacos = frame('tacos');
+    const cooked = withoutAlternatives(tacos);
+    const ids = (c: Classic): string[] => (c.components ?? []).map((k) => must(k.from).recipe);
+    expect(ids(tacos)).toContain('frijoles-refritos');
+    expect(ids(cooked)).toEqual([
+      'tortillas-de-harina',
+      'pollo-deshebrado-en-jitomate',
+      'guacamole',
+      'pico-de-gallo',
+    ]);
+    expect(
+      validateClassic(cooked, { techniques: TECHNIQUES, ingredientIds: catalogueIds }),
+    ).toEqual({ ok: true });
+    const shown = dishView(cooked, 4, 'en', (id) => id);
+    expect(shown.ok && shown.view.components.map((c) => c.name)).not.toContain(
+      'Refried pinto beans',
+    );
+    // Control: a recipe, and a frame without alternatives, are returned as they are.
+    expect(withoutAlternatives(frame('pizza-margherita'))).toBe(frame('pizza-margherita'));
+    const recipe = must(recipes.get('guacamole'));
+    expect(withoutAlternatives(recipe)).toBe(recipe);
+  });
+
+  test('choosing the beans puts them into the dish and makes the chicken the alternative', () => {
+    const tacos = frame('tacos');
+    const at = tacos.slots.findIndex((s) => s.role === 'main');
+    const chosen = chooseAlternative(tacos, at, 'frijoles-refritos-main');
+    expect(chosen.slots[at]?.ref).toEqual({ kind: 'component', id: 'frijoles-refritos-main' });
+    expect(slotAlternatives(chosen, must(chosen.slots[at])).map((c) => c.from?.recipe)).toEqual([
+      'pollo-deshebrado-en-jitomate',
+    ]);
+    expect(
+      (withoutAlternatives(chosen).components ?? []).map((c) => must(c.from).recipe),
+    ).toContain('frijoles-refritos');
+    // The tortillas are made with lard: the tacos are not vegetarian with the beans either.
+    expect(chosen.vegetarian).toBe(false);
+    // Controls: an id that is no alternative of the slot, and a slot that does not exist, change nothing.
+    expect(chooseAlternative(tacos, at, 'guacamole-sauce')).toBe(tacos);
+    expect(chooseAlternative(tacos, 99, 'frijoles-refritos-main')).toBe(tacos);
+  });
+
+  test('the set meal says "without meat and fish" once the omelette takes the salmon place', () => {
+    const meal = frame('teishoku');
+    expect(meal.vegetarian).toBe(false);
+    const at = meal.slots.findIndex((s) => s.role === 'main');
+    const omelette = must(slotAlternatives(meal, must(meal.slots[at]))[0]);
+    expect(omelette.from?.recipe).toBe('tamagoyaki');
+    expect(chooseAlternative(meal, at, omelette.id).vegetarian).toBe(true);
+  });
+
+  test('the cook choice: the screens show it, Keep copies the base with it and the alternatives', () => {
+    resetChoices();
+    const tacos = frame('tacos');
+    const at = tacos.slots.findIndex((s) => s.role === 'main');
+    expect(fillingChoices(tacos, 'en').map((c) => [c.role, c.options.length])).toEqual([
+      ['main', 2],
+      ['sauce', 2],
+    ]);
+    chooseFilling('tacos', at, 'frijoles-refritos-main');
+    expect(must(fillingChoices(tacos, 'en')[0]).current).toBe('frijoles-refritos-main');
+    expect((asChosen(tacos).components ?? []).map((c) => c.id)).not.toContain(
+      'pollo-deshebrado-en-jitomate-main',
+    );
+    expect((withChoices(tacos).components ?? []).length).toBe((tacos.components ?? []).length);
+    resetChoices();
+    // Control: without a choice the frame is as shipped.
+    expect(withChoices(tacos)).toBe(tacos);
   });
 
   test('the pizza has slots filled by plain ingredients', () => {
@@ -109,10 +192,13 @@ describe('the shipped frames', () => {
     const shown = dishView(frame('tacos'), 4, 'en', (id) => id);
     expect(shown.ok).toBe(true);
     if (!shown.ok) return;
+    // Every recipe the frame can be made of is named, the alternatives too.
     expect(shown.view.frameParts?.map((p) => p.recipe)).toEqual([
       'tortillas-de-harina',
       'pollo-deshebrado-en-jitomate',
+      'frijoles-refritos',
       'guacamole',
+      'crema-de-limon',
       'pico-de-gallo',
     ]);
     const recipe = dishView(must(recipes.get('guacamole')), 4, 'en', (id) => id);

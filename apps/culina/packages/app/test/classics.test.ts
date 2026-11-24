@@ -82,9 +82,11 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'buttermilk-pancakes',
     'cavolfiore-balsamella',
     'chao-cai-jiang',
+    'chao-shi-cai',
     'chapati',
     'coban-salatasi',
     'coleslaw',
+    'crema-de-limon',
     'creme-caramel',
     'crepes',
     'dan-chao-fan',
@@ -113,6 +115,7 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'mayonnaise',
     'mercimek-corbasi',
     'minestrone',
+    'miso-ramen-no-supu',
     'miso-shiru',
     'murgh-masala',
     'nam-chim-kai',
@@ -133,6 +136,7 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'rahmchampignons',
     'raita',
     'risotto-alla-milanese',
+    'risotto-bianco',
     'roast-potatoes',
     'ruehrei',
     'sake-no-shioyaki',
@@ -152,6 +156,7 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'tortillas-de-harina',
     'tzatziki',
     'vinaigrette-moutarde',
+    'yude-tamago',
   ];
   test('are marked as bases, and every component of a base names its role', () => {
     expect(

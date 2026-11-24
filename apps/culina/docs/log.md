@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (a choice of filling, three more frames)
+
+- **Update**: a slot of a [frame](classic-format.md#a-frame) may offer a choice (the beans in place of the chicken): a shipped base is shown as it is cooked, without its alternatives, and the dish screen has "Choose what goes in" under the ingredients; the cook screen and Keep follow the choice. Three more frames (miso ramen, burrito, risotto) and five recipes written for them and read a second time (a quick miso ramen broth, soft-boiled eggs, a chicken and vegetable stir-fry, a white risotto, a lime sour cream). 129 shipped files, 11 frames, Cook lists 113.
+
 ## 2026-11-24 (frames)
 
 - **Creation**: eight [frames](classic-format.md#a-frame) (tacos, chickpea curry plate, souvlaki plate, Japanese set meal, burger plate, Chinese rice plate, köfte plate, pizza), the project's own compositions of its own recipes: a short file per frame in `data/frames/`, composed by the build into a base whose components say which recipe they are and keep its source, also through Keep. Roadmap goal 7 has its first frames. One recipe per slot: an alternative would be listed as a part of the dish by the screens of a shipped dish, found in a browser and left as the next step.

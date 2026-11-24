@@ -108,10 +108,12 @@ describe('entries', () => {
       'buttermilk-pancakes',
       'chana-masala',
       'chao-cai-jiang',
+      'chao-shi-cai',
       'chapati',
       'coban-salatasi',
       'cocido-ordinario',
       'coleslaw',
+      'crema-de-limon',
       'crepes',
       'dan-chao-fan',
       'fanqie-chao-dan',
@@ -133,6 +135,7 @@ describe('entries', () => {
       'mashed-potatoes',
       'masoor-dal-tadka',
       'mercimek-corbasi',
+      'miso-ramen-no-supu',
       'miso-shiru',
       'murgh-masala',
       'nam-chim-kai',
@@ -150,6 +153,7 @@ describe('entries', () => {
       'rahmchampignons',
       'raita',
       'ratatouille',
+      'risotto-bianco',
       'roast-potatoes',
       'rote-gruetze',
       'sake-no-shioyaki',
@@ -161,6 +165,7 @@ describe('entries', () => {
       'tortillas-de-harina',
       'tzatziki',
       'vinaigrette-moutarde',
+      'yude-tamago',
     ]);
   });
 

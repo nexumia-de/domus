@@ -1,0 +1,115 @@
+{
+  "id": "yude-tamago",
+  "kind": "base",
+  "name": {
+    "en": "Soft-boiled eggs for ramen",
+    "de": "Weich gekochte Eier für Ramen"
+  },
+  "originalName": "Yude tamago",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "yude-tamago-garnish",
+      "name": {
+        "en": "Soft-boiled eggs for ramen",
+        "de": "Weich gekochte Eier für Ramen"
+      },
+      "role": "garnish",
+      "lines": [
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 2000,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For boiling; plus cold water, with ice if you have it, for cooling.",
+            "de": "Zum Kochen; dazu kaltes Wasser, wenn vorhanden mit Eis, zum Abschrecken."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the water to a rolling boil in a pot.",
+            "de": "Das Wasser in einem Topf sprudelnd zum Kochen bringen."
+          },
+          "technique": "boil",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Lower the eggs straight from the fridge into the boiling water with a spoon. Boil for 6 1/2 to 7 minutes for a set white and a soft, jammy yolk.",
+            "de": "Die Eier direkt aus dem Kühlschrank mit einem Löffel in das kochende Wasser legen. 6 1/2 bis 7 Minuten kochen, für festes Eiweiß und weiches, cremiges Eigelb."
+          },
+          "technique": "boil",
+          "uses": ["egg"],
+          "time": {
+            "value": 6.5,
+            "to": 7,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Lift the eggs out and cool them in cold water for 5 minutes.",
+            "de": "Die Eier herausheben und 5 Minuten in kaltem Wasser abkühlen."
+          },
+          "action": "cool",
+          "uses": ["egg", "water"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Peel the eggs under the cold water and cut them in half lengthways. Serve in the ramen.",
+            "de": "Die Eier unter dem kalten Wasser schälen und der Länge nach halbieren. In die Ramen geben."
+          },
+          "action": "peel",
+          "uses": ["egg"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "garnish",
+      "ref": {
+        "kind": "component",
+        "id": "yude-tamago-garnish"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing (6 1/2 to 7 minutes from boiling water for a medium egg from the fridge gives a set white and a jammy yolk)."
+  }
+}

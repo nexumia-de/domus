@@ -1,4 +1,4 @@
-// The nutrition section of all 124 shipped dishes, as the screen gets it: per dish whether figures
+// The nutrition section of all 129 shipped dishes, as the screen gets it: per dish whether figures
 // are shown, the energy per portion when they are, and how many lines are counted. Pins the rule of
 // docs/engine-rules.md (Nutrition, When figures are shown; The figures of a line) on the real
 // content and the shipped catalogue. A change to a dish, the catalogue or the rule shows up here
@@ -159,12 +159,17 @@ const EXPECTED: Record<string, [number | null, number, number]> = {
   'tortillas-de-harina': [null, 4, 5],
   tzatziki: [170, 7, 7],
   'vinaigrette-moutarde': [280, 6, 6],
+  'chao-shi-cai': [310, 11, 11],
+  'crema-de-limon': [130, 4, 4],
+  'miso-ramen-no-supu': [210, 7, 7],
+  'risotto-bianco': [490, 8, 8],
+  'yude-tamago': [60, 2, 2],
 };
 
 describe('the nutrition of the shipped dishes', () => {
   test('every shipped dish is in the table and no other', () => {
     expect(dishes.map((c) => c.id).sort()).toEqual(Object.keys(EXPECTED).sort());
-    expect(dishes).toHaveLength(124);
+    expect(dishes).toHaveLength(129);
   });
 
   for (const [id, [kcal, counted, total]] of Object.entries(EXPECTED)) {
@@ -187,8 +192,8 @@ describe('the nutrition of the shipped dishes', () => {
     });
   }
 
-  test('68 of 124 dishes show figures (17 of 68 before the own recipes of 2026-11-24)', () => {
-    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(68);
+  test('73 of 129 dishes show figures (17 of 68 before the own recipes of 2026-11-24)', () => {
+    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(73);
   });
 });
 
