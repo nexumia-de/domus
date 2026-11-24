@@ -173,6 +173,8 @@ export const appStrings = {
     added: 'added by you',
     removed: 'taken away by you',
     reset: 'As worked out',
+    summaryNone: 'Nothing ticked',
+    summaryCorrected: (n: number): string => `${n} changed by you`,
     diffAdded: (name: string): string => `added: ${name}`,
     diffRemoved: (name: string): string => `taken away: ${name}`,
   },
@@ -228,7 +230,7 @@ export const appStrings = {
     pickNote: 'The pick is random within each role. It does not know what goes together.',
     pickMake: 'Make it a dish',
     pickDishHeading: 'Surprise me with a dish',
-    pickDishNote: 'One dish by chance, yours or shipped, among those that fit your choice above.',
+    pickDishNote: 'One dish by chance, yours or shipped, among those that fit these choices.',
     pickDishReady: 'Only what the stock allows now',
     pickDishRoll: 'Surprise me',
     pickDishResult: 'Suggestion',
@@ -237,7 +239,8 @@ export const appStrings = {
       n === 1 ? 'The only dish that fits.' : `By chance among ${n} dishes.`,
     pickDishNoneReady: 'The stock allows none of these dishes now.',
     pickRolesHeading: 'Put one together from your components',
-    pickFitsNote: 'Rolled among the combinations that are like your choice above.',
+    pickFitsNote: (choices: string): string =>
+      `Only combinations like your choice under "What you feel like": ${choices}.`,
     pickNoFit: 'No combination of your components is like that.',
     pickNoFitTried: (tries: number, total: number): string =>
       `No combination of your components was like that in ${tries} tries by chance (of ${total}).`,
@@ -955,6 +958,10 @@ export const appStrings = {
     rowOrigin: { own: 'My dish', shipped: 'Shipped' },
     /** Cook's one list of every dish under the one filter (docs/decisions/cook-screen.md). */
     startListLabel: 'Dishes that fit',
+    /** The heading of Cook's group of frames, the app's own compositions (tacos, ramen, pizza). */
+    groupFrames: 'Put together',
+    /** The heading of Cook's group of dishes that state no course. */
+    groupNoCourse: 'No course given',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Mine', shipped: 'Shipped' },
     /** The folded filter's summary when nothing is chosen. */

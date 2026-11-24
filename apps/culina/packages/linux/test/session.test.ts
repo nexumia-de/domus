@@ -10,8 +10,14 @@ import { COUNTRY_CODES } from '@culina/engine';
 import { createMemoryStore, ensureSpace } from '@nexumia-de/hospes';
 import {
   classics,
+  cookView,
   dishClassics,
   dishView,
+  GROUP_COURSES,
+  resetChoices,
+  setStep,
+  stepOf,
+  techniques,
   portionsOf,
   readyKeysOf,
   setPortions,
@@ -355,5 +361,128 @@ test('the dish filter is kept under the web app key, and a change tells the page
   // What cannot be read is the empty filter.
   kept.set(PREFS.dishes, 'not json');
   expect(session.dishFilter()).toEqual({});
+  session.stop();
+});
+
+// A frame with a choice of filling (classic-format.md, "A frame"). The names are the content's
+// English ones. Proves what the dish page and the cook page are given; does not prove the combo
+// row on screen (no GTK here), and the choice is the web app's module state, shared by the tests
+// of this file and reset by each.
+const namesOf = (classic: Parameters<typeof dishView>[0]) => {
+  const shown = dishView(classic, 2, 'en', (id) => id);
+  if (!shown.ok) throw new Error('no dish view');
+  const steps = cookView(classic, 2, 'en', (id) => id, techniques(), new Set());
+  return {
+    parts: shown.view.components.map((c) => c.name),
+    meatFree: shown.view.vegetarian,
+    frameParts: (shown.view.frameParts ?? []).map((part) => part.name),
+    stepParts: [...new Set((steps.ok ? steps.steps : []).map((step) => step.component))],
+  };
+};
+
+test('a frame is shown as it is cooked: the alternative of a slot is not among its parts or steps', async () => {
+  resetChoices();
+  const { session } = await make();
+  // How the dish page read a frame before (the full base): the alternative stood among the parts
+  // and its steps among the method. This half passes before and after; it shows the defect.
+  const full = namesOf(must(classics().find((c) => c.id === 'burrito')));
+  expect(full.parts).toContain('Guacamole');
+  expect(full.stepParts).toContain('Guacamole');
+  // The dish the pages are given now: the sauce in the dish, not its alternative.
+  const shown = namesOf(must(session.dish('burrito')));
+  expect(shown.parts).toContain('Lime sour cream');
+  expect(shown.parts).not.toContain('Guacamole');
+  expect(shown.stepParts).not.toContain('Guacamole');
+  expect(shown.frameParts).not.toContain('Guacamole');
+  // The same dish as Cook's list has it (dishClassics drops the alternatives too).
+  expect(shown.parts).toEqual(namesOf(must(dishClassics().find((c) => c.id === 'burrito'))).parts);
+  // Control: a dish without alternatives is the shipped one, unchanged.
+  const plain = must(classics().find((c) => c.id === 'chana-masala'));
+  expect(session.dish('chana-masala')).toEqual(plain);
+  expect(session.fillings('chana-masala')).toEqual([]);
+  expect(session.dish('no-such-dish')).toBeUndefined();
+  expect(session.fillings('no-such-dish')).toEqual([]);
+  session.stop();
+});
+
+test('a slot with alternatives offers its recipes, and a choice changes the dish, its steps and the meat line', async () => {
+  resetChoices();
+  const { session } = await make();
+  try {
+    const [choice, ...rest] = session.fillings('teishoku');
+    expect(rest).toEqual([]);
+    expect(must(choice).role).toBe('main');
+    // The one in the dish first, selected.
+    expect(must(choice).current).toBe('sake-no-shioyaki-salmon');
+    expect(must(choice).options.map((o) => o.id)).toEqual([
+      'sake-no-shioyaki-salmon',
+      'tamagoyaki-omelette',
+    ]);
+    const before = namesOf(must(session.dish('teishoku')));
+    expect(before.meatFree).toBe(false);
+    const salmon = must(must(choice).options[0]).name;
+    const omelette = must(must(choice).options[1]).name;
+    expect(before.parts).toContain(salmon);
+    expect(before.parts).not.toContain(omelette);
+
+    // Cooking had reached step 3; a choice starts it again at the first step (another method).
+    setStep('teishoku', 3);
+    expect(session.chooseFilling('teishoku', must(choice).slotIndex, 'tamagoyaki-omelette')).toBe(
+      true,
+    );
+    expect(stepOf('teishoku')).toBe(0);
+    const after = namesOf(must(session.dish('teishoku')));
+    expect(after.parts).toContain(omelette);
+    expect(after.parts).not.toContain(salmon);
+    expect(after.stepParts).toContain(omelette);
+    expect(after.stepParts).not.toContain(salmon);
+    expect(after.frameParts).toContain(omelette);
+    // "Without meat and fish" follows the parts in the dish.
+    expect(after.meatFree).toBe(true);
+    // Asked again, the chosen recipe is the current one and comes first, as on the web; the page
+    // keeps the model it made when it opened, so its rows do not move.
+    expect(must(session.fillings('teishoku')[0]).current).toBe('tamagoyaki-omelette');
+    expect(must(session.fillings('teishoku')[0]).options.map((o) => o.id)).toEqual([
+      'tamagoyaki-omelette',
+      'sake-no-shioyaki-salmon',
+    ]);
+    // An id that is no recipe of the slot changes nothing, the choice and the step included.
+    setStep('teishoku', 2);
+    expect(session.chooseFilling('teishoku', must(choice).slotIndex, 'not-a-recipe')).toBe(false);
+    expect(namesOf(must(session.dish('teishoku'))).parts).toEqual(after.parts);
+    expect(stepOf('teishoku')).toBe(2);
+    // An unknown dish changes nothing.
+    expect(session.chooseFilling('no-such-dish', 0, 'x')).toBe(false);
+    // Control: another frame keeps its own filling.
+    expect(must(session.fillings('burrito')[0]).current).toBe('crema-de-limon-sauce');
+  } finally {
+    resetChoices();
+    session.stop();
+  }
+});
+
+test("Cook's list by name stands in the web app's groups, the frames first; Use up first and one group left are flat", async () => {
+  const { session } = await make();
+  const view = session.cookView({}, { have: false, order: 'name' });
+  const groups = must(view.groups);
+  const ids = groups.map((group) => group.id);
+  expect(ids[0]).toBe('frames');
+  // The courses in the web app's order, the empty ones left out.
+  expect(ids.slice(1)).toEqual(GROUP_COURSES.filter((course) => ids.includes(course)));
+  expect(groups.flatMap((group) => group.rows).length).toBe(view.rows.length);
+  expect(must(groups[0]).rows.every((row) => row.entry.frame === true)).toBe(true);
+  expect(must(groups[0]).rows.length).toBe(11);
+  // In a course's group the row no longer carries its course (the heading says it); a frame does.
+  expect(must(groups[1]).rows.every((row) => row.meta.course === undefined)).toBe(true);
+  expect(must(groups[0]).rows.every((row) => row.meta.course !== undefined)).toBe(true);
+  // "Main course" leaves two groups: the frames and the main courses.
+  const main = session.cookView({ course: 'main' }, { have: false, order: 'name' });
+  expect(must(main.groups).map((group) => group.id)).toEqual(['frames', 'main']);
+  // Control: "Soup" leaves one group, so the list is flat.
+  const soup = session.cookView({ course: 'soup' }, { have: false, order: 'name' });
+  expect(soup.rows.length).toBeGreaterThan(0);
+  expect(soup.groups).toBeUndefined();
+  // "Use up first" is one list in its own order.
+  expect(session.cookView({}, { have: false, order: 'use-up' }).groups).toBeUndefined();
   session.stop();
 });

@@ -4,7 +4,9 @@
 // (the dishes that use a stock item with a use-by date first, in the engine's ranking). Which dishes
 // pass and in which order is the session's `cookView`, the web app's `dishListView`; nothing is
 // judged here. "What is there" in the bottom bar opens the stock; the space and its sync status are
-// the header's subtitle.
+// the header's subtitle. By name the list stands in the web app's groups (the frames, then by
+// course), one preferences group each under its name and count; "Use up first", or one group left,
+// is one list.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import { statusText } from '@nexumia-de/hospes';
@@ -17,7 +19,7 @@ import {
   type ListRow,
   type UseUpNow,
 } from '@culina/app/core';
-import { entryLine } from '../dish-choices';
+import { groupTitle, rowLine } from '../dish-choices';
 import { barButton, clear, column, text, titled, type Page, type Ui } from './context';
 import { dishFilterRow, type DishFilterRow } from './dish-filter';
 import { dishPage } from './dish-page';
@@ -63,7 +65,7 @@ export function cookListPage(ui: Ui, menu: any): Page {
   /** The line under a dish: course, cuisine, meat, and in "Use up first" what sets its place. */
   const subtitle = (row: ListRow, useUp: UseUpNow | undefined): string =>
     [
-      entryLine(s, row.entry),
+      rowLine(s, row),
       ...(row.meta.useUp === undefined || useUp === undefined
         ? []
         : useUpWords(row.meta.useUp, (id) => useUp.itemName(id))),
@@ -189,17 +191,27 @@ export function cookListPage(ui: Ui, menu: any): Page {
       results.append(none);
       return;
     }
-    const group = new Adw.PreferencesGroup({ title: s.browse.count(cook.rows.length) });
-    if (narrowed) group.set_header_suffix(resetButton(true));
-    for (const found of cook.rows) {
+    const rowOf = (found: ListRow): any => {
       const row = new Adw.ActionRow({ use_markup: false, activatable: true });
       row.set_title(found.entry.name);
       row.set_subtitle(subtitle(found, cook.useUp));
       row.add_suffix(new Gtk.Image({ icon_name: 'go-next-symbolic' }));
       row.connect('activated', () => ui.push(dishPage(ui, found.entry.id)));
-      group.add(row);
+      return row;
+    };
+    // The count of the whole list, with "Show all" beside it; flat, the rows stand under it.
+    const count = new Adw.PreferencesGroup({ title: s.browse.count(cook.rows.length) });
+    if (narrowed) count.set_header_suffix(resetButton(true));
+    results.append(count);
+    if (cook.groups === undefined) {
+      for (const found of cook.rows) count.add(rowOf(found));
+      return;
     }
-    results.append(group);
+    for (const part of cook.groups) {
+      const group = new Adw.PreferencesGroup({ title: groupTitle(s, part) });
+      for (const found of part.rows) group.add(rowOf(found));
+      results.append(group);
+    }
   }
 
   /** "Show all": drops every choice of the filter and "Only with what I have"; the order stays. */

@@ -181,6 +181,8 @@ export const appStringsDe: typeof appStrings = {
     added: 'von dir ergänzt',
     removed: 'von dir entfernt',
     reset: 'Wie ermittelt',
+    summaryNone: 'Nichts angehakt',
+    summaryCorrected: (n: number): string => `${n} von dir geändert`,
     diffAdded: (name: string): string => `ergänzt: ${name}`,
     diffRemoved: (name: string): string => `entfernt: ${name}`,
   },
@@ -237,7 +239,7 @@ export const appStringsDe: typeof appStrings = {
     pickMake: 'Ein Gericht daraus machen',
     pickDishHeading: 'Überrasch mich mit einem Gericht',
     pickDishNote:
-      'Ein zufälliges Gericht, eigenes oder mitgeliefertes, aus denen, die zu deiner Wahl oben passen.',
+      'Ein zufälliges Gericht, eigenes oder mitgeliefertes, aus denen, die zu dieser Wahl passen.',
     pickDishReady: 'Nur was der Vorrat jetzt erlaubt',
     pickDishRoll: 'Überrasch mich',
     pickDishResult: 'Vorschlag',
@@ -246,7 +248,8 @@ export const appStringsDe: typeof appStrings = {
       n === 1 ? 'Das einzige Gericht, das passt.' : `Zufällig aus ${n} Gerichten gewählt.`,
     pickDishNoneReady: 'Der Vorrat erlaubt jetzt keines dieser Gerichte.',
     pickRolesHeading: 'Aus deinen Komponenten zusammenstellen',
-    pickFitsNote: 'Gewürfelt aus den Zusammenstellungen, die zu deiner Wahl oben passen.',
+    pickFitsNote: (choices: string): string =>
+      `Nur Zusammenstellungen nach deiner Wahl unter „Worauf du Lust hast“: ${choices}.`,
     pickNoFit: 'Keine Zusammenstellung deiner Komponenten ist so.',
     pickNoFitTried: (tries: number, total: number): string =>
       `In ${tries} Würfen war keine Zusammenstellung deiner Komponenten so (von ${total}).`,
@@ -980,6 +983,10 @@ export const appStringsDe: typeof appStrings = {
     rowOrigin: { own: 'Mein Gericht', shipped: 'Mitgeliefert' },
     /** The start screen: every dish under the one filter, then the tools. */
     startListLabel: 'Passende Gerichte',
+    /** The heading of Cook's group of frames, the app's own compositions (tacos, ramen, pizza). */
+    groupFrames: 'Zusammengestellt',
+    /** The heading of Cook's group of dishes that state no course. */
+    groupNoCourse: 'Ohne Gang',
     /** The origin as the select offers it, short enough for half a phone's width. */
     originChoice: { own: 'Meine', shipped: 'Mitgelieferte' },
     /** The folded filter's summary when nothing is chosen. */

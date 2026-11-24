@@ -93,6 +93,19 @@ const dish = async (page, origin) => {
   await page.getByLabel('Search your notebook').fill('parsley');
   await page.getByRole('button', { name: 'Parsley', exact: true }).click();
   // The cook's correction of the characters: a tick per character; one no rule gives is added.
+  // Since 2026-11-24 the ticks are folded behind one line under the assembly, closed at first;
+  // the summary names what is ticked. The fold is opened here before a tick is touched.
+  const characterFold = page.locator('details.character-fold');
+  const characterSummary = () => characterFold.locator('.fold-choices').innerText();
+  const unchanged = await characterSummary();
+  check(
+    !(await characterFold.evaluate((d) => d.open)) &&
+      (await page.locator('.dish-characters-edit').isHidden()) &&
+      (await characterFold.locator('summary').innerText()).startsWith('What it is like') &&
+      !unchanged.includes('changed by you'),
+    `${label}: "What it is like" is folded at first and names no change (${unchanged})`,
+  );
+  await characterFold.locator('summary').click();
   const creamy = page.locator('.dish-characters-edit input[data-character="creamy"]');
   const tickBox = await creamy.boundingBox();
   check(
@@ -112,6 +125,11 @@ const dish = async (page, origin) => {
       (await creamy.evaluate((n) => n === document.activeElement)) &&
       (await page.locator('.character-reset').isVisible()),
     `${label}: a ticked character no rule gives says "added by you", keeps the focus and can be reset`,
+  );
+  const afterTick = await characterSummary();
+  check(
+    afterTick.includes('Creamy') && afterTick.endsWith('1 changed by you'),
+    `${label}: the summary names the added character and one change (${afterTick})`,
   );
   await layout(page, `${label} (two slots)`);
   await page.getByRole('button', { name: 'Save', exact: true }).click();
@@ -165,6 +183,15 @@ const dish = async (page, origin) => {
       (await page.getByLabel('Cuisine', { exact: true }).inputValue()) === 'it',
     `${label}: Edit reads course and cuisine back into the selects`,
   );
+  // The stored dish opens with the fold closed; its summary says what is set without opening it.
+  const readBack = await characterSummary();
+  check(
+    !(await characterFold.evaluate((d) => d.open)) &&
+      readBack.includes('Creamy') &&
+      readBack.endsWith('1 changed by you'),
+    `${label}: Edit shows the correction in the closed summary (${readBack})`,
+  );
+  await characterFold.locator('summary').click();
   check(
     (await page.locator('.dish-characters-edit input[data-character="creamy"]').isChecked()) &&
       (await page.locator('.character-tick[data-corrected]').count()) === 1,

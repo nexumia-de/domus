@@ -1,17 +1,40 @@
 // Which component fills a slot of a shipped base, where the base has alternatives for it (a
 // frame: the beans in place of the chicken). Chosen on the dish screen and kept while the app is
-// open; nothing is stored. The cook screen and Keep read the same choice.
+// open; nothing is stored. The cook screen and Keep read the same choice; a choice sets the dish's
+// step back to the first (`classics/session.ts`).
 import { chooseAlternative, slotAlternatives, withoutAlternatives } from '@culina/engine';
 import type { Classic, Lang } from '@culina/engine';
 import { pickText } from '@culina/engine';
+import { setStep } from './session';
 
 const chosen = new Map<string, Map<number, string>>();
 
-/** Fills the slot with the component; an id that is no alternative of the slot changes nothing. */
-export const chooseFilling = (classicId: string, slotIndex: number, componentId: string): void => {
-  const slots = chosen.get(classicId) ?? new Map<number, string>();
-  slots.set(slotIndex, componentId);
-  chosen.set(classicId, slots);
+/**
+ * Fills the slot with the component, for as long as the app runs. The shipped filling clears the
+ * choice; an id that is neither the shipped filling nor an alternative of the slot changes nothing,
+ * an earlier choice included. A change starts cooking the dish again at its first step, since the
+ * method is another one.
+ * @returns whether the dish changed.
+ */
+export const chooseFilling = (
+  classic: Classic,
+  slotIndex: number,
+  componentId: string,
+): boolean => {
+  const slot = classic.slots[slotIndex];
+  if (slot?.ref?.kind !== 'component') return false;
+  const shipped = slot.ref.id;
+  const valid =
+    componentId === shipped || slotAlternatives(classic, slot).some((c) => c.id === componentId);
+  if (!valid) return false;
+  const slots = chosen.get(classic.id) ?? new Map<number, string>();
+  if ((slots.get(slotIndex) ?? shipped) === componentId) return false;
+  if (componentId === shipped) slots.delete(slotIndex);
+  else slots.set(slotIndex, componentId);
+  if (slots.size === 0) chosen.delete(classic.id);
+  else chosen.set(classic.id, slots);
+  setStep(classic.id, 0);
+  return true;
 };
 
 /** Forgets every choice (for tests). */

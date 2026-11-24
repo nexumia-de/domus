@@ -3,8 +3,10 @@
 // "Use up first", kept under `culina.cookList`), the shared filter controls (dish-filter.ts) folded
 // behind a summary line of the active choices, a count line and one row per dish. The filter is the
 // one kept choice (`currentDishFilter`/`keepDishFilter` in browse/filter.ts), shared with the random
-// pick; the search text lives as long as the page. Which dishes the stock covers and the order of
-// "Use up first" are the finder's (src/dishes/); the order and the meta are in browse/list-view.ts.
+// pick; the search text lives as long as the page. In the order by name the rows stand in groups
+// with a heading each (frames, then the courses: browse/groups.ts); "Use up first" is one list.
+// Which dishes the stock covers and the order of "Use up first" are the finder's (src/dishes/); the
+// order and the meta are in browse/list-view.ts.
 import { dishEntries } from '../browse/entries';
 import type { DishEntry } from '../browse/entry';
 import {
@@ -15,15 +17,9 @@ import {
   offeredBy,
   type DishFilter,
 } from '../browse/filter';
-import {
-  activeChoices,
-  dishListView,
-  type ActiveChoice,
-  type CookNarrowing,
-  type ListRow,
-} from '../browse/list-view';
+import { activeChoices, dishListView, type CookNarrowing, type ListRow } from '../browse/list-view';
+import { groupRows, type GroupId } from '../browse/groups';
 import { CHARACTER_TABLE } from '../characters/table';
-import { characterLabel } from '../characters/view';
 import { currentLang } from '../classics/lang';
 import { COUNTRIES } from '../classics/list-view';
 import { loadNames } from '../classics/names';
@@ -38,6 +34,7 @@ import {
   courseLabel,
   cuisineLabel,
   dishFilterControls,
+  filterChoiceLabel,
   replaceFilterControls,
   tick,
 } from './dish-filter';
@@ -78,27 +75,16 @@ const metaText = ({ meta }: ListRow, useUp: UseUpNow | undefined): string =>
     .filter((part) => part !== undefined)
     .join(' · ');
 
-const choiceLabel = (choice: ActiveChoice): string => {
-  const t = strings.browse;
-  switch (choice.kind) {
-    case 'origin':
-      return t.origin[choice.value];
-    case 'character':
-      return characterLabel(choice.value, currentLang());
-    case 'course':
-      return courseLabel(choice.value);
-    case 'cuisine':
-      return cuisineLabel(choice.value);
-    case 'meatFree':
-      return t.meatFree;
-    case 'completeOnly':
-      return t.completeOnly;
-  }
+/** The heading of a group of Cook's list. */
+const groupName = (id: GroupId): string => {
+  if (id === 'frames') return strings.browse.groupFrames;
+  if (id === 'none') return strings.browse.groupNoCourse;
+  return courseLabel(id);
 };
 
 /** The summary of the folded filter: what it is, then the active choices or "Everything". */
 const summaryText = (filter: DishFilter): string => {
-  const chosen = activeChoices(filter).map(choiceLabel);
+  const chosen = activeChoices(filter).map(filterChoiceLabel);
   return chosen.length === 0 ? strings.browse.anything : chosen.join(' · ');
 };
 
@@ -271,10 +257,33 @@ export const dishList = (options: DishListOptions): HTMLElement => {
       rows.replaceChildren(el('p', 'empty', t.none), all);
       return;
     }
-    const ul = el('ul', 'rows dish-rows-list');
-    ul.setAttribute('aria-label', options.listLabel);
-    ul.append(...view.rows.map((row) => rowOf(row, options.screen, options.current, useUp)));
-    rows.replaceChildren(ul);
+    const rowsOf = (shown: readonly ListRow[]): HTMLElement => {
+      const ul = el('ul', 'rows dish-rows-list');
+      ul.append(...shown.map((row) => rowOf(row, options.screen, options.current, useUp)));
+      return ul;
+    };
+    // By name the list stands in groups (frames, then the courses); "Use up first" stays one list
+    // in its own order, which is the answer there.
+    const groups = list.order === 'name' ? groupRows(view.rows) : undefined;
+    if (groups === undefined) {
+      const ul = rowsOf(view.rows);
+      ul.setAttribute('aria-label', options.listLabel);
+      rows.replaceChildren(ul);
+      return;
+    }
+    rows.replaceChildren(
+      ...groups.map((group) => {
+        const section = el('section', 'dish-group');
+        section.dataset.group = group.id;
+        const heading = el('h2', 'dish-group-heading', groupName(group.id));
+        heading.id = nextId('dish-group');
+        heading.append(' ', el('span', 'dish-group-count', `· ${t.count(group.rows.length)}`));
+        const ul = rowsOf(group.rows);
+        ul.setAttribute('aria-labelledby', heading.id);
+        section.append(heading, ul);
+        return section;
+      }),
+    );
   };
 
   // The controls are drawn anew on every change; the control that had focus keeps it.

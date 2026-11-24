@@ -18,6 +18,7 @@ import {
   type RolePick,
 } from '../src/dishes/pick';
 import { dishPool, surpriseDish } from '../src/dishes/pick-dish';
+import { pickDishChoices, pickRoleChoices } from '../src/dishes/pick-summary';
 import { combinationDish, combinationJudge } from '../src/dishes/pick-judge';
 import { buildNotebook } from '../src/notebook/build';
 import type { ComponentRecord, DishRecord, IngredientRecord } from '../src/records';
@@ -299,5 +300,51 @@ describe('every pick stays in its own role', () => {
       return rolled.found ? rolled.picks[0]?.choice?.id : undefined;
     });
     expect(mains).toEqual(['A', 'A', 'B']);
+  });
+});
+
+// The closed folds of the screen name what narrows each roll (dish-random.ts turns these into
+// words). Not proved here: the words, the fold in a browser (e2e/dish-swap.mjs does that).
+describe('what the closed folds name', () => {
+  test('"Surprise me": the choices of the filter in the order of the controls, then the stock tick', () => {
+    expect(pickDishChoices({ meatFree: true, origin: 'own', cuisine: 'it' }, true)).toEqual([
+      { kind: 'origin', value: 'own' },
+      { kind: 'cuisine', value: 'it' },
+      { kind: 'meatFree' },
+      { kind: 'ready' },
+    ]);
+    // Control: nothing chosen names nothing, so the summary says "Everything".
+    expect(pickDishChoices({}, false)).toEqual([]);
+  });
+
+  test('the roll per role: the ticked roles in the order of the ticks, and the stock tick', () => {
+    expect(pickRoleChoices(new Set(['starch', 'main', 'sauce']), true, {})).toEqual({
+      roles: ['main', 'sauce', 'starch'],
+      onlyStock: true,
+      judged: [],
+    });
+    // An id that is no role is not named; no role ticked names none, the stock tick still shows.
+    expect(pickRoleChoices(new Set(['dessert']), true, {})).toEqual({
+      roles: [],
+      onlyStock: true,
+      judged: [],
+    });
+  });
+
+  test('the roll per role names the choices of the filter it is judged by, and only those', () => {
+    // The character and "without meat and fish" narrow the combinations (judgesCombination);
+    // origin, course and cuisine do not apply to this roll and are not named.
+    const filter = {
+      origin: 'own',
+      character: 'tomatoey',
+      course: 'main',
+      meatFree: true,
+    } as const;
+    expect(pickRoleChoices(new Set(['main']), false, filter).judged).toEqual([
+      { kind: 'character', value: 'tomatoey' },
+      { kind: 'meatFree' },
+    ]);
+    // Control: a filter that judges nothing names only the roles.
+    expect(pickRoleChoices(new Set(['main']), false, { cuisine: 'it' }).judged).toEqual([]);
   });
 });

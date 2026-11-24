@@ -528,12 +528,23 @@ together from components, and a component names the role it usually fills
   step of the cook screen back to the first.
 - **Random pick**, `#/dishes/random`, reached by "Put a dish together at
   random" beside "Add a dish" (`src/screens/dish-random.ts`): what do I
-  feel like? The screen shows the controls of the
-  [one filter over every dish](#one-filter-over-every-dish) at its top; a
-  choice made here is stored there (`culina.dishes`) and holds for the list
-  and the finder too. A change by keyboard keeps the focus on the control
-  that was changed (`replaceDishFilterControls` in
-  `src/screens/dish-filter.ts`). Under it, two rolls.
+  feel like? Two rolls, each with its button first, working at once with
+  what is set; the choices that narrow a roll are folded under its result
+  behind one line (since 2026-11-24, a `<details>`, `src/screens/fold.ts`,
+  the look of Cook's folded filter): its name and, in the quiet colour,
+  what is chosen, so a closed fold says what narrows the roll. Folded at
+  first; open or closed as left while the app is open, closed again after
+  a reload. Under **Surprise me**, its result, then the fold "What you
+  feel like" with one line on what the roll does, the controls of the
+  [one filter over every dish](#one-filter-over-every-dish) and the tick
+  "Only what the stock allows now"; the summary names the active choices
+  and the tick, or "Everything". Before, the filter's four selects (about
+  30 options) and three ticks stood above the button, which at 360 px was
+  below the first screen. A choice made here is stored in the one filter
+  (`culina.dishes`) and holds for the list and the finder too. A change by
+  keyboard keeps the focus on the control that was changed
+  (`replaceFilterControls` in `src/screens/dish-filter.ts`).
+  Opening a fold does not move the result above it.
 - **Surprise me with a dish** (since 2026-11-21, `src/dishes/pick-dish.ts`).
   **Surprise me** takes one whole dish by chance, each with the same share,
   among the entries of both origins (`allEntries`) that pass the filter.
@@ -557,7 +568,16 @@ together from components, and a component names the role it usually fills
   link leads to the Components list, where a shipped one is kept or a new
   one written. Before, the roll answered "No component of yours has this
   role yet" for every role. **Test:** `e2e/editor-pairing.mjs` (German).
-- **The roll per role** ("Put one together from your components"). The cook
+- **The roll per role** ("Put one together from your components"). **Roll**
+  comes first, then the picks, then the fold "Which roles" with the six
+  role ticks and "Only what is ready in stock"; its summary names the
+  ticked roles ("Main element · Sauce · Starch", or "Tick at least one
+  role." when none is), the stock tick when it is ticked, and the choices
+  of the filter this roll is judged by, the character and "Without meat
+  and fish" ("Main element · Sauce · Starch · Tomatoey"): their controls
+  stand in the fold of **Surprise me**, so a closed fold of the roles
+  still says what narrows the roll (since the review of 96735d9; before,
+  a stored character narrowed the roll unnamed). The cook
   ticks the roles wanted (main element, sauce and starch are ticked at
   first), may tick "Only what is ready in stock", and presses **Roll**:
   one component per ticked role, by chance. Without a character or
@@ -589,8 +609,10 @@ together from components, and a component names the role it usually fills
   is never meat-free. Without amounts a character that needs a share is
   judged on what is there, as for a dish of the notebook without amounts.
   With a character or "Without meat and fish" chosen, the roll is among the
-  combinations that have it, and a quiet line says "Rolled among the
-  combinations that are like your choice above." Every combination that
+  combinations that have it, and a quiet line above **Roll** names the
+  choice: "Only combinations like your choice under "What you feel
+  like": Tomatoey." (before 2026-11-24 "… like your choice above", which
+  named nothing). Every combination that
   fits has the same share, so a component that fits with more of the others
   comes up more often: with main A or B and sauce x or y, where A+x, A+y
   and B+x fit, A comes up in two rolls of three. The search is bounded:
@@ -633,8 +655,19 @@ character, each that fits reachable, rolling a role again within what fits,
 none found when all are judged, the bounded tries above 200 combinations;
 every pick stays in its own role when the stock option changes between
 Roll and Roll again, and when nothing is in stock; the draw is even over the
-combinations that fit),
-`test/router.test.ts`, `e2e/dish-swap.mjs`. Not proved: the unit tests build
+combinations that fit;
+what the closed folds name: the filter's choices and the stock tick in the
+order of the controls, the ticked roles in the order of the ticks),
+`test/router.test.ts`, `e2e/dish-swap.mjs` (since 2026-11-24 also: each
+button stands before its fold, both folds closed at first and named
+"Everything" and "Main element · Sauce · Starch", Enter on a summary opens
+it with the focus kept, the summaries follow a tick and the stored choice
+after a reload; with "Tomatoey" stored, after a reload both folds are
+closed, the roles' summary names "Tomatoey" and the line above Roll names
+it, and without it the summary names only the roles; the checks open a
+fold before they change a choice in it), `e2e/editor-pairing.mjs`
+(German: "Überrasch mich" ends above the bottom navigation at 360 x 720,
+its filter folded as "Alles"). Not proved: the unit tests build
 the notebook in memory, give the stock as a list of ids and never call
 `Math.random`; what the stock allows now is the finder's answer and is
 checked in the browser only for "none allowed"; the browser check runs in
@@ -1063,11 +1096,24 @@ never stored ([analysis](dish-characters.md),
   says "What it is like: empty → added: Creamy". A shipped dish is
   read-only and is corrected on its copy. Code: `src/editor/dish-characters.ts`,
   `src/characters/correction.ts`, `src/screens/editor/dish-characters-editor.ts`.
+  **Folded (since 2026-11-24).** The 18 ticks stand behind one line under
+  the assembly (a `<details>`, `src/screens/fold.ts`), closed on every dish
+  when the editor opens, so that the editor asks first for what goes into
+  the dish. The summary names "What it is like" and the characters the dish
+  shows, in the table's order ("Tomatoey · Creamy"), or "Nothing ticked",
+  and "n changed by you" when ticks differ from the rules; it follows every
+  change of the draft. A dish with a correction says so without opening
+  it. The fold stays as the cook left it while the editor is open. Nothing
+  stored changed.
   **Test:** `test/dish-character-correction.test.ts` (entry and filter,
-  the ticks, the form, schema, export and import, the history),
-  `e2e/editor-more.mjs` (tick, the mark, focus, save, chip, read back, at
-  360 px). Not verified: a screen reader on the ticks, the German texts in
-  a browser, the native Linux app (it shows no dish of the notebook).
+  the ticks, the form, schema, export and import, the history, what the
+  closed fold names), `e2e/editor-more.mjs` (closed at first and naming no
+  change, opened before the tick, tick, the mark, focus, the summary after
+  the tick, save, chip, read back in the closed summary, at 360 px),
+  `e2e/editor-pairing.mjs` (one closed line under the slots in English and
+  German, "Nothing ticked", "Nichts angehakt"). Not verified: a screen
+  reader on the ticks or the fold, the native Linux app (it shows no dish
+  of the notebook).
 
 **Test:** `test/characters.test.ts` (the table against the catalogue, the
 facts of a dish and of a classic, shipped dishes by name),
@@ -1132,8 +1178,9 @@ own; the origin is only a choice of the filter.
   closed), and opened the selects (origin, character, course, cuisine in two
   columns from 360 px) and the two ticks; a count line ("4 dishes"), the
   rows. Every dish whose entry passes the filter and the search, sorted by
-  name in the content language, own and shipped mixed. A row is the name and
-  a quiet line: course, cuisine, and the origin ("My dish", "Shipped") while
+  name in the content language, own and shipped mixed; by name in groups
+  under a heading each ([below](#cook), since 2026-11-24). A row is the name and
+  a quiet line: course (not in a course's group, whose heading says it), cuisine, and the origin ("My dish", "Shipped") while
   the rows shown hold both (with one origin left, by "From", a character
   or a search, no row repeats it). A row of a shipped
   dish opens `#/classic/<id>`, a row of an own dish `#/dishes/<id>`. Nothing
@@ -1165,7 +1212,7 @@ own; the origin is only a choice of the filter.
 - **A sauce that is a base is no dish (since 2026-11-23).** The
   shipped bases of the course sauce (27 of them) are on no dish list, in
   the finder or the random pick; they are in the Components list. Cook
-  lists 102 of the 129 shipped files and the 11 frames, 113 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+  lists 102 of the 129 shipped files and the 11 frames, 113 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A choice starts cooking the dish again at its first step, since the method is another one (before 2026-11-24 the cook screen, reached by its address or the browser's way back rather than the Cook button, could resume at the same number of a different method); an id that is no recipe of the slot changes nothing, and the shipped filling clears the choice (`chooseFilling`, `test/frames.test.ts`: "a choice is kept against an id that is no recipe of the slot …"). Known: Cook's list and "Only with what I have" judge a frame by its shipped filling, not by the cook's choice: after choosing the omelette the set meal's row still says "with meat or fish" while its page says without, in this app and in the native one. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1325,6 +1372,58 @@ shipped, under the one filter, with:
   item a quiet line says so; when the finder cannot read the notebook (a
   broken ingredient tree) the order places nothing and no such line is
   shown, because nothing is known about the dates.
+- **Groups** (since 2026-11-24; the pitfall "one long list without
+  groups" in [design](design.md#pitfalls-of-an-interface-built-by-agents)).
+  In the order by name the list stands in groups, each under a heading of
+  level 2 (below the screen's h1) that names the group and how many dishes
+  it holds, "Main course · 37 dishes" (German "Hauptgericht · 37
+  Gerichte"): first **Put together** (German "Zusammengestellt"), the
+  frames, the app's own compositions (tacos, ramen, pizza), whatever their
+  course; then the other dishes by course in this order: main course, soup,
+  starter, side dish, sauce, breakfast, snack, dessert, baking; then **No
+  course given** (German "Ohne Gang") for own dishes that state none. The
+  order of the courses is a judgement of the agent (what a cook looks for
+  first is a main course, then what goes with it or before it, then the
+  rest of the day and the sweet things), not tested with a cook. Own and
+  shipped dishes share a group, by name within it; the origin stays on the
+  row as before. A frame kept in the notebook is an own dish and stands in
+  its course. An empty group is not shown. In a course's group the row's
+  quiet line drops the course, which the heading says; in the frames group
+  it keeps it. On the shipped content: 11 frames, 37 main courses, 12
+  soups, 2 starters, 38 side dishes, 1 breakfast, 9 desserts, 3 baking, 113
+  rows. **What was decided and why:** the filter, the search and "Only with
+  what I have" only drop rows, and the groups are drawn from what is left;
+  when one group is left (a course chosen that no frame has, such as soup)
+  the list is one list without a heading, since the heading would only
+  repeat the filter and the count line; choosing "Main course" leaves two
+  groups, the frames and the main courses, both with their heading. The
+  order **Use up first** is one flat list in its own order: there the
+  order is the answer (the nearest use-by first), and groups by course
+  would break it apart. Each group is its own list, labelled by its
+  heading; the flat list keeps the label "Dishes that fit". The way back
+  from a dish leads to Cook in the same groups under the same filter; the
+  screen opens at its top, as before the groups (the place in the list
+  was not kept before and is not now). Pure part: `groupRows` in
+  `src/browse/groups.ts`; the headings in `src/screens/dish-list.ts`.
+  **Test:** `test/browse-groups.test.ts` (entries written by hand: the
+  order of the groups, a frame in the frames group, own and shipped in one
+  group, the order by name within a group, one group left gives no groups,
+  the course filter leaving two groups (and, the control, one), the quiet
+  line in a group, every course of the engine placed once; and the shipped
+  content: 113 entries, 11 frames first, the main courses next, the
+  courses in order), `e2e/cook-groups.mjs` (the real content and an empty
+  notebook at 360 x 720, English and German: the headings in order with
+  their counts and as headings of level 2, each list labelled by its
+  heading, 113 rows; "Main course" leaves two headings with 11 and 37 and
+  the count line 48; "Soup" leaves 12 rows and no heading (the control);
+  "Use up first" is one flat list of 113; the way back; no horizontal
+  scroll, 44 px targets), `e2e/dish-browse.mjs` (the fixture: two groups,
+  the pan dish's quiet line without its course). Not proved: a screen
+  reader reading the headings, a real phone, an own dish without a course
+  in a browser (only in the unit test), that the order of the courses is
+  the one a cook wants. The native Linux app's Cook list has the same
+  groups since 2026-11-24, from the same `groupRows`, one preferences
+  group each ([native app](native-linux.md#cooks-list)).
 - Both are kept on the device under `culina.cookList` (`{ have, order }`,
   `src/prefs.ts`; anything unreadable falls back field by field).
 - **The stock** is one tap away: "What is there" (German "Vorrat") beside

@@ -3,6 +3,7 @@
 // it has something to offer. The caller keeps the filter and draws its list again on a change.
 import type { Origin } from '../browse/entry';
 import type { DishFilter, Offered } from '../browse/filter';
+import type { ActiveChoice } from '../browse/list-view';
 import { characterLabel } from '../characters/view';
 import { currentLang } from '../classics/lang';
 import { el } from '../shell/el';
@@ -23,6 +24,25 @@ export const cuisineLabel = (cuisine: string): string =>
 /** The cuisine as an option of the select, whose label already says "Cuisine": the bare adjective. */
 const cuisineChoice = (cuisine: string): string =>
   (strings.browse.cuisineChoice as Record<string, string>)[cuisine] ?? cuisine;
+
+/** One active choice of the filter by name, as a folded filter's summary names it. */
+export const filterChoiceLabel = (choice: ActiveChoice): string => {
+  const t = strings.browse;
+  switch (choice.kind) {
+    case 'origin':
+      return t.origin[choice.value];
+    case 'character':
+      return characterLabel(choice.value, currentLang());
+    case 'course':
+      return courseLabel(choice.value);
+    case 'cuisine':
+      return cuisineLabel(choice.value);
+    case 'meatFree':
+      return t.meatFree;
+    case 'completeOnly':
+      return t.completeOnly;
+  }
+};
 
 export interface Choice {
   value: string;

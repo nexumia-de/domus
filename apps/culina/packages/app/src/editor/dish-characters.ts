@@ -84,3 +84,16 @@ export const setCharacter = (
   if (shown !== computed.includes(id)) (shown ? add : remove).push(id);
   return normalCorrection({ add, remove });
 };
+
+export interface CharacterSummary {
+  /** The characters the dish shows, in the order of the table. */
+  shown: string[];
+  /** How many ticks differ from what the rules say: the rows marked "added" or "taken away". */
+  corrected: number;
+}
+
+/** What the closed "What it is like" names: the characters ticked and how many the cook changed. */
+export const characterSummary = (ticks: readonly CharacterTick[]): CharacterSummary => ({
+  shown: ticks.filter((tick) => tick.shown).map((tick) => tick.id),
+  corrected: ticks.filter((tick) => tick.shown !== tick.computed).length,
+});

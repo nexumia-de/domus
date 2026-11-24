@@ -1,6 +1,6 @@
 // The one list of every dish in a browser, at 360 x 720: the two example dishes of the notebook
 // ("Add example data") and the two FICTIONAL shipped dishes of e2e/classics-fixture.mjs in one list
-// on Cook (docs/decisions/cook-screen.md); each choice of the filter narrows, choices combine,
+// on Cook (docs/decisions/cook-screen.md), by name in groups of their course; each choice of the filter narrows, choices combine,
 // nothing found offers "Show all"; the choice survives a reload; the Notebook's Dishes are own and
 // shipped dishes in a plain list, without the filter; a shipped row opens its dish; the old addresses of the classics and of Start land on
 // Cook with their filter. "Only with what I have" and "Use up first" are in e2e/cook.mjs. No horizontal
@@ -14,9 +14,10 @@ import { seed } from './seed.mjs';
 const label = '360px dish browse';
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const OWN = ['Example: Flat dough with pan sauce', 'Example: Vegetable plate with herb oil'];
-const ALL = [PAN.name.en, SECOND.name.en, ...OWN].sort((a, b) =>
-  a.localeCompare(b, 'en', { sensitivity: 'base' }),
-);
+const byName = (list) => list.sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+// By name Cook stands in groups (docs/behaviour.md, Cook): the main courses (the pan dish and the
+// two example dishes, own and shipped mixed) by name, then the soup (the second dish).
+const ALL = [...byName([PAN.name.en, ...OWN]), SECOND.name.en];
 
 const names = (page) => page.locator('.dish-rows .entry-name').allInnerTexts();
 const count = (page) => page.locator('.dish-count').innerText();
@@ -66,7 +67,14 @@ export const dishBrowse = async (browser, server) => {
     await page.evaluate(() => document.activeElement === document.body),
     `${label}: nothing is focused on open`,
   );
-  check(same(await names(page), ALL), `${label}: every dish in one list (${await names(page)})`);
+  check(
+    same(await names(page), ALL) &&
+      same(await page.locator('.dish-group-heading').allInnerTexts(), [
+        'Main course · 3 dishes',
+        'Soup · 1 dish',
+      ]),
+    `${label}: every dish in one list, by name within its course (${await names(page)})`,
+  );
   check(
     (await page.locator('.dish-row-own').count()) === 2 &&
       (await page.locator('.dish-row-shipped').count()) === 2,
@@ -77,9 +85,10 @@ export const dishBrowse = async (browser, server) => {
     .locator('.dish-row', { hasText: PAN.name.en })
     .locator('.entry-meta')
     .innerText();
+  // The course is the heading of the row's group; the row says cuisine and origin.
   check(
-    panMeta === 'Main course · German · Shipped',
-    `${label}: a shipped row says course, cuisine and origin (${panMeta})`,
+    panMeta === 'German · Shipped',
+    `${label}: a shipped row says cuisine and origin under its course's heading (${panMeta})`,
   );
   check(
     (await page.getByLabel('What it is like').count()) === 1 &&

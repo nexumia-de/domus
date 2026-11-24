@@ -20,6 +20,15 @@ export type { ComponentView, DishView, LineView, NameOf } from './classics/dish-
 export { cookView } from './classics/cook-view';
 export type { StepView } from './classics/cook-view';
 export { portionsOf, setPortions, setStep, stepOf } from './classics/session';
+export {
+  asChosen,
+  chooseFilling,
+  fillingChoices,
+  resetChoices,
+  withChoices,
+} from './classics/choices';
+export type { FillingChoice } from './classics/choices';
+export { roleLabel } from './components/names';
 export { currentLang } from './classics/lang';
 export { findClassics } from './cook/classic-finder';
 export type { Shipped } from './cook/finder';
@@ -68,5 +77,7 @@ export {
 export type { DishFilter, Offered } from './browse/filter';
 export { dishListView } from './browse/list-view';
 export type { CookNarrowing, DishListView, ListRow } from './browse/list-view';
+export { GROUP_COURSES, groupRows } from './browse/groups';
+export type { GroupId, RowGroup } from './browse/groups';
 export { CHARACTER_TABLE } from './characters/table';
 export { characterLabel } from './characters/view';

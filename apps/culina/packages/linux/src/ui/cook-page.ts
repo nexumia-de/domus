@@ -1,25 +1,18 @@
 // Cooking one step at a time: the step, the lines it uses with their amounts, its time and
 // temperature as the source gives them, the note of a technique the first time it comes, and
-// large Back and Next buttons in the bottom bar. The screen stays on while the page is open.
+// large Back and Next buttons in the bottom bar. The screen stays on while the page is open. The
+// dish is the one the dish page shows: as it is cooked, with the cook's choice of filling.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
 import { pickText, type Classic } from '@culina/engine';
-import {
-  classics,
-  cookView,
-  portionsOf,
-  setStep,
-  stepOf,
-  techniques,
-  type StepView,
-} from '@culina/app/core';
+import { cookView, portionsOf, setStep, stepOf, techniques, type StepView } from '@culina/app/core';
 import { clear, column, text, titled, type Page, type Ui } from './context';
 import { lineList } from './lines';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function cookPage(ui: Ui, id: string): Page {
   const { t, s } = ui;
-  const classic = classics().find((c) => c.id === id);
+  const classic = ui.session.dish(id);
   const portions = classic ? portionsOf(classic.id) : 1;
   const head = titled(classic ? pickText(classic.name, ui.lang) : id);
   const { scrolled, body } = column();

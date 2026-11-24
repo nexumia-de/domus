@@ -235,7 +235,8 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
           select.append(item);
         }
         select.addEventListener('change', () => {
-          chooseFilling(classic.id, choice.slotIndex, select.value);
+          // Also starts cooking it again at the first step: the method is another one.
+          chooseFilling(classic, choice.slotIndex, select.value);
           refillKeep();
           redraw();
           card

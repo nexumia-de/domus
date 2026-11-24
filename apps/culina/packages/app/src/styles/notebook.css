@@ -149,7 +149,13 @@
   margin: 0 0 var(--sp-2);
 }
 
-/* The random pick: one row per role, the component and "Roll again" beside it. */
+/* The random pick: each roll's button first, then the fold of the choices that narrow it. */
+.fold.pick-dish-fold,
+.fold.pick-roles-fold {
+  margin: var(--sp-3) 0 0;
+}
+
+/* One row per role, the component and "Roll again" beside it. */
 .pick-stock {
   margin: 0 0 var(--sp-3);
 }
