@@ -3,10 +3,17 @@
 // and writes what went through into the space. Every write is one atomic step
 // on the records as stored at that moment, so a person's change or a sync
 // cycle in between is not overwritten.
-import { DEFAULT_PRIORITY, newEntryCategory, type Entry } from '@emptio/engine';
+import {
+  DEFAULT_PRIORITY,
+  LIST,
+  entriesOf,
+  isEntryValue,
+  newEntryCategory,
+  valueFor,
+  type Entry,
+} from '@nexumia-de/list';
 import { localChange } from '@nexumia-de/hospes';
-import { valueFor, type ListDeps } from '../list/actions';
-import { LIST, entriesOf, isEntryValue } from '../list/model';
+import type { ListDeps } from '../list/actions';
 import {
   KitchenowlError,
   createKitchenowlClient,

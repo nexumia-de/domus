@@ -2,7 +2,8 @@
 // a bottom bar within reach of the thumb.
 import Adw from 'gi://Adw?version=1';
 import Gtk from 'gi://Gtk?version=4.0';
-import { DEFAULT_PRIORITY, PRIORITIES, homeOrder, type Entry } from '@emptio/engine';
+import { homeOrder } from '@emptio/engine';
+import { DEFAULT_PRIORITY, PRIORITIES, type Entry } from '@nexumia-de/list';
 import {
   addToList,
   categoriesOf,

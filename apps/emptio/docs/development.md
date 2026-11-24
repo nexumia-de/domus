@@ -43,9 +43,12 @@ commands, each with `-w` and the package:
 
 - `packages/engine` (`@emptio/engine`): the pure engine. `src/index.ts`
   is its only public entry; the package exports the TypeScript file
-  directly. One job per file: `priority.ts`, `sort-key.ts`,
-  `home-order.ts`, `category.ts`, `add-entry.ts`, `suggest.ts`,
-  `starting-categories.ts`. `data/categories.json` holds the starting
+  directly. One job per file: `home-order.ts`, `category.ts` (the
+  order of the categories), `suggest.ts`, `starting-categories.ts`.
+  The entry, the priorities, the sort key, rules 4 and 5 and the usual
+  items are in the shared list package `packages/list`
+  (`@nexumia-de/list`, [rules](../../../packages/list/docs/rules.md))
+  since 2026-11-24, because Culina writes the list too. `data/categories.json` holds the starting
   categories ([categories](categories.md)); `vectors/` holds the worked
   examples ([vector format](vectors.md)).
 - `packages/app` (`@emptio/app`): the web app. `src/list/` is the list
@@ -59,7 +62,9 @@ commands, each with `-w` and the package:
   link and the check tooling are in `packages/gjs`
   ([platform pieces](../../../packages/gjs/docs/platform.md)).
 - The shared packages come from this repository: hospes for everything
-  about spaces and sync, materia through it.
+  about spaces and sync, materia through it, and the list package for
+  the entry and the rules of putting something on the list
+  (`planAdd`, which `addToList` runs inside `localChange`).
 
 ## The purity rule
 

@@ -12,7 +12,9 @@ import type {
   MakeableCandidate,
   MakeableComponent,
   MakeableDish,
+  MakeableError,
   MakeableInput,
+  MakeableLineReport,
   MakeableResult,
 } from './types';
 
@@ -117,4 +119,28 @@ export function makeable(input: MakeableInput): MakeableResult {
   }
   const candidates = rank(all);
   return { ok: true, candidates, useUpFirst: useUpFirst(ctx, candidates) };
+}
+
+export type DishReportResult =
+  | { ok: true; name: string; lines: MakeableLineReport[] }
+  | { ok: false; error: MakeableError | { code: 'unknown-dish' } };
+
+/**
+ * Every slot of one dish against the stock, judged as `makeable` judges it, but without its rule
+ * for what is listed (a dish with nothing in stock is reported too): what the hand-over to the
+ * shopping list reads.
+ *
+ * @param input - As for `makeable`; `dishes` holds the dish, `components` what its slots name.
+ * @param dishId - The id of the dish.
+ * @returns The dish's name and a report per slot; or the error of the tree or a cycle, or
+ *   `unknown-dish`.
+ */
+export function dishReport(input: MakeableInput, dishId: string): DishReportResult {
+  const dish = (input.dishes ?? []).find((d) => d.id === dishId);
+  if (dish === undefined) return { ok: false, error: { code: 'unknown-dish' } };
+  const built = buildContext(input);
+  if (!built.ok) return built;
+  const evaluated = evaluateLines(built.ctx, dishSpecs(dish), [dish.id]);
+  if (!evaluated.ok) return evaluated;
+  return { ok: true, name: dish.name, lines: evaluated.reports };
 }

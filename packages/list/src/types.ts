@@ -1,9 +1,15 @@
-// The entities of the data model (docs/data-model.md) as the rules read them.
+// The entry of the list (docs/entry.md) as the rules read it.
 import type { Priority } from './priority';
 
-/** Why an entry is on the list. */
+/**
+ * Why an entry is on the list. A recipe origin may name its `dish` (since 2026-11-24): what the
+ * dish is in the app that handed it over, the same in every language. Readers that do not know
+ * the field keep it and show the title (docs/entry.md#origins).
+ */
 export type Origin =
-  { kind: 'typed' } | { kind: 'recipe'; app: string; title: string } | { kind: 'staple' };
+  | { kind: 'typed' }
+  | { kind: 'recipe'; app: string; title: string; dish?: string }
+  | { kind: 'staple' };
 
 /** What is stored for an entry; the id is the key of its record. */
 export interface EntryFields {

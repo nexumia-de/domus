@@ -2,7 +2,7 @@
 // (docs/kitchenowl.md#one-cycle): from the entries, the links and the items on
 // the KitchenOwl list, what to send to KitchenOwl and what to change in the
 // space. Pure: no clock, no requests; the runner does both.
-import { sortKey, type Entry } from '@emptio/engine';
+import { sortKey, type Entry } from '@nexumia-de/list';
 import type { RemoteItem } from './client';
 import type { Link } from './config';
 

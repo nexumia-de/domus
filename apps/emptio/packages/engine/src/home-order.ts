@@ -1,7 +1,5 @@
 // Rule 1, order at home (docs/engine-rules.md#1-order-at-home).
-import { PRIORITIES, type Priority } from './priority';
-import { compareText, sortKey } from './sort-key';
-import { OTHER_CATEGORY } from './types';
+import { OTHER_CATEGORY, PRIORITIES, compareText, sortKey, type Priority } from '@nexumia-de/list';
 
 /** What the order reads of an entry. */
 export interface OrderEntry {

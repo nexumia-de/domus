@@ -11,7 +11,11 @@ generated: { by: claude-code/2.1.327, at: 2026-11-18 }
 Every rule is a pure function of `packages/engine`, reached through
 `src/index.ts`, with worked examples in `packages/engine/vectors/`
 ([vector format](vectors.md)). Time and ids come in as input. The
-entities are in the [data model](data-model.md).
+entities are in the [data model](data-model.md). The sort key and rules
+4 and 5 are in the shared list package since 2026-11-24, unchanged,
+because Culina puts entries on the list by them too
+([rules of the list](../../../packages/list/docs/rules.md)); their headings stay here so
+that links keep working.
 
 Rules 1, 4 and 5, the order of the categories and what the add field
 offers are built and have vectors; 2 and 3
@@ -20,11 +24,7 @@ completed when their goal starts.
 
 # The sort key of a name
 
-Names are compared by a key, so that "Äpfel" stands with "Apfel" and
-the result is the same on every device: the name in Unicode form NFD
-with combining marks removed, `ß` as `ss`, lower case, spaces at the
-ends removed and runs of spaces as one. Keys are compared by code
-units. No locale of the device is used.
+In the list package: [the sort key of a name](../../../packages/list/docs/rules.md#the-sort-key-of-a-name).
 
 # The order of the categories
 
@@ -59,47 +59,16 @@ show their count.
 
 # 4. Category of a new entry
 
-Input: the name, the catalogue's match for it if any (an ingredient id
-with a category), and the household's earlier entries.
-
-1. If an earlier entry has the same ingredient id, or no ingredient id
-   and the same sort key, the category of the latest such entry (by
-   `addedAt`). The household's choice wins over the catalogue.
-2. Otherwise the category the catalogue gives the ingredient.
-3. Otherwise the category of the usual item the name means
-   (`usualCategory`, the list is in
-   [categories](categories.md#usual-items)). Names are compared by
-   their sort key, word by word:
-   1. the longest run of the name's words that is an item ("Bio-Milch
-      3,5 %" is milk), the last such run on a tie;
-   2. otherwise, from the last word to the first, the item a word is a
-      plural of ("Tomaten", "eggs": the item followed by `e`, `n`, `s`,
-      `en`, `es`, `er` or `nen`), or the longest item the word ends
-      with, the head of a German compound ("Vollmilch" is milk,
-      "Wildschwein" is Schwein and not Wein). Only items of one word
-      and four letters or more are looked for inside a word.
-4. Otherwise `other`.
-
-Step 3 is a guess from a short list and is wrong for some names (a
-compound whose head is another department). The household corrects it
-on the entry, and step 1 keeps that choice from then on.
+In the list package: [rule 4](../../../packages/list/docs/rules.md#4-category-of-a-new-entry),
+with the usual items. Emptio passes the catalogue's match of a name
+that has an ingredient id as that ingredient with the category `other`
+([putting something on the list](../../../packages/list/docs/rules.md#putting-something-on-the-list)).
 
 # 5. Twice the same
 
-Adding an entry when an open entry is the same thing does not make a
-second one. Two entries are the same thing when both have the same
-ingredient id, or neither has one and their names have the same sort
-key. A bought entry never counts; adding again makes a new entry.
-
-The open entry is kept with:
-
-- the more pressing of the two priorities;
-- the amounts: if only one has an amount, that one; if both have the
-  same text, that text; otherwise both joined as `<old> + <new>`
-  (amounts are free text, so nothing is added up);
-- the notes by the same rule as the amounts;
-- the origins of both, each kind and title once, the old ones first;
-- its own id, name, category, `addedAt` and `notAt`.
+In the list package: [rule 5](../../../packages/list/docs/rules.md#5-twice-the-same), and
+its [open weaknesses](../../../packages/list/docs/rules.md#open-weaknesses) for a hand-over
+from a recipe.
 
 # What the add field offers
 
@@ -121,9 +90,14 @@ how many visits must agree, and how single stray ticks are ignored.
 # 7. Hand-over
 
 Outline (Goal 4). In: the missing ingredients of a recipe become
-entries with a `recipe` origin, each through rules 4 and 5. Out: bought
-entries with an ingredient id become proposed stock records of the
-place. To settle: the format of the link between the apps.
+entries with a `recipe` origin, each through rules 4 and 5. Since
+2026-11-24 Culina writes them itself into the collection `list` of the
+space it uses, through the list package's `planAdds` (no screen offers
+it yet; [Culina's behaviour](../../culina/docs/behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)):
+all apps are on one address and write the shared collections directly
+([decision](../../../docs/decisions/one-origin-spaces-storages.md)), so
+no link between the apps is needed. Out: bought entries with an
+ingredient id become proposed stock records of the space; not built.
 
 # 8. Raised by an offer
 

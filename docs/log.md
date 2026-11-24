@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24
+
+- **Creation**: a fourth shared package, [the list package](../packages/list/docs/index.md) (`packages/list`, `@nexumia-de/list`; the name is provisional and the owner's to choose): the household's shopping list as every app writes it (the entry, its record in the collection `list`, rules 4 and 5, the usual items), pure, moved out of Emptio without a change of behaviour, because Culina now puts what a dish lacks on the list ([Culina's roadmap, goal 11](../apps/culina/docs/roadmap.md)). Wired: `npm run check:list` in `npm run check`, the CI job `list-check` (a change under `packages/list` runs Culina and Emptio too), and `npm run boundaries` now also fails when a pure package (`packages/model`, `packages/list`) imports a host package in its `src/`.
+
 ## 2026-11-23
 
 - **Update**: Culina's visible name is Cook's Workbench (owner; [Culina's log](../apps/culina/docs/log.md)); the issue forms, Household's list of apps and Emptio's entry screen name it so. The owner also answered four of the five open points of Culina's building kit decision.

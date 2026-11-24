@@ -1,6 +1,7 @@
 // Keeps the parts of this repository apart (docs/decisions/one-repository.md):
 // an app imports nothing of another app, and a shared package imports nothing
-// of an app. Reads every import and export specifier of the source files.
+// of an app; a pure shared package (materia, the list package) imports no host
+// package either. Reads every import and export specifier of the source files.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 
@@ -29,11 +30,22 @@ function* files(dir) {
   }
 }
 
+/** The shared packages that are pure: their `src/` uses no host API, so no host package either. */
+const PURE = new Set(['packages/model', 'packages/list']);
+const HOST_PACKAGES = ['@nexumia-de/hospes', '@nexumia-de/gjs'];
+
 /** Why `spec`, imported by a file of `part` in `dir`, crosses a boundary; null if it does not. */
-export function problem(part, dir, spec, scopes) {
+export function problem(part, dir, spec, scopes, source = true) {
   if (spec.startsWith('.')) {
     const target = partOf(resolve(dir, spec));
     return target === part ? null : `leaves ${part} by a relative path`;
+  }
+  if (
+    source &&
+    PURE.has(part) &&
+    HOST_PACKAGES.some((h) => spec === h || spec.startsWith(`${h}/`))
+  ) {
+    return `is pure and imports the host package ${spec}`;
   }
   for (const { part: app, scope } of scopes) {
     const named = spec === scope || spec.startsWith(`@${scope}/`) || spec.startsWith(`${scope}/`);
@@ -49,7 +61,8 @@ for (const top of ['apps', 'packages']) {
     const part = partOf(file);
     if (!part) continue;
     for (const match of readFileSync(file, 'utf8').matchAll(specifier)) {
-      const why = problem(part, dirname(file), match[2], scopes);
+      const source = relative(join(root, part), file).startsWith(`src${sep}`);
+      const why = problem(part, dirname(file), match[2], scopes, source);
       if (why) found.push(`${relative(root, file)}: '${match[2]}' ${why}`);
     }
   }
@@ -60,4 +73,6 @@ if (found.length > 0) {
   console.error(`\n${found.length} import(s) cross a boundary.`);
   process.exit(1);
 }
-console.log('boundaries: no app imports another app, no shared package imports an app');
+console.log(
+  'boundaries: no app imports another app, no shared package imports an app, no pure package imports a host package',
+);

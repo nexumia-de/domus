@@ -7,7 +7,8 @@
   "type": "module",
   "dependencies": {
     "@culina/engine": "0.0.0",
-    "@nexumia-de/hospes": "0.1.0"
+    "@nexumia-de/hospes": "0.1.0",
+    "@nexumia-de/list": "0.1.0"
   },
   "scripts": {
     "pretest": "node compile-schemas.mjs && node make-classics.mjs && node ../engine/scripts/make-techniques.mjs && node ../engine/scripts/make-substitutes.mjs",

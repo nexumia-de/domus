@@ -10,6 +10,7 @@
     "@emptio/engine": "0.0.0",
     "@nexumia-de/gjs": "0.1.0",
     "@nexumia-de/hospes": "0.1.0",
+    "@nexumia-de/list": "0.1.0",
     "@nexumia-de/materia": "0.3.0"
   },
   "scripts": {

@@ -1,19 +1,15 @@
 // Runs every vector file through the engine's public entry and compares with
-// what was computed by hand (docs/vectors.md).
+// what was computed by hand (docs/vectors.md). The kinds of rules 4 and 5 moved with the rules to
+// the shared list package (packages/list/test/vectors.test.ts).
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
-  addEntry,
   categoryOrder,
   homeOrder,
-  newEntryCategory,
   suggest,
-  type CatalogueMatch,
   type CategoryChange,
-  type EarlierEntry,
-  type Entry,
   type OrderEntry,
   type SuggestEntry,
 } from '../src/index';
@@ -25,12 +21,6 @@ const kinds: Record<string, (input: never) => unknown> = {
   'home-order': (input: { entries: OrderEntry[]; categoryOrder: string[] }) => ({
     order: homeOrder(input.entries, input.categoryOrder).map((entry) => entry.id),
   }),
-  'new-entry-category': (input: {
-    name: string;
-    catalogue?: CatalogueMatch;
-    earlier: EarlierEntry[];
-  }) => ({ categoryId: newEntryCategory(input) }),
-  'add-entry': (input: { entries: Entry[]; add: Entry }) => addEntry(input.entries, input.add),
   'category-order': (input: { starting: string[]; changes: CategoryChange[] }) => ({
     order: categoryOrder(input.starting, input.changes),
   }),

@@ -279,6 +279,14 @@ records, as the decision says: a bottle ticked in Drink Builder is not
 has no notebook, so the user's own ingredients and components of the web
 app are not known to it.
 
+Since 2026-11-24 the native app's loops keep the collection `list` in
+step too, as the web app's do (the same space code), for the hand-over
+of what a dish lacks to the shopping list; no screen offers the
+hand-over, here or on the web. Its spaces are in its own file store, not
+in the browser's database `domus`: native Culina and web Emptio on one
+machine meet only through a shared space's storage
+([behaviour](behaviour.md#handing-what-a-dish-lacks-to-the-shopping-list)).
+
 # What version 0.1 leaves out
 
 On purpose, for the first release:

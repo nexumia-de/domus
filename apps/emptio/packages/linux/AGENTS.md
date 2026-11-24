@@ -11,7 +11,8 @@ too; the toolkit's GTK rules above apply to this package only.
 ## Rules
 
 - **Screens only.** Rules, records, texts and sync come from
-  `@emptio/engine`, `@emptio/app/core` and the host package; nothing of
+  `@emptio/engine`, the list package (`@nexumia-de/list`),
+  `@emptio/app/core` and the host package; nothing of
   them is written a second time here. A text only the native app needs
   is in `src/strings.ts`, English and German.
 - **What GJS lacks is in `@nexumia-de/gjs`**

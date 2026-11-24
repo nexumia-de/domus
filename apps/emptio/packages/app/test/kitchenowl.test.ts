@@ -6,7 +6,7 @@
 import { expect, test, vi } from 'vitest';
 import { createMemoryStore, type Store } from '@nexumia-de/hospes';
 import { addToList, editEntry, removeEntries, setBought } from '../src/list/actions';
-import { LIST, entriesOf } from '../src/list/model';
+import { LIST, entriesOf } from '@nexumia-de/list';
 import { bridgeCycle } from '../src/kitchenowl/bridge';
 import { KitchenowlError, type KitchenowlClient } from '../src/kitchenowl/client';
 import {

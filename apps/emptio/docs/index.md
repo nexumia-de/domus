@@ -11,7 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order: foundations, the list, sharing, stores, hand-over, Domus.
-- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the list as its own file in the household's place, hand-over by link and by sync, screens, the owner's decisions.
+- [How Emptio is built](architecture.md) - Shape as Culina, what is stored and derived, engine rules, the plan of 2026-11-18 (the list as its own file, hand-over by link; both superseded by one address), screens, the owner's decisions.
 
 # Specifications
 
@@ -19,9 +19,9 @@ links. Change history is in [log.md](log.md).
 - [KitchenOwl sync](kitchenowl.md) - Two-way sync of a space's list with a KitchenOwl list: mapping, links, one cycle, setup, CORS for the web app, the API calls, what is lost and not proven.
 - [Native Linux app](native-linux.md) - The GTK 4 and libadwaita app on GJS: what it shares with the web app, what GJS lacks and how it is filled, pages, joining a space, build, packaging, what is not checked.
 
-- [Data model](data-model.md) - Entry, category and store with fields and ids, what is derived, records in collections of Emptio's file in the place, limits of merging.
-- [Engine rules](engine-rules.md) - Sort key of a name, order at home and in a store, hiding, category of a new entry, adding what is already there; later rules in outline.
-- [Test vector format](vectors.md) - JSON shape of the worked examples, the three kinds that exist, how the files are checked.
+- [Data model](data-model.md) - Category and store with fields and ids (the entry is in the shared list package), what is derived, records in collections of a space, limits of merging.
+- [Engine rules](engine-rules.md) - Order at home and in a store, hiding, what the add field offers; the sort key, the category of a new entry and adding what is already there are in the shared list package; later rules in outline.
+- [Test vector format](vectors.md) - JSON shape of the worked examples, the engine's three kinds, how the files are checked; the kinds of rules 4 and 5 are in the list package.
 
 # Reference
 

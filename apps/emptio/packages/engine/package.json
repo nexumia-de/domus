@@ -11,5 +11,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@nexumia-de/list": "0.1.0"
   }
 }

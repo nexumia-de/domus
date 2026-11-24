@@ -1,4 +1,4 @@
-// The sort key of a name (docs/engine-rules.md#the-sort-key-of-a-name): the
+// The sort key of a name (docs/rules.md#the-sort-key-of-a-name): the
 // same on every device, no locale.
 
 const COMBINING = /[̀-ͯ]/g;

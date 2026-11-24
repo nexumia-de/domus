@@ -1,6 +1,8 @@
 // The running stock without a screen: which space is used, its records of the collection `stock`,
 // the changes a person makes, the one move of Culina's old items, and the loops that keep shared
-// spaces in step (the host package's `createCollectionSync`). Making, sharing and removing spaces is
+// spaces in step (the host package's `createCollectionSync`). The loops keep the collection `list`
+// in step too, which Culina writes when it hands what a dish lacks to the shopping list
+// (../shared-list/hand-over.ts), so those entries leave the device without Emptio open. Making, sharing and removing spaces is
 // the Household app's (docs/decisions/stock-in-spaces.md).
 import {
   createCollectionSync,
@@ -15,6 +17,7 @@ import {
   type SyncStatus,
 } from '@nexumia-de/hospes';
 import type { ComponentRef } from '@culina/engine';
+import { LIST } from '@nexumia-de/list';
 import { readSpaceChoice, writeSpaceChoice, type KeyValueStore } from '../prefs';
 import type { Store as OwnStore } from '../store';
 import type { Decision, SyncRecord } from './edits';
@@ -50,7 +53,18 @@ export interface StockSpaceOptions {
 }
 
 /** A change that could not be made: no space, the write failed, or the item is gone. */
-export type ChangeResult<T> = { ok: true; outcome: T } | { ok: false; why: 'unavailable' | 'gone' };
+export type ChangeResult<T> =
+  | { ok: true; outcome: T; spaceId: string; spaceName: string }
+  | { ok: false; why: 'unavailable' | 'gone' };
+
+/** Where a change goes: the collection (default `stock`) and the space (default the used one). */
+export interface ChangeTarget {
+  collection?: string;
+  spaceId?: string;
+}
+
+/** The collections Culina keeps in step: its stock, and the list it hands lines to. */
+export const SYNCED: readonly string[] = [STOCK, LIST];
 
 export interface StockSpace {
   state(): StockSpaceState;
@@ -58,9 +72,18 @@ export interface StockSpace {
   load(): Promise<void>;
   /** Uses another space and remembers the choice on this device. */
   choose(spaceId: string): Promise<void>;
-  /** Runs a decision inside one atomic change of the used space, reads again, asks for a cycle. */
-  change<T>(decide: (records: readonly SyncRecord[]) => Decision<T>): Promise<ChangeResult<T>>;
+  /**
+   * Runs a decision inside one atomic change of the used space (or the one named, if it is still
+   * on the device), reads again, asks for a cycle.
+   */
+  change<T>(
+    decide: (records: readonly SyncRecord[]) => Decision<T>,
+    target?: ChangeTarget,
+  ): Promise<ChangeResult<T>>;
+  /** The sync of the stock of the used space: the collection `stock` alone. */
   status(): SyncStatus | undefined;
+  /** The sync of the list of the used space (the collection `list`), for the hand-over. */
+  listStatus(): SyncStatus | undefined;
   /** Calls `listener` when a sync status changed; returns the way to stop. */
   onStatus(listener: () => void): () => void;
   /** The page came to the front. */
@@ -82,7 +105,7 @@ export function createStockSpace(options: StockSpaceOptions): StockSpace {
 
   const sync: CollectionSync = createCollectionSync({
     store: shared,
-    collections: [STOCK],
+    collections: [...SYNCED],
     adapter: options.adapter,
     now,
     // Records another device changed are read again; a status change only redraws the status.
@@ -144,12 +167,15 @@ export function createStockSpace(options: StockSpaceOptions): StockSpace {
       writeSpaceChoice(prefs, spaceId);
       await load();
     },
-    async change(decide) {
-      const space = current.space;
+    async change(decide, target = {}) {
+      const space =
+        target.spaceId === undefined
+          ? current.space
+          : current.spaces.find((s) => s.id === target.spaceId);
       if (space === undefined) return { ok: false, why: 'unavailable' };
       let decided: Decision<unknown> | undefined;
       try {
-        await localChange(shared, space.id, STOCK, now, (records) => {
+        await localChange(shared, space.id, target.collection ?? STOCK, now, (records) => {
           decided = decide(records);
           return decided.edit;
         });
@@ -161,9 +187,12 @@ export function createStockSpace(options: StockSpaceOptions): StockSpace {
       sync.changed(space.id);
       const done = decided as Decision<never> | undefined;
       if (done === undefined || 'missing' in done) return { ok: false, why: 'gone' };
-      return { ok: true, outcome: done.outcome };
+      return { ok: true, outcome: done.outcome, spaceId: space.id, spaceName: space.name };
     },
-    status: () => (current.space ? sync.status(current.space.id) : undefined),
+    // Each screen speaks of its own collection: a list file that cannot be read, or a list never
+    // synced yet, is no news about the stock.
+    status: () => (current.space ? sync.status(current.space.id, STOCK) : undefined),
+    listStatus: () => (current.space ? sync.status(current.space.id, LIST) : undefined),
     onStatus(listener) {
       statusListeners.add(listener);
       return () => void statusListeners.delete(listener);

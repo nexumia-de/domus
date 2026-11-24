@@ -1,6 +1,6 @@
-// Rule 4, step 3 (docs/engine-rules.md#4-category-of-a-new-entry): the category a name gets
-// from the usual things a household buys. The list is data of the engine
-// (docs/categories.md#usual-items) and names its source and licence.
+// Rule 4, step 3 (docs/rules.md#4-category-of-a-new-entry): the category a name gets
+// from the usual things a household buys. The list is data of this package (docs/rules.md#usual-items)
+// and names its source and licence. Its category ids are Emptio's starting categories.
 import data from '../data/usual-items.json';
 import { sortKey } from './sort-key';
 

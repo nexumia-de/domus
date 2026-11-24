@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-24 (the list package)
+
+- **Update**: the entry of the list and the rules of putting something on it moved to the new shared [list package](../../../packages/list/docs/index.md) (`packages/list`, name provisional), because Culina now writes the list too ([Culina, roadmap goal 11](../../culina/docs/roadmap.md)): the entry and its types, the priorities, the sort key, rules 4 and 5 with the usual items and their data file, the record of the collection (`LIST`, `isEntryValue`, `entriesOf`), `valueFor`, the vectors of rules 4 and 5 and the priority tests. `addToList` runs the package's `planAdd`, the same logic as before. No behaviour changed: the unit tests (engine 23 of 38 left here, the other 15 moved with their code; app 64; native 2), the vectors and the browser checks pass with only their imports changed. The [entry](../../../packages/list/docs/entry.md), [rules 4 and 5 and the sort key](../../../packages/list/docs/rules.md) and the vectors of those rules moved with the code; this bundle links to them. The plan of hand-over by link and decision 3 of the [architecture](architecture.md) are marked as superseded by one address.
+- **Update**: a recipe origin may carry the key of its dish (`dish`, written by Culina's hand-over); Emptio shows the title as before, and rule 5 keeps one origin per dish by that key ([the entry](../../../packages/list/docs/entry.md)). Emptio writes no such origin, so nothing it does changes.
+
 ## 2026-11-22 (report a problem)
 
 - **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) in the native main menu and About link, and Settings › About in the web app; checked by `npm run interact -w @emptio/linux` (the dialog opens) and `e2e/report-scenario.mjs`; the dialog is the shared one.

@@ -12,6 +12,7 @@ there.
 | ---------------- | --------------------------------------------------------------------------------------- |
 | `packages/model` | materia, the general model: pure, no domain, no host API                                |
 | `packages/host`  | hospes, the host code two apps need: sync cipher, WebDAV adapter                        |
+| `packages/list`  | the list package (name provisional): the shopping list's entry and rules, pure          |
 | `packages/gjs`   | gjs, what the native Linux apps share: Web Crypto subset, libsoup fetch, files, tooling |
 | `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks, with a native Linux app          |
 | `apps/culina`    | Culina (Cook's Workbench), finding what to cook from a building kit, with a notebook    |
@@ -73,7 +74,7 @@ Taken from a study of another agent-built project on 2026-11-20
 ## Before committing
 
 1. From the root: `npm run check:<part>` for every part you changed
-   (`model`, `host`, `gjs`, `mixtura`, `culina`, `emptio`), and `npm run check` (all
+   (`model`, `host`, `list`, `gjs`, `mixtura`, `culina`, `emptio`), and `npm run check` (all
    parts, the boundaries and the root files) when you changed
    `packages/`, a root file or more than one part.
 2. `docs/` of the part updated in the same commit; a change that

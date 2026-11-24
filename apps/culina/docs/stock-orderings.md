@@ -21,6 +21,9 @@ behaviour, and the test that pins it. The orderings of the cycle and the
 loop themselves are the host package's
 ([sync orderings](../../../packages/host/docs/sync-orderings.md)); this page
 lists what Culina adds on top ([decision](decisions/stock-in-spaces.md)).
+The orderings of Culina's hand-over to the shopping list (the
+collection `list`, written by Emptio too) are in the list package's
+[list orderings across apps](../../../packages/list/docs/orderings.md).
 
 Reading the last column: a test is named as `file` › 'name', all in
 `packages/app/test/`. **not pinned**: no test asserts it. **not handled**:
