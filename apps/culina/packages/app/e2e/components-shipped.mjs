@@ -16,7 +16,8 @@ const total = () => content().classics.reduce((n, c) => n + (c.components ?? [])
 const DISH = 'oeufs-a-la-neige';
 const KEEPABLE = `${DISH}.snow-eggs`;
 // Saffron risotto still names water as a wanted ingredient.
-const WANTED = 'risotto-alla-milanese.saffron-risotto';
+// Orange-flower water is not in the USDA data; water itself is a catalogue ingredient since 2026-11-24.
+const WANTED = 'flan-clasico.flan-custard';
 
 const open = async (page, origin, hash) => {
   await page.goto('about:blank');
@@ -138,7 +139,9 @@ const phone = async (browser, origin) => {
   await open(page, origin, `components/${WANTED}`);
   check(
     (await page.getByRole('button', { name: 'Keep in my notebook' }).count()) === 0 &&
-      (await page.locator('.keep-cannot').innerText()).includes('does not know Water'),
+      (await page.locator('.keep-cannot').innerText()).includes(
+        'does not know Orange-flower water',
+      ),
     `${label}: a component with an ingredient the catalogue lacks says why it cannot be kept`,
   );
   await open(page, origin, 'components/no-such-dish.nothing');
@@ -190,7 +193,7 @@ const german = async (browser, origin) => {
   check(
     (await page.getByRole('button', { name: 'In mein Notizbuch übernehmen' }).count()) === 0 &&
       cannot ===
-        'Diese Komponente lässt sich noch nicht übernehmen: Das Notizbuch kennt Wasser nicht. Das Rezept bleibt hier zum Kochen.',
+        'Diese Komponente lässt sich noch nicht übernehmen: Das Notizbuch kennt Orangenblütenwasser nicht. Das Rezept bleibt hier zum Kochen.',
     `${label}: why a component cannot be kept, in German with the German name (${cannot})`,
   );
   await context.close();
