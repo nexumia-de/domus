@@ -1,0 +1,158 @@
+{
+  "id": "raita",
+  "kind": "base",
+  "name": {
+    "en": "Yogurt and cucumber sauce",
+    "de": "Joghurt-Gurken-Sauce"
+  },
+  "originalName": "Kheere ka raita",
+  "country": "in",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "raita-sauce",
+      "name": {
+        "en": "Yogurt and cucumber sauce",
+        "de": "Joghurt-Gurken-Sauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "yogurt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171284"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Plain yogurt.",
+            "de": "Naturjoghurt."
+          }
+        },
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Peeled, coarsely grated and squeezed out.",
+            "de": "Geschält, grob gerieben und ausgedrückt."
+          }
+        },
+        {
+          "key": "cumin",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170923"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Whole seeds.",
+            "de": "Ganze Samen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "mint",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173475"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Leaves, finely chopped.",
+            "de": "Blätter, fein gehackt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Grate the cucumber coarsely and squeeze out the water with your hands.",
+            "de": "Die Gurke grob reiben und das Wasser mit den Händen ausdrücken."
+          },
+          "action": "grate",
+          "uses": ["cucumber"]
+        },
+        {
+          "text": {
+            "en": "Toast the cumin seeds in a dry pan over medium heat for 1 minute until they smell nutty, then crush them roughly.",
+            "de": "Den Kreuzkümmel in einer trockenen Pfanne bei mittlerer Hitze 1 Minute rösten, bis er duftet, dann grob zerstoßen."
+          },
+          "action": "toast",
+          "uses": ["cumin"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir the yogurt smooth in a bowl and mix in the cucumber, the cumin, the salt and the mint.",
+            "de": "Den Joghurt in einer Schüssel glatt rühren und Gurke, Kreuzkümmel, Salz und Minze untermischen."
+          },
+          "action": "mix",
+          "uses": ["yogurt", "cucumber", "cumin", "salt", "mint"]
+        },
+        {
+          "text": {
+            "en": "Chill for 15 minutes and serve cold beside curry, rice or flatbread.",
+            "de": "15 Minuten kühlen und kalt zu Curry, Reis oder Fladenbrot servieren."
+          },
+          "action": "chill",
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "raita-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "id": "kofte",
+  "name": {
+    "en": "Grilled meatballs",
+    "de": "Gegrillte Hackfleischröllchen"
+  },
+  "originalName": "Izgara köfte",
+  "country": "tr",
+  "vegetarian": false,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "kofte-patties",
+      "name": {
+        "en": "Grilled meatballs",
+        "de": "Gegrillte Hackfleischröllchen"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "beef",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174036"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Ground beef, not too lean.",
+            "de": "Rinderhack, nicht zu mager."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "breadcrumbs",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174928"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Or the same amount of stale white bread, soaked and squeezed out.",
+            "de": "Oder die gleiche Menge trockenes Weißbrot, eingeweicht und ausgedrückt."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "amount": {
+            "value": 20,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Flat-leaf, about half a bunch.",
+            "de": "Glatte Petersilie, etwa ein halbes Bund."
+          }
+        },
+        {
+          "key": "cumin",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170923"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Grate the onion on the fine side of the grater and press it out in a sieve, so that little liquid is left. Chop the parsley finely.",
+            "de": "Die Zwiebel auf der feinen Seite der Reibe reiben und im Sieb ausdrücken, damit nur wenig Flüssigkeit bleibt. Die Petersilie fein hacken."
+          },
+          "action": "grate",
+          "uses": ["onion", "parsley"]
+        },
+        {
+          "text": {
+            "en": "Knead the beef with the onion, the breadcrumbs, the parsley, the cumin, the salt and the pepper for about 5 minutes, until the mixture is sticky and holds together.",
+            "de": "Das Rinderhack mit Zwiebel, Semmelbröseln, Petersilie, Kreuzkümmel, Salz und Pfeffer etwa 5 Minuten kneten, bis die Masse klebrig ist und zusammenhält."
+          },
+          "action": "mix",
+          "uses": ["beef", "onion", "breadcrumbs", "parsley", "cumin", "salt", "pepper"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cover the mixture and chill it, so that it is easier to shape and the flavours come together.",
+            "de": "Die Masse zudecken und kalt stellen, damit sie sich leichter formen lässt und die Aromen sich verbinden."
+          },
+          "action": "chill",
+          "time": {
+            "value": 30,
+            "to": 60,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "With wet hands shape 16 small oblong patties of about 5 cm, slightly flattened.",
+            "de": "Mit nassen Händen 16 kleine längliche Röllchen von etwa 5 cm formen und leicht flach drücken."
+          },
+          "action": "shape",
+          "uses": ["beef"]
+        },
+        {
+          "text": {
+            "en": "Grill the köfte over high heat, or in a hot grill pan, for 8 to 10 minutes. Turn them once, until they are browned on both sides and cooked through.",
+            "de": "Die Köfte bei starker Hitze auf dem Grill oder in einer heißen Grillpfanne 8 bis 10 Minuten garen. Einmal wenden, bis sie beidseitig gebräunt und durchgegart sind."
+          },
+          "action": "grill",
+          "uses": ["beef"],
+          "time": {
+            "value": 8,
+            "to": 10,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "kofte-patties"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

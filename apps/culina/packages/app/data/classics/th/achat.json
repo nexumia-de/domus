@@ -1,0 +1,190 @@
+{
+  "id": "achat",
+  "kind": "base",
+  "name": {
+    "en": "Cucumber relish",
+    "de": "Gurken-Relish"
+  },
+  "originalName": "Achat",
+  "country": "th",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "cucumber-relish",
+      "name": {
+        "en": "Cucumber relish",
+        "de": "Gurken-Relish"
+      },
+      "role": "acid",
+      "lines": [
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172237"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Quartered lengthwise and cut into thin slices.",
+            "de": "Längs geviertelt und in dünne Scheiben geschnitten."
+          }
+        },
+        {
+          "key": "shallot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170499"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g"
+          },
+          "note": {
+            "en": "In thin slices.",
+            "de": "In dünnen Scheiben."
+          }
+        },
+        {
+          "key": "chili",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170106"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "In thin rings.",
+            "de": "In dünnen Ringen."
+          }
+        },
+        {
+          "key": "coriander",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169997"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Leaves picked.",
+            "de": "Blätter abgezupft."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Heat the vinegar, the water, the sugar and the salt in a small pot, stirring, until the sugar has dissolved.",
+            "de": "Essig, Wasser, Zucker und Salz in einem kleinen Topf unter Rühren erhitzen, bis sich der Zucker gelöst hat."
+          },
+          "action": "heat",
+          "uses": ["vinegar", "water", "sugar", "salt"]
+        },
+        {
+          "text": {
+            "en": "Let the syrup cool completely.",
+            "de": "Den Sirup vollständig abkühlen lassen."
+          },
+          "action": "cool"
+        },
+        {
+          "text": {
+            "en": "Put the cucumber, the shallots and the chilli into a bowl.",
+            "de": "Gurke, Schalotten und Chili in eine Schüssel geben."
+          },
+          "action": "add",
+          "uses": ["cucumber", "shallot", "chili"]
+        },
+        {
+          "text": {
+            "en": "Pour the cold syrup over the vegetables shortly before serving, so that the cucumber stays crisp.",
+            "de": "Den kalten Sirup kurz vor dem Anrichten über das Gemüse gießen, damit die Gurke knackig bleibt."
+          },
+          "action": "pour"
+        },
+        {
+          "text": {
+            "en": "Scatter the coriander leaves on top and serve.",
+            "de": "Das Koriandergrün darüberstreuen und anrichten."
+          },
+          "action": "garnish",
+          "uses": ["coriander"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "acid",
+      "ref": {
+        "kind": "component",
+        "id": "cucumber-relish"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

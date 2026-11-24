@@ -1,4 +1,4 @@
-// The nutrition section of all 68 shipped dishes, as the screen gets it: per dish whether figures
+// The nutrition section of all 124 shipped dishes, as the screen gets it: per dish whether figures
 // are shown, the energy per portion when they are, and how many lines are counted. Pins the rule of
 // docs/engine-rules.md (Nutrition, When figures are shown; The figures of a line) on the real
 // content and the shipped catalogue. A change to a dish, the catalogue or the rule shows up here
@@ -83,7 +83,6 @@ const EXPECTED: Record<string, [number | null, number, number]> = {
   'stracotto-di-vitella': [null, 5, 15],
   'tagliatelle-verdi': [null, 1, 6],
   'torta-mantovana': [null, 6, 10],
-  // The recipes of 2026-11-23.
   kartoffelnudeln: [null, 1, 6],
   ruehrei: [null, 2, 4],
   'saure-eiersauce': [null, 2, 7],
@@ -104,12 +103,68 @@ const EXPECTED: Record<string, [number | null, number, number]> = {
   'maccheroni-alla-bolognese': [null, 5, 13],
   'passato-di-patate': [200, 3, 4],
   'spaghetti-alla-rustica': [null, 2, 8],
+  achat: [70, 7, 8],
+  'arroz-rojo': [350, 6, 7],
+  'bai-mi-fan': [270, 1, 2],
+  'barbecue-sauce': [120, 10, 11],
+  'basmati-chawal': [270, 2, 3],
+  bratkartoffeln: [270, 5, 5],
+  'bulgur-pilavi': [350, 7, 8],
+  'buttermilk-pancakes': [null, 7, 9],
+  'chana-masala': [390, 16, 18],
+  'chao-cai-jiang': [40, 6, 6],
+  chapati: [260, 4, 5],
+  'coban-salatasi': [140, 8, 8],
+  coleslaw: [null, 6, 7],
+  crepes: [430, 6, 6],
+  'dan-chao-fan': [430, 7, 8],
+  'fanqie-chao-dan': [220, 6, 6],
+  'frijoles-refritos': [320, 6, 7],
+  'gambas-al-ajillo': [280, 6, 6],
+  gohan: [270, 1, 2],
+  guacamole: [250, 6, 6],
+  'hamburger-patties': [410, 4, 4],
+  horiatiki: [310, 9, 9],
+  'impasto-per-pizza': [520, 4, 5],
+  kachumber: [30, 7, 7],
+  'kaeng-phet-kai': [null, 9, 11],
+  'khao-suai': [270, 1, 2],
+  kofte: [440, 7, 7],
+  'kyuri-no-sunomono': [40, 6, 7],
+  ladolemono: [180, 5, 5],
+  'macaroni-and-cheese': [800, 10, 11],
+  'mashed-potatoes': [300, 6, 7],
+  'masoor-dal-tadka': [310, 12, 13],
+  'mercimek-corbasi': [330, 12, 13],
+  'miso-shiru': [null, 3, 4],
+  'murgh-masala': [350, 15, 16],
+  'nam-chim-kai': [80, 6, 8],
+  'nam-chim-satay': [260, 7, 8],
+  'onion-gravy': [120, 6, 6],
+  'pai-huanggua': [40, 7, 7],
+  'patatas-bravas': [650, 11, 12],
+  'patates-lemonates': [340, 7, 8],
+  'pesto-genovese': [310, 7, 7],
+  'pico-de-gallo': [35, 6, 6],
+  'pollo-deshebrado-en-jitomate': [280, 10, 11],
+  'quiche-lorraine': [830, 10, 11],
+  rahmchampignons: [270, 7, 7],
+  raita: [70, 5, 5],
+  ratatouille: [250, 11, 11],
+  'roast-potatoes': [290, 4, 5],
+  'sake-no-shioyaki': [230, 3, 3],
+  'souvlaki-kotopoulo': [300, 7, 7],
+  tamagoyaki: [110, 6, 7],
+  'teriyaki-no-tare': [60, 3, 3],
+  'tortillas-de-harina': [null, 3, 5],
+  tzatziki: [170, 7, 7],
+  'vinaigrette-moutarde': [280, 6, 6],
 };
 
 describe('the nutrition of the shipped dishes', () => {
   test('every shipped dish is in the table and no other', () => {
     expect(dishes.map((c) => c.id).sort()).toEqual(Object.keys(EXPECTED).sort());
-    expect(dishes).toHaveLength(68);
+    expect(dishes).toHaveLength(124);
   });
 
   for (const [id, [kcal, counted, total]] of Object.entries(EXPECTED)) {
@@ -132,8 +187,8 @@ describe('the nutrition of the shipped dishes', () => {
     });
   }
 
-  test('17 of 68 dishes show figures (9 of 48 before the recipes of 2026-11-23)', () => {
-    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(17);
+  test('68 of 124 dishes show figures (17 of 68 before the own recipes of 2026-11-24)', () => {
+    expect(dishes.filter((c) => !viewOf(c.id).tooFew)).toHaveLength(68);
   });
 });
 

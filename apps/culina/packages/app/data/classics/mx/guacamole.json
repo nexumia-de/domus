@@ -1,0 +1,173 @@
+{
+  "id": "guacamole",
+  "kind": "base",
+  "name": {
+    "en": "Guacamole",
+    "de": "Guacamole"
+  },
+  "originalName": "Guacamole",
+  "country": "mx",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "guacamole-sauce",
+      "name": {
+        "en": "Guacamole",
+        "de": "Guacamole"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "avocado",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171705"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Ripe, they give a little under the thumb.",
+            "de": "Reif, sie geben unter dem Daumen leicht nach."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "chilli",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168576"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "coriander",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169997"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "lime",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168155"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Only the juice is used.",
+            "de": "Nur der Saft wird verwendet."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.75,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the onion and chop it finely; chop the jalapeño and the coriander leaves finely.",
+            "de": "Die Zwiebel schälen und fein hacken; Jalapeño und Koriandergrün fein hacken."
+          },
+          "action": "prepare",
+          "uses": ["onion", "chilli", "coriander"]
+        },
+        {
+          "text": {
+            "en": "Halve the avocados, remove the stones and scoop the flesh into a bowl.",
+            "de": "Die Avocados halbieren, die Kerne entfernen und das Fruchtfleisch in eine Schüssel löffeln."
+          },
+          "action": "prepare",
+          "uses": ["avocado"]
+        },
+        {
+          "text": {
+            "en": "Mash the avocado roughly with a fork; small pieces stay.",
+            "de": "Die Avocado mit einer Gabel grob zerdrücken; kleine Stücke bleiben."
+          },
+          "action": "mash",
+          "uses": ["avocado"]
+        },
+        {
+          "text": {
+            "en": "Stir in the onion, the jalapeño and the coriander.",
+            "de": "Zwiebel, Jalapeño und Koriandergrün unterrühren."
+          },
+          "action": "stir",
+          "uses": ["onion", "chilli", "coriander"]
+        },
+        {
+          "text": {
+            "en": "Squeeze the lime over it, add the salt and stir; add more salt if needed.",
+            "de": "Die Limette darüber auspressen, das Salz zugeben und umrühren; bei Bedarf nachsalzen."
+          },
+          "action": "season",
+          "uses": ["lime", "salt"]
+        },
+        {
+          "text": {
+            "en": "Serve at once, as the flesh turns brown when it stands.",
+            "de": "Gleich servieren, denn das Fruchtfleisch wird beim Stehen braun."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "guacamole-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Serves 4 as a dip with tortilla chips or as a topping.",
+    "de": "Für 4 Personen als Dip zu Tortilla-Chips oder als Belag."
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "id": "miso-shiru",
+  "kind": "base",
+  "name": {
+    "en": "Miso soup",
+    "de": "Misosuppe"
+  },
+  "originalName": "Miso shiru",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "miso-shiru-soup",
+      "name": {
+        "en": "Miso soup",
+        "de": "Misosuppe"
+      },
+      "role": "soup",
+      "lines": [
+        {
+          "key": "dashi",
+          "wanted": {
+            "en": "Dashi (kombu and bonito stock)",
+            "de": "Dashi (Kombu-Bonito-Brühe)"
+          },
+          "amount": {
+            "value": 800,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Made from kombu and dried bonito, which the catalogue lacks. Use ready dashi or make it from them.",
+            "de": "Aus Kombu und getrocknetem Bonito, die der Katalog nicht hat. Fertige Dashi nehmen oder daraus kochen."
+          }
+        },
+        {
+          "key": "miso",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172442"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "About 50 g; the paste varies in saltiness, so add it to taste.",
+            "de": "Etwa 50 g; die Paste ist unterschiedlich salzig, daher nach Geschmack zugeben."
+          }
+        },
+        {
+          "key": "tofu",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172475"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Firm tofu, cut into 1.5 cm cubes.",
+            "de": "Fester Tofu, in 1,5-cm-Würfel geschnitten."
+          }
+        },
+        {
+          "key": "scallion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170005"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tofu into cubes of 1.5 cm and the scallions into thin rings.",
+            "de": "Den Tofu in 1,5-cm-Würfel und die Lauchzwiebeln in feine Ringe schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["tofu", "scallion"]
+        },
+        {
+          "text": {
+            "en": "Heat the dashi in a pot until it is hot and steaming; do not let it boil hard.",
+            "de": "Die Dashi im Topf erhitzen, bis sie heiß ist und dampft; nicht stark kochen lassen."
+          },
+          "action": "heat",
+          "uses": ["dashi"]
+        },
+        {
+          "text": {
+            "en": "Add the tofu and warm it for 2 minutes.",
+            "de": "Den Tofu zugeben und 2 Minuten erwärmen."
+          },
+          "action": "add",
+          "uses": ["tofu"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat. Put the miso into a ladle, dip it in the soup and stir it with a spoon until it has dissolved, then stir it into the pot.",
+            "de": "Den Topf vom Herd nehmen. Das Miso in eine Kelle geben, in die Suppe tauchen und mit einem Löffel darin auflösen, dann in den Topf rühren."
+          },
+          "action": "stir",
+          "uses": ["miso"]
+        },
+        {
+          "text": {
+            "en": "Serve at once in bowls, with the scallions on top. Do not boil the soup again after the miso is in.",
+            "de": "Sofort in Schalen servieren, die Lauchzwiebeln darüberstreuen. Die Suppe nach dem Miso nicht mehr kochen."
+          },
+          "action": "sprinkle",
+          "uses": ["scallion"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "soup",
+      "ref": {
+        "kind": "component",
+        "id": "miso-shiru-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (56 own recipes in the app)
+
+- **Creation**: the 40 own recipes of the drafts are shipped files again, the ones bent by gaps of the catalogue repaired with the foods it has now (soy sauce, cumin, oregano, pecorino, the chicken cuts without skin, pinto beans), and 16 more are written: guacamole, macaroni and cheese, barbecue sauce, tzatziki, horiatiki, köfte, raita, chana masala, onion gravy, teriyaki sauce, miso soup, a stir-fry sauce, a red curry, a peanut sauce, a mustard vinaigrette, ratatouille. 124 shipped files, Cook lists 98, 26 are sauce bases. Two lines stay `wanted` for want of a USDA food: dashi and red curry paste. **Second reading: 34 of 56 are read** (seven changed: water of the bulgur, of the basmati rice and of the chickpeas, eggs of the quiche, salt of the ratatouille, the sweet chilli sauce's proportions, the pizza dough's water and the order of heating the oven); **the 22 of Mexico, the USA, China and Japan are not read yet** and say so in `check.note`. The recipe files left `drafts/`.
+
 ## 2026-11-23 (48 foods for the own recipes)
 
 - **Update**: the catalogue has the 48 named foods the own recipes need ([ingredient catalogue](ingredient-catalogue.md#named-foods)): every id of the proposed list read in SR Legacy 2018-04 before it was taken, the Wikidata snapshot fetched again, 40 own German names, 777 entries. FlavorDB's links rebuilt with 17 corrections for the new foods (681 of 777). The stocks, the fish, oyster and Worcestershire sauce count as food of an animal for "without meat and fish" ([dish characters](dish-characters.md)). `drafts/catalogue/` is gone.

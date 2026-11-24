@@ -1,0 +1,150 @@
+{
+  "id": "chao-cai-jiang",
+  "kind": "base",
+  "name": {
+    "en": "All-purpose stir-fry sauce",
+    "de": "Allzweck-Sauce zum Wok-Braten"
+  },
+  "originalName": "Chao cai jiang",
+  "country": "cn",
+  "vegetarian": false,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "chao-cai-jiang-sauce",
+      "name": {
+        "en": "All-purpose stir-fry sauce",
+        "de": "Allzweck-Sauce zum Wok-Braten"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "soy-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "oyster-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174529"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "cornstarch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "stock",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172884"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Chicken stock; water works too, but the sauce is then thinner in taste.",
+            "de": "Hühnerfond; Wasser geht auch, die Sauce schmeckt dann aber dünner."
+          }
+        },
+        {
+          "key": "sesame-oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171016"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stir the cornstarch with 2 tablespoons of the stock until smooth.",
+            "de": "Die Stärke mit 2 Esslöffeln des Fonds glatt rühren."
+          },
+          "action": "stir",
+          "uses": ["cornstarch", "stock"]
+        },
+        {
+          "text": {
+            "en": "Add the rest of the stock, the soy sauce, the oyster sauce, the sugar and the sesame oil and stir until the sugar has dissolved.",
+            "de": "Den übrigen Fond, Sojasauce, Austernsauce, Zucker und Sesamöl zugeben und rühren, bis sich der Zucker gelöst hat."
+          },
+          "action": "mix",
+          "uses": ["stock", "soy-sauce", "oyster-sauce", "sugar", "sesame-oil"]
+        },
+        {
+          "text": {
+            "en": "Stir again just before use, as the starch settles. Pour it into the wok at the end of stir-frying and cook for 1 minute, stirring, until it turns glossy and thickens.",
+            "de": "Kurz vor Gebrauch noch einmal rühren, da sich die Stärke absetzt. Am Ende des Wok-Bratens in den Wok gießen und 1 Minute rührend kochen, bis sie glänzt und bindet."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["cornstarch"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "chao-cai-jiang-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Enough for a stir-fry of about 600 g of meat and vegetables.",
+    "de": "Reicht für ein Wok-Gericht aus etwa 600 g Fleisch und Gemüse."
+  }
+}

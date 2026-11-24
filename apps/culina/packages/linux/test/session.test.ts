@@ -6,6 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from 'vitest';
+import { COUNTRY_CODES } from '@culina/engine';
 import { createMemoryStore, ensureSpace } from '@nexumia-de/hospes';
 import {
   classics,
@@ -315,12 +316,13 @@ test('every dish is an entry of the web app, and the one filter narrows the list
   await session.load();
   const all = session.entries();
   expect(all).toHaveLength(dishClassics().length);
-  expect(dishClassics().length).toBe(classics().length - 12);
+  // 26 shipped files are sauce bases, which are parts and no dishes.
+  expect(dishClassics().length).toBe(classics().length - 26);
   expect(all.every((entry) => entry.origin === 'shipped')).toBe(true);
-  // What is offered comes from the dishes: the four countries in their order, courses, characters.
+  // What is offered comes from the dishes: the countries in the app's order, courses, characters.
   const offered = session.offered();
   expect(offered.origins).toEqual(['shipped']);
-  expect(offered.cuisines).toEqual(['de', 'it', 'fr', 'es']);
+  expect(offered.cuisines).toEqual([...COUNTRY_CODES]);
   expect(offered.courses.length).toBeGreaterThan(1);
   expect(offered.characters.length).toBeGreaterThan(0);
   // Each choice keeps only what passes it, and the choices combine.

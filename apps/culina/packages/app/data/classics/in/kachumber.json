@@ -1,0 +1,164 @@
+{
+  "id": "kachumber",
+  "kind": "base",
+  "name": {
+    "en": "Kachumber (tomato, cucumber and onion salad)",
+    "de": "Kachumber (Tomaten-Gurken-Zwiebel-Salat)"
+  },
+  "originalName": "Kachumber",
+  "country": "in",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "kachumber-salad",
+      "name": {
+        "en": "Kachumber",
+        "de": "Kachumber"
+      },
+      "role": "acid",
+      "lines": [
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "chili",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170497"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Seeds removed, finely chopped.",
+            "de": "Entkernt und fein gehackt."
+          }
+        },
+        {
+          "key": "coriander",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169997"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Chopped.",
+            "de": "Gehackt."
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tomatoes, the cucumber and the onion into small dice of one size.",
+            "de": "Tomaten, Gurke und Zwiebel in kleine, gleich große Würfel schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["tomato", "cucumber", "onion"]
+        },
+        {
+          "text": {
+            "en": "Mix the dice with the chilli and the coriander leaves in a bowl.",
+            "de": "Die Würfel in einer Schüssel mit Chili und Koriandergrün mischen."
+          },
+          "action": "mix",
+          "uses": ["chili", "coriander"]
+        },
+        {
+          "text": {
+            "en": "Shortly before serving, stir in the lemon juice and the salt.",
+            "de": "Kurz vor dem Anrichten Zitronensaft und Salz unterrühren."
+          },
+          "action": "season",
+          "uses": ["lemon", "salt"]
+        },
+        {
+          "text": {
+            "en": "Serve cool beside curry, dal and rice.",
+            "de": "Kühl zu Curry, Dal und Reis anrichten."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "acid",
+      "ref": {
+        "kind": "component",
+        "id": "kachumber-salad"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

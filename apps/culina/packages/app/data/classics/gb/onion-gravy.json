@@ -1,0 +1,190 @@
+{
+  "id": "onion-gravy",
+  "kind": "base",
+  "name": {
+    "en": "Onion gravy",
+    "de": "Zwiebelsauce"
+  },
+  "originalName": "Onion gravy",
+  "country": "gb",
+  "vegetarian": false,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "onion-gravy-sauce",
+      "name": {
+        "en": "Onion gravy",
+        "de": "Zwiebelsauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173410"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Halved and cut into thin slices.",
+            "de": "Halbiert und in dünne Scheiben geschnitten."
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168894"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Plain flour.",
+            "de": "Weizenmehl."
+          }
+        },
+        {
+          "key": "stock",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172883"
+          },
+          "amount": {
+            "value": 500,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Hot beef stock.",
+            "de": "Heiße Rinderbrühe."
+          }
+        },
+        {
+          "key": "worcestershire",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171610"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Melt the butter in a wide pan over medium-low heat.",
+            "de": "Die Butter in einer breiten Pfanne bei mittlerer bis schwacher Hitze schmelzen."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Cook the onions in it for 25 minutes, stirring now and then, until they are soft and deep golden brown.",
+            "de": "Die Zwiebeln darin unter gelegentlichem Rühren 25 Minuten garen, bis sie weich und tief goldbraun sind."
+          },
+          "action": "cook",
+          "uses": ["onion"],
+          "time": {
+            "value": 25,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Sprinkle the flour over the onions and stir for 2 minutes.",
+            "de": "Das Mehl über die Zwiebeln streuen und 2 Minuten rühren."
+          },
+          "action": "sprinkle",
+          "uses": ["flour"],
+          "time": {
+            "value": 2,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the hot stock a little at a time, stirring so that no lumps form.",
+            "de": "Die heiße Brühe nach und nach zugießen und dabei rühren, damit keine Klümpchen entstehen."
+          },
+          "action": "pour",
+          "uses": ["stock"]
+        },
+        {
+          "text": {
+            "en": "Add the Worcestershire sauce and simmer for 10 minutes until the gravy coats the back of a spoon.",
+            "de": "Die Worcestershiresauce zugeben und 10 Minuten köcheln lassen, bis die Sauce den Löffelrücken überzieht."
+          },
+          "technique": "simmer",
+          "uses": ["worcestershire"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Season with the pepper and serve hot with sausages, mash or roast meat.",
+            "de": "Mit dem Pfeffer abschmecken und heiß zu Würstchen, Püree oder Braten servieren."
+          },
+          "action": "season",
+          "uses": ["pepper"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "onion-gravy-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it changed nothing."
+  }
+}

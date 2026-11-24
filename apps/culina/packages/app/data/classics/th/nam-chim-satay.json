@@ -1,0 +1,195 @@
+{
+  "id": "nam-chim-satay",
+  "kind": "base",
+  "name": {
+    "en": "Peanut sauce",
+    "de": "Erdnusssauce"
+  },
+  "originalName": "Nam chim satay",
+  "country": "th",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "peanut-sauce",
+      "name": {
+        "en": "Peanut sauce",
+        "de": "Erdnusssauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "peanut-butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172470"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Smooth.",
+            "de": "Fein."
+          }
+        },
+        {
+          "key": "coconut",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170172"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Two cloves.",
+            "de": "Zwei Zehen."
+          }
+        },
+        {
+          "key": "chili",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170106"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Finely chopped; with the seeds for more heat, without for less.",
+            "de": "Fein gehackt; mit den Kernen schärfer, ohne milder."
+          }
+        },
+        {
+          "key": "soy",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168833"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "lime",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168156"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the garlic and the chilli very finely.",
+            "de": "Knoblauch und Chili sehr fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["garlic", "chili"]
+        },
+        {
+          "text": {
+            "en": "Warm the coconut milk and the water in a small pot over low heat and whisk in the peanut butter until the sauce is smooth.",
+            "de": "Kokosmilch und Wasser in einem kleinen Topf bei schwacher Hitze erwärmen und die Erdnussbutter glatt einrühren."
+          },
+          "action": "whisk",
+          "uses": ["coconut", "water", "peanut-butter"]
+        },
+        {
+          "text": {
+            "en": "Add the garlic, the chilli, the soy sauce and the sugar and simmer for 5 minutes, stirring often, until the sauce is thick enough to coat a spoon.",
+            "de": "Knoblauch, Chili, Sojasauce und Zucker dazugeben und 5 Minuten köcheln lassen, dabei oft rühren, bis die Sauce einen Löffel überzieht."
+          },
+          "technique": "simmer",
+          "uses": ["garlic", "chili", "soy", "sugar"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat, stir in the lime juice and taste. If the sauce is too thick, loosen it with a little warm water.",
+            "de": "Den Topf vom Herd nehmen, den Limettensaft einrühren und abschmecken. Ist die Sauce zu dick, mit etwas warmem Wasser verdünnen."
+          },
+          "action": "remove-from-heat",
+          "uses": ["lime"]
+        },
+        {
+          "text": {
+            "en": "Serve warm or at room temperature, for example with grilled skewers.",
+            "de": "Warm oder zimmerwarm servieren, zum Beispiel zu gegrillten Spießen."
+          },
+          "action": "serve"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "peanut-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  },
+  "note": {
+    "en": "Makes about 300 ml, enough for 4 persons as a dip.",
+    "de": "Ergibt etwa 300 ml, als Dip genug für 4 Personen."
+  }
+}

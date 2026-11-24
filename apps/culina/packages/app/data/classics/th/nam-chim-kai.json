@@ -1,0 +1,198 @@
+{
+  "id": "nam-chim-kai",
+  "kind": "base",
+  "name": {
+    "en": "Sweet chilli sauce",
+    "de": "Süße Chilisauce"
+  },
+  "originalName": "Nam chim kai",
+  "country": "th",
+  "vegetarian": false,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 8,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "sweet-chilli-sauce",
+      "name": {
+        "en": "Sweet chilli sauce",
+        "de": "Süße Chilisauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "chili",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170106"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Stalks removed; with the seeds for more heat, without for less.",
+            "de": "Stiele entfernt; mit den Kernen schärfer, ohne milder."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Three cloves.",
+            "de": "Drei Zehen."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172237"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "fish-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174531"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "cornstarch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Stirred smooth with the water for thickening.",
+            "de": "Mit dem Wasser zum Binden glatt gerührt."
+          }
+        },
+        {
+          "key": "water-starch",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 30,
+            "unit": "ml"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the chillies and the garlic very finely, or crush them coarsely in a mortar.",
+            "de": "Chilis und Knoblauch sehr fein hacken oder im Mörser grob zerstoßen."
+          },
+          "action": "crush",
+          "uses": ["chili", "garlic"]
+        },
+        {
+          "text": {
+            "en": "Put them into a small pot with the vinegar, the 100 ml of water, the sugar and the fish sauce and bring to the boil, stirring, until the sugar has dissolved.",
+            "de": "Mit Essig, den 100 ml Wasser, Zucker und Fischsauce in einen kleinen Topf geben und unter Rühren aufkochen, bis sich der Zucker gelöst hat."
+          },
+          "action": "heat",
+          "uses": ["vinegar", "water", "sugar", "fish-sauce"]
+        },
+        {
+          "text": {
+            "en": "Simmer without a lid for 5 minutes.",
+            "de": "Ohne Deckel 5 Minuten köcheln lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Stir the cornstarch smooth with the 30 ml of cold water, stir it into the simmering sauce and cook for 1 minute until it is clear and lightly thick; it thickens further as it cools.",
+            "de": "Die Maisstärke mit den 30 ml kaltem Wasser glatt rühren, in die köchelnde Sauce rühren und 1 Minute kochen, bis sie klar und leicht dick ist; beim Abkühlen dickt sie weiter ein."
+          },
+          "technique": "thicken-with-starch",
+          "uses": ["cornstarch", "water-starch"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Let the sauce cool and fill it into a clean jar. It keeps in the refrigerator for 2 weeks.",
+            "de": "Die Sauce abkühlen lassen und in ein sauberes Glas füllen. Im Kühlschrank hält sie sich 2 Wochen."
+          },
+          "action": "cool"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "sweet-chilli-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed the proportions: the sauce was too sour and thin, so the vinegar went from 120 to 80 ml, the water from 60 to 100 ml and the sugar from 100 to 150 g. The fish sauce was already in; nothing else was missing."
+  },
+  "note": {
+    "en": "Makes about 250 ml, a dipping sauce for about 8 persons.",
+    "de": "Ergibt etwa 250 ml, eine Dip-Sauce für etwa 8 Personen."
+  }
+}

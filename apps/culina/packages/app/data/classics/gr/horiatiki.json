@@ -1,0 +1,206 @@
+{
+  "id": "horiatiki",
+  "name": {
+    "en": "Greek village salad",
+    "de": "Griechischer Bauernsalat"
+  },
+  "originalName": "Horiatiki salata",
+  "country": "gr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "horiatiki-salad",
+      "name": {
+        "en": "Greek village salad",
+        "de": "Griechischer Bauernsalat"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "tomato",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170457"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Ripe, about 500 g.",
+            "de": "Reif, etwa 500 g."
+          }
+        },
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "About 200 g.",
+            "de": "Etwa 200 g."
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Red if you can; half a small onion.",
+            "de": "Möglichst rot; eine halbe kleine Zwiebel."
+          }
+        },
+        {
+          "key": "greenpepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170427"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "olives",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169094"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Kalamata olives where there are some.",
+            "de": "Wenn vorhanden Kalamata-Oliven."
+          }
+        },
+        {
+          "key": "feta",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173420"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "note": {
+            "en": "In one slab.",
+            "de": "Als ganze Scheibe."
+          }
+        },
+        {
+          "key": "oregano",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171328"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Dried.",
+            "de": "Getrocknet."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Little, as the feta and the olives are salty.",
+            "de": "Wenig, da Feta und Oliven salzig sind."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Cut the tomatoes into wedges, the cucumber into thick half slices and the pepper into rings; take the seeds out of the pepper first.",
+            "de": "Die Tomaten in Spalten, die Gurke in dicke halbe Scheiben und die Paprika in Ringe schneiden; die Paprika vorher entkernen."
+          },
+          "technique": "knife-cuts",
+          "uses": ["tomato", "cucumber", "greenpepper"]
+        },
+        {
+          "text": {
+            "en": "Cut the onion into thin rings.",
+            "de": "Die Zwiebel in dünne Ringe schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["onion"]
+        },
+        {
+          "text": {
+            "en": "Put the vegetables and the olives in a wide bowl, add the salt and half of the olive oil and turn them gently.",
+            "de": "Gemüse und Oliven in eine weite Schüssel geben, Salz und die Hälfte des Olivenöls zugeben und vorsichtig wenden."
+          },
+          "action": "mix",
+          "uses": ["tomato", "cucumber", "onion", "greenpepper", "olives", "salt", "oil"]
+        },
+        {
+          "text": {
+            "en": "Lay the slab of feta on top, sprinkle it with the oregano and drizzle the rest of the olive oil over it. Serve at once, with bread to mop up the juices.",
+            "de": "Die Fetascheibe obenauf legen, mit dem Oregano bestreuen und das restliche Olivenöl darüberträufeln. Sofort servieren, mit Brot zum Auftunken des Safts."
+          },
+          "action": "serve",
+          "uses": ["feta", "oregano", "oil"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "horiatiki-salad"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

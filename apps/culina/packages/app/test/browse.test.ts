@@ -4,6 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
+import { COUNTRY_CODES } from '@culina/engine';
 import { allEntries, entryOfClassic, entryOfDish } from '../src/browse/entry';
 import {
   isEmptyFilter,
@@ -97,13 +98,69 @@ describe('entries', () => {
       (c) => c.id,
     );
     expect(complete.sort()).toEqual([
+      'achat',
+      'arroz-rojo',
+      'bai-mi-fan',
+      'barbecue-sauce',
+      'basmati-chawal',
+      'bratkartoffeln',
+      'bulgur-pilavi',
+      'buttermilk-pancakes',
+      'chana-masala',
+      'chao-cai-jiang',
+      'chapati',
+      'coban-salatasi',
       'cocido-ordinario',
+      'coleslaw',
+      'crepes',
+      'dan-chao-fan',
+      'fanqie-chao-dan',
+      'frijoles-refritos',
+      'gambas-al-ajillo',
+      'gohan',
+      'guacamole',
+      'hamburger-patties',
+      'horiatiki',
+      'impasto-per-pizza',
+      'kachumber',
+      'kaeng-phet-kai',
+      'khao-suai',
+      'kofte',
+      'kyuri-no-sunomono',
+      'ladolemono',
       'macaroni-a-l-italienne-maigre',
+      'macaroni-and-cheese',
+      'mashed-potatoes',
+      'masoor-dal-tadka',
+      'mercimek-corbasi',
+      'miso-shiru',
+      'murgh-masala',
+      'nam-chim-kai',
+      'nam-chim-satay',
+      'onion-gravy',
+      'pai-huanggua',
+      'patatas-bravas',
+      'patates-lemonates',
+      'pesto-genovese',
+      'pico-de-gallo',
+      'pollo-deshebrado-en-jitomate',
       'pommes-de-terre-au-lait',
       'pot-au-feu',
+      'quiche-lorraine',
+      'rahmchampignons',
+      'raita',
+      'ratatouille',
+      'roast-potatoes',
       'rote-gruetze',
+      'sake-no-shioyaki',
       'sauce-blanche',
       'soupe-aux-poireaux',
+      'souvlaki-kotopoulo',
+      'tamagoyaki',
+      'teriyaki-no-tare',
+      'tortillas-de-harina',
+      'tzatziki',
+      'vinaigrette-moutarde',
     ]);
   });
 
@@ -155,7 +212,9 @@ describe('filter', () => {
       cuisines: ['de', 'it', 'fr', 'es'],
     });
     expect(offered.origins).toEqual(['own', 'shipped']);
-    expect(offered.cuisines).toEqual(['de', 'it', 'fr', 'es']);
+    // The four asked for come first in their order; the nine other cuisines of the shipped dishes follow.
+    expect(offered.cuisines.slice(0, 4)).toEqual(['de', 'it', 'fr', 'es']);
+    expect([...offered.cuisines].sort()).toEqual([...COUNTRY_CODES].sort());
     expect(offered.courses.slice(0, 2)).toEqual(['soup', 'main']);
     expect(offered.characters.indexOf('creamy')).toBeLessThan(
       offered.characters.indexOf('tomatoey'),

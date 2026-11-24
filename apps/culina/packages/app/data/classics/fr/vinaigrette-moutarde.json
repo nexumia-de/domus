@@ -1,0 +1,166 @@
+{
+  "id": "vinaigrette-moutarde",
+  "kind": "base",
+  "name": {
+    "en": "Mustard vinaigrette",
+    "de": "Senfvinaigrette"
+  },
+  "originalName": "Vinaigrette à la moutarde",
+  "country": "fr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "vinaigrette",
+      "name": {
+        "en": "Mustard vinaigrette",
+        "de": "Senfvinaigrette"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "mustard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172234"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Dijon mustard is the usual one.",
+            "de": "Üblich ist Dijon-Senf."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172240"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Freshly ground.",
+            "de": "Frisch gemahlen."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 9,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Rapeseed oil; a mild olive oil also works.",
+            "de": "Rapsöl; ein mildes Olivenöl passt ebenfalls."
+          }
+        },
+        {
+          "key": "shallot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170499"
+          },
+          "amount": {
+            "value": 20,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Optional; very finely chopped.",
+            "de": "Nach Belieben; sehr fein gehackt."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Chop the shallot very finely, if you use it.",
+            "de": "Die Schalotte, falls verwendet, sehr fein hacken."
+          },
+          "technique": "knife-cuts",
+          "uses": ["shallot"]
+        },
+        {
+          "text": {
+            "en": "Stir the mustard, the vinegar, the salt and the pepper together in a bowl until the salt has dissolved.",
+            "de": "Senf, Essig, Salz und Pfeffer in einer Schüssel verrühren, bis sich das Salz gelöst hat."
+          },
+          "action": "stir",
+          "uses": ["mustard", "vinegar", "salt", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Whisk in the oil in a thin stream until the sauce is thick and creamy.",
+            "de": "Das Öl in dünnem Strahl einschlagen, bis die Sauce dick und cremig ist."
+          },
+          "technique": "cold-emulsion",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Stir in the shallot, taste and serve over a green salad. It keeps for a week in a closed jar in the refrigerator; shake before use.",
+            "de": "Die Schalotte einrühren, abschmecken und über grünen Salat geben. Im verschlossenen Glas hält sie sich eine Woche im Kühlschrank; vor Gebrauch schütteln."
+          },
+          "action": "taste",
+          "uses": ["shallot"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "vinaigrette"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24; it added a note that Dijon mustard is the usual choice, the amounts are unchanged."
+  },
+  "note": {
+    "en": "Makes about 180 ml, a dressing for a salad for 4 persons.",
+    "de": "Ergibt etwa 180 ml, ein Dressing für einen Salat für 4 Personen."
+  }
+}

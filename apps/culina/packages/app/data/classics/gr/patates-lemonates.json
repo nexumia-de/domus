@@ -1,0 +1,199 @@
+{
+  "id": "patates-lemonates",
+  "kind": "base",
+  "name": {
+    "en": "Lemon potatoes from the oven",
+    "de": "Zitronenkartoffeln aus dem Ofen"
+  },
+  "originalName": "Patates lemonates",
+  "country": "gr",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "lemon-potatoes",
+      "name": {
+        "en": "Lemon potatoes",
+        "de": "Zitronenkartoffeln"
+      },
+      "role": "starch",
+      "lines": [
+        {
+          "key": "potatoes",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170028"
+          },
+          "amount": {
+            "value": 1000,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 80,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "lemon",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167747"
+          },
+          "amount": {
+            "value": 60,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Freshly squeezed, about 1.5 lemons.",
+            "de": "Frisch gepresst, etwa 1,5 Zitronen."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Three cloves.",
+            "de": "Drei Zehen."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "oregano",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171328"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Dried.",
+            "de": "Getrocknet."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "ml"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Preheat the oven to 200 °C (top and bottom heat).",
+            "de": "Den Ofen auf 200 °C (Ober- und Unterhitze) vorheizen."
+          },
+          "action": "preheat",
+          "temperature": {
+            "value": 200,
+            "unit": "C"
+          }
+        },
+        {
+          "text": {
+            "en": "Peel the potatoes and cut them lengthwise into wedges of one size.",
+            "de": "Die Kartoffeln schälen und längs in gleich große Spalten schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["potatoes"]
+        },
+        {
+          "text": {
+            "en": "Chop the garlic finely. In a roasting tin large enough to hold the potatoes in one layer, mix the potatoes with the olive oil, the lemon juice, the garlic, the oregano, the salt and the pepper.",
+            "de": "Den Knoblauch fein hacken. In einem Bräter, in dem die Kartoffeln in einer Lage Platz haben, die Kartoffeln mit Olivenöl, Zitronensaft, Knoblauch, Oregano, Salz und Pfeffer mischen."
+          },
+          "action": "mix",
+          "uses": ["potatoes", "oil", "lemon", "garlic", "salt", "oregano", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Pour the water into the tin beside the potatoes.",
+            "de": "Das Wasser neben den Kartoffeln in den Bräter gießen."
+          },
+          "action": "pour",
+          "uses": ["water"]
+        },
+        {
+          "text": {
+            "en": "Roast for 60 to 70 minutes and turn the potatoes once after half the time. They are done when they are soft, the edges are browned and almost all the liquid is gone.",
+            "de": "60 bis 70 Minuten im Ofen braten und die Kartoffeln nach der Hälfte der Zeit einmal wenden. Sie sind fertig, wenn sie weich sind, die Ränder gebräunt sind und die Flüssigkeit fast ganz verkocht ist."
+          },
+          "action": "roast",
+          "time": {
+            "value": 60,
+            "to": 70,
+            "unit": "min"
+          },
+          "temperature": {
+            "value": 200,
+            "unit": "C"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "starch",
+      "ref": {
+        "kind": "component",
+        "id": "lemon-potatoes"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

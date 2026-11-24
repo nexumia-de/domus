@@ -1,0 +1,192 @@
+{
+  "id": "tzatziki",
+  "kind": "base",
+  "name": {
+    "en": "Yogurt and cucumber dip",
+    "de": "Joghurt-Gurken-Dip"
+  },
+  "originalName": "Tzatziki",
+  "country": "gr",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "tzatziki-sauce",
+      "name": {
+        "en": "Yogurt and cucumber dip",
+        "de": "Joghurt-Gurken-Dip"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "yogurt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171304"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Strained Greek yogurt, full fat.",
+            "de": "Abgetropfter griechischer Joghurt, Vollfett."
+          }
+        },
+        {
+          "key": "cucumber",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169225"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "About 200 g.",
+            "de": "Etwa 200 g."
+          }
+        },
+        {
+          "key": "garlic",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169230"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Two cloves.",
+            "de": "Zwei Zehen."
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171413"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "dill",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172233"
+          },
+          "amount": {
+            "value": 10,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Fresh; mint is also used.",
+            "de": "Frisch; auch Minze wird verwendet."
+          }
+        },
+        {
+          "key": "vinegar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172240"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Red wine vinegar; lemon juice can take its place.",
+            "de": "Rotweinessig; Zitronensaft geht auch."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Peel the cucumber, cut it in half lengthwise and scrape out the seeds with a spoon. Grate it coarsely.",
+            "de": "Die Gurke schälen, der Länge nach halbieren und die Kerne mit einem Löffel herauskratzen. Grob raspeln."
+          },
+          "action": "grate",
+          "uses": ["cucumber"]
+        },
+        {
+          "text": {
+            "en": "Mix the grated cucumber with half of the salt and let it stand, then squeeze it out firmly in a clean kitchen towel or a sieve, so the dip stays thick.",
+            "de": "Die Gurkenraspel mit der Hälfte des Salzes mischen, stehen lassen und dann in einem sauberen Küchentuch oder Sieb kräftig ausdrücken, damit der Dip dick bleibt."
+          },
+          "action": "stand",
+          "uses": ["cucumber", "salt"],
+          "time": {
+            "value": 10,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Crush the garlic or chop it very finely and chop the dill.",
+            "de": "Den Knoblauch pressen oder sehr fein hacken und den Dill hacken."
+          },
+          "action": "prepare",
+          "uses": ["garlic", "dill"]
+        },
+        {
+          "text": {
+            "en": "Stir the yogurt smooth with the olive oil and the vinegar, then fold in the cucumber, the garlic, the dill and the rest of the salt.",
+            "de": "Den Joghurt mit Olivenöl und Essig glatt rühren, dann Gurke, Knoblauch, Dill und das übrige Salz unterheben."
+          },
+          "action": "mix",
+          "uses": ["yogurt", "oil", "vinegar", "cucumber", "garlic", "dill", "salt"]
+        },
+        {
+          "text": {
+            "en": "Chill the dip for at least 1 hour so the garlic and dill come through, and taste it again before serving.",
+            "de": "Den Dip mindestens 1 Stunde kalt stellen, damit Knoblauch und Dill durchziehen, und vor dem Servieren noch einmal abschmecken."
+          },
+          "action": "chill",
+          "time": {
+            "value": 1,
+            "unit": "h"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "tzatziki-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 and changed nothing."
+  }
+}

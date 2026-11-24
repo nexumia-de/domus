@@ -1,0 +1,120 @@
+{
+  "id": "teriyaki-no-tare",
+  "kind": "base",
+  "name": {
+    "en": "Teriyaki sauce",
+    "de": "Teriyaki-Sauce"
+  },
+  "originalName": "Teriyaki no tare",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "sauce",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "teriyaki-no-tare-sauce",
+      "name": {
+        "en": "Teriyaki sauce",
+        "de": "Teriyaki-Sauce"
+      },
+      "role": "sauce",
+      "lines": [
+        {
+          "key": "soy-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "sake",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-167723"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "Stands in for mirin, which the catalogue lacks.",
+            "de": "Ersetzt Mirin, das der Katalog nicht hat."
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "More than with mirin, which is itself sweet.",
+            "de": "Mehr als mit Mirin, das selbst süß ist."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Put the soy sauce, the sake and the sugar into a small pan and stir over low heat until the sugar has dissolved.",
+            "de": "Sojasauce, Sake und Zucker in einen kleinen Topf geben und bei schwacher Hitze rühren, bis sich der Zucker gelöst hat."
+          },
+          "action": "stir",
+          "uses": ["soy-sauce", "sake", "sugar"]
+        },
+        {
+          "text": {
+            "en": "Bring to a gentle boil and simmer for 5 to 6 minutes, until the sauce is reduced by about a third and coats a spoon.",
+            "de": "Zum leichten Kochen bringen und 5 bis 6 Minuten köcheln, bis die Sauce um etwa ein Drittel eingekocht ist und am Löffel haftet."
+          },
+          "technique": "reduce",
+          "time": {
+            "value": 5,
+            "to": 6,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat; the sauce thickens further as it cools. Brush it on grilled or fried fish or chicken, or pour it over.",
+            "de": "Den Topf vom Herd nehmen; die Sauce wird beim Abkühlen noch dicker. Über gegrillten oder gebratenen Fisch oder Hähnchen pinseln oder gießen."
+          },
+          "action": "remove-from-heat"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "sauce",
+      "ref": {
+        "kind": "component",
+        "id": "teriyaki-no-tare-sauce"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Mirin, the usual sweet rice wine, is not in the catalogue; sake and sugar replace it.",
+    "de": "Mirin, der übliche süße Reiswein, ist nicht im Katalog; Sake und Zucker ersetzen ihn."
+  }
+}

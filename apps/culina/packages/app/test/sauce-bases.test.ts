@@ -19,8 +19,19 @@ import { reset } from '../src/notebook/state';
 const SAUCES = [
   'alioli',
   'balsamella',
+  'barbecue-sauce',
+  'chao-cai-jiang',
+  'guacamole',
   'holl-sauce',
+  'ladolemono',
   'mayonnaise',
+  'nam-chim-kai',
+  'nam-chim-satay',
+  'onion-gravy',
+  'pesto-genovese',
+  'pico-de-gallo',
+  'rahmchampignons',
+  'raita',
   'salsa-de-tomate',
   'salsa-di-pomodoro',
   'salsa-vinagreta',
@@ -29,6 +40,9 @@ const SAUCES = [
   'sauce-maitre-d-hotel',
   'saure-eiersauce',
   'spargelsauce',
+  'teriyaki-no-tare',
+  'tzatziki',
+  'vinaigrette-moutarde',
 ];
 
 beforeEach(async () => {
@@ -52,7 +66,7 @@ afterEach(() => {
   resetContent();
 });
 
-test('the twelve sauce bases are no dishes; every other shipped file is', () => {
+test('the 26 sauce bases are no dishes; every other shipped file is', () => {
   const left = classics()
     .filter((c) => !dishClassics().includes(c))
     .map((c) => c.id)

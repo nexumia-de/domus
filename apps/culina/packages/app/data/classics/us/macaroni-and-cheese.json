@@ -1,0 +1,300 @@
+{
+  "id": "macaroni-and-cheese",
+  "name": {
+    "en": "Macaroni and cheese",
+    "de": "Makkaroni mit Käsesauce"
+  },
+  "originalName": "Macaroni and cheese",
+  "country": "us",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "macaroni-and-cheese-main",
+      "name": {
+        "en": "Macaroni and cheese",
+        "de": "Makkaroni mit Käsesauce"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "pasta",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168927"
+          },
+          "amount": {
+            "value": 350,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Elbow macaroni or another short pasta.",
+            "de": "Ellenbogennudeln oder eine andere kurze Nudelsorte."
+          }
+        },
+        {
+          "key": "salt-pot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        },
+        {
+          "key": "water",
+          "wanted": {
+            "en": "Water",
+            "de": "Wasser"
+          },
+          "amount": {
+            "value": 2000,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "flour",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-wheat-flour-white-all-purpose"
+          },
+          "amount": {
+            "value": 40,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Warm.",
+            "de": "Warm."
+          }
+        },
+        {
+          "key": "cheddar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173414"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Sharp, grated.",
+            "de": "Kräftig, gerieben."
+          }
+        },
+        {
+          "key": "mustard",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172234"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "salt-sauce",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the sauce.",
+            "de": "Für die Sauce."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Ground.",
+            "de": "Gemahlen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the water with the salt for the cooking water to the boil in a large pot.",
+            "de": "Das Wasser mit dem Salz für das Kochwasser in einem großen Topf zum Kochen bringen."
+          },
+          "action": "heat",
+          "uses": ["water", "salt-pot"]
+        },
+        {
+          "text": {
+            "en": "Cook the macaroni until just short of done, then drain.",
+            "de": "Die Makkaroni knapp bissfest garen, dann abgießen."
+          },
+          "technique": "cook-pasta",
+          "uses": ["pasta"],
+          "time": {
+            "value": 7,
+            "to": 8,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Melt the butter in the empty pot over medium heat.",
+            "de": "Die Butter im leeren Topf bei mittlerer Hitze schmelzen."
+          },
+          "action": "melt",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Stir in the flour and cook for 1 minute, stirring, without letting it brown.",
+            "de": "Das Mehl einrühren und 1 Minute unter Rühren garen, ohne dass es Farbe nimmt."
+          },
+          "technique": "roux",
+          "uses": ["flour"],
+          "time": {
+            "value": 1,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour in the warm milk a little at a time, stirring, until smooth, and cook until the sauce thickens.",
+            "de": "Die warme Milch nach und nach unter Rühren zugießen, bis alles glatt ist, und garen, bis die Sauce eindickt."
+          },
+          "action": "pour",
+          "uses": ["milk"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pot off the heat and stir in three quarters of the cheddar, the mustard, the nutmeg, the salt for the sauce and the pepper.",
+            "de": "Den Topf vom Herd nehmen und drei Viertel des Cheddars, Senf, Muskat, das Salz für die Sauce und den Pfeffer einrühren."
+          },
+          "action": "stir",
+          "uses": ["cheddar", "mustard", "nutmeg", "salt-sauce", "pepper"]
+        },
+        {
+          "text": {
+            "en": "Mix the macaroni into the sauce and fill the mixture into a baking dish.",
+            "de": "Die Makkaroni unter die Sauce mischen und die Mischung in eine Auflaufform füllen."
+          },
+          "action": "fill",
+          "uses": ["pasta"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle the rest of the cheddar on top.",
+            "de": "Den restlichen Cheddar darüberstreuen."
+          },
+          "action": "sprinkle",
+          "uses": ["cheddar"]
+        },
+        {
+          "text": {
+            "en": "Bake until the cheese is golden and the edges bubble.",
+            "de": "Backen, bis der Käse goldbraun ist und die Ränder Blasen werfen."
+          },
+          "technique": "bake",
+          "time": {
+            "value": 20,
+            "to": 25,
+            "unit": "min"
+          },
+          "temperature": {
+            "value": 200,
+            "unit": "C"
+          }
+        },
+        {
+          "text": {
+            "en": "Let it stand for a few minutes, then serve.",
+            "de": "Einige Minuten stehen lassen, dann servieren."
+          },
+          "action": "stand",
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "macaroni-and-cheese-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  },
+  "note": {
+    "en": "Bake in a dish of about 22 x 30 cm.",
+    "de": "In einer Auflaufform von etwa 22 x 30 cm backen."
+  }
+}
