@@ -105,7 +105,8 @@ export const asCourse = (value: string | undefined): Course | undefined =>
 export const asCuisine = (value: string | undefined): Country | undefined =>
   COUNTRY_CODES.find((c) => c === value);
 
-const wholePortions = (text: string): number | undefined => {
+/** The portions typed, when they are a whole number. */
+export const wholePortions = (text: string): number | undefined => {
   const entry = parseEntry(text);
   return entry.kind === 'ok' && Number.isInteger(entry.value) ? entry.value : undefined;
 };

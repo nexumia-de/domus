@@ -21,6 +21,79 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: a kept copy is judged, and shows the amounts, as its shipped dish
+
+Two agents under one lead, both on the second-largest model. One made
+the own-dish path derive a component slot's mass as the shipped path
+does (a kept pizza was not "cheesy"), found on the way that keeping
+stored a slot's amount for all portions where a dish reads it per
+portion (a kept pizza for two showed 250 g of mozzarella against 125
+g), and fixed that for copies kept from now on. The other, which wrote
+none of it and was given the task and the staged diff, kept every
+keepable file with a script of its own and compared copy and shipped
+dish (548 copies, 2,192 comparisons: characters, the page's and the
+cook screen's lines, steps and grams, nutrition), built own dishes by
+hand, and read pages in a browser. It looked three times; each time the
+builder fixed what was found. The last fixes (the note on the cook
+screen, its wording) were read by nobody else.
+
+| Part                                                    | Done by | Checked by                                                       |
+| ------------------------------------------------------- | ------- | ---------------------------------------------------------------- |
+| Characters of a copy equal the shipped dish's           | agent 1 | agent 2, own script: 0 of 2,192 comparisons differ (263 before)  |
+| Keeping writes a slot's amount per portion              | agent 1 | agent 2 (every reader of the amount traced; the changed vectors) |
+| Nested components shown on a copy's page                | agent 1 | agent 2, second pass, in a browser against the shipped dish      |
+| One run weight for page, cook screen, totals, nutrition | agent 1 | agent 2, second and third pass, on thirteen hand-made dishes     |
+| A run with a line that cannot be weighed is unknown     | agent 1 | agent 2, third pass (the old rule read in the documents)         |
+| The note on the cook screen, its wording                | agent 1 | nobody but the checks                                            |
+
+**What the checks found, and where it was fixed.**
+
+- _First pass:_ the page of a hand-made dish with a nested component
+  showed two amounts for one ingredient (500 g and 417 g of pasta); a
+  dish without stored portions showed a whole pot as "per portion";
+  five copies lacked a nested component altogether (the kept crème
+  caramel had no caramel), which was so before and which the builder's
+  test, comparing stored numbers and not the page, did not see.
+- _Second pass:_ a component that is a slot and also nested under an
+  earlier slot was counted once on the page and twice in the totals;
+  and the run weight left out, without a word, lines it could not
+  weigh, so the 417 g were about twice too much (201 g with the milk
+  weighed). A run with such a line now has no known weight: the
+  component is shown as written, for one run, with a sentence that
+  says why, and is not added up. The kept green beans in butter, which
+  asked for 36 g of beans beside the source's 500 grammes, are shown
+  that way too.
+- _Third pass:_ the cook screen showed those one-run amounts without
+  the sentence; it carries it now and names the line.
+- _A documented rule was narrowed, not only a defect fixed:_ "a run
+  without a yield weighs what goes in" no longer holds when a line
+  cannot be weighed. Three checks that pinned the old rule were changed
+  with it and are named in Culina's log. The reviewer judged the
+  narrowing sound (the old figures were too large without a word) and
+  named its reach: an own batter with eggs by the piece is no longer
+  scaled.
+- _Too wide, left so and said:_ kitchen water in a component without a
+  yield that a dish names by mass makes its run unknown. That is right
+  for boiled beans and wrong for a bread dough, whose water stays in.
+  It fails safe. The owner is asked.
+
+**Test counts** (builder's run after the last fixes; the reviewer's
+runs after the third round gave app 1287 and e2e 2195): `npm run
+check:culina` passes with 1285 engine, 1287 app and 25 native tests;
+Culina's e2e passes with 2205 checks, run alone. The invariants over
+all 130 keepable files and 14 fillings fail on the code before for 51
+files (characters) and four dishes (amounts).
+
+**What nobody verified.** The last fixes by a second reader. An old
+copy opened in a browser. German pages beyond the sentences read on
+screenshots. A real device. Nothing was cooked. Known and listed first
+in Culina's handover: old copies of the pizza, the miso ramen and the
+soup with dumplings keep their doubled amounts and now show nutrition
+figures from them; the recipe import writes a slot's amount per dish
+where it is read per portion (traced in code, not run); 17 copies show
+no nutrition where the shipped dish does; two copies show their parts
+in another order than the shipped dish.
+
 ## 2026-11-24: a kept frame's place, two sauces said to be uncooked, the German review
 
 Two agents under one lead, both on the second-largest model. One fixed

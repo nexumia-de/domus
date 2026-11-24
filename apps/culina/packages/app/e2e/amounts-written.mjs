@@ -1,8 +1,11 @@
 // Amounts a cook actually writes, in a browser at 360 px, in English and in German: a component
 // with one onion counted in pieces and no piece weight still shows all its lines, its input, its raw
-// list and its steps by name, the onion with its own quiet note; the dish that uses it gives the
-// same amounts on the dish screen and on its cook screen, with a quiet note that the sauce is not
-// weighed; the editor names every unit in the language of the app. The records are written through
+// list and its steps by name, the onion with its own quiet note; the dish that uses it by weight
+// cannot scale it (its run cannot be weighed without the onion, since 2026-11-24; before, the run
+// was weighed without it and the sauce came out too large without a word), so the dish screen and
+// its cook screen show the sauce as written, one run, with a quiet line that says why, and the
+// total list does not add it up and says why; the editor names every unit in the language of the
+// app. The records are written through
 // the store's test hook; the onion is a notebook ingredient without a piece weight.
 import { check, watch } from './harness.mjs';
 import { layout, putStore } from './editor-helpers.mjs';
@@ -20,6 +23,8 @@ const TEXT = {
     half: '½ pcs (0.69)',
     lacks: 'no piece weight recorded, not in the sums',
     unweighed: 'is not weighed: one run is taken as weighing what goes in',
+    cannotScale: 'cannot be scaled: Onion has no weight here.',
+    asWritten: 'For one run as written.',
     units: [
       'g',
       'kg',
@@ -47,6 +52,8 @@ const TEXT = {
     half: '½ Stück (0,69)',
     lacks: 'kein Stückgewicht erfasst, nicht in den Summen',
     unweighed: 'ist nicht gewogen: ein Durchgang zählt so viel, wie hineingeht',
+    cannotScale: 'lässt sich nicht skalieren: Zwiebel hat hier kein Gewicht.',
+    asWritten: 'Für einen Ansatz wie notiert.',
     units: [
       'g',
       'kg',
@@ -180,22 +187,26 @@ const run = async (browser, origin, lang) => {
   );
   await layout(page, `${label} (cook a component)`);
 
-  // B: the dish and its cook screen give the same amounts.
+  // B: the dish cannot scale the sauce (the onion cannot be weighed), and says so everywhere.
   await visit(page, origin, 'dishes/e2e-plate', 'Kartoffeln mit Soße');
   const total = await cells(page, '.raw-table');
   check(
     same(total, [
-      [t.tomatoes, '276 g'],
-      [t.butter, '21 g'],
-      [t.salt, lang === 'de' ? '3,4 g' : '3.4 g'],
       [t.potato, '500 g'],
-      [lang === 'de' ? 'Gesamt' : 'Total', '800 g'],
+      [lang === 'de' ? 'Gesamt' : 'Total', '500 g'],
     ]),
-    `${label}: the dish adds up the unweighed sauce as what goes into it (${JSON.stringify(total)})`,
+    `${label}: the dish does not add up the sauce it cannot weigh (${JSON.stringify(total)})`,
   );
   check(
-    (await page.locator('.raw .note-quiet').allInnerTexts()).some((n) => n.includes(t.unweighed)),
-    `${label}: with a quiet note that the sauce is not weighed`,
+    (await page.locator('.raw li').allInnerTexts()).some((n) => n.includes(t.cannotScale)),
+    `${label}: under "Not added up" it says the sauce cannot be scaled`,
+  );
+  const partNote = await page.locator('.recipe-block .part-note').allInnerTexts();
+  check(
+    partNote.length === 1 &&
+      partNote[0].includes(t.cannotScale) &&
+      partNote[0].endsWith(t.asWritten),
+    `${label}: the sauce in the ingredients is one run as written, and says why (${partNote.join(' | ')})`,
   );
   await layout(page, `${label} (dish)`);
   await page
@@ -203,8 +214,8 @@ const run = async (browser, origin, lang) => {
     .click();
   await page.locator('.cook-step').waitFor();
   check(
-    same(await page.locator('.cook-step .recipe-amount').allInnerTexts(), [t.half, '21 g']),
-    `${label}: the dish's cook screen scales the sauce by the same rule`,
+    same(await page.locator('.cook-step .recipe-amount').allInnerTexts(), [t.piece, '30 g']),
+    `${label}: the dish's cook screen shows the sauce as written, not scaled`,
   );
   await layout(page, `${label} (cook the dish)`);
 
@@ -225,7 +236,62 @@ const run = async (browser, origin, lang) => {
   await context.close();
 };
 
+// The kept green beans in butter: their boiled beans cannot be scaled (the run holds the boiling
+// water, which a run is not weighed by), so the cook screen shows them as written, one run, and
+// says why at the step where the amounts are read, also cooked at 4 portions where the copy was
+// kept for 2 (docs/dish-characters.md). Control: the step of the other part has no such note.
+const BEANS = {
+  en: {
+    cook: 'Cook step by step',
+    note: 'The output of Boiled green beans is not weighed yet, so it cannot be scaled. For one run as written.',
+  },
+  de: {
+    cook: 'Schritt für Schritt kochen',
+    note: 'Das Ergebnis von Gekochte grüne Bohnen ist noch nicht gewogen, deshalb lässt es sich nicht skalieren. Für einen Ansatz wie notiert.',
+  },
+};
+
+const keptBeans = async (browser, origin, lang) => {
+  const t = BEANS[lang];
+  const label = `360px ${lang} kept green beans at 4 portions`;
+  const context = await browser.newContext({ viewport: { width: 360, height: 720 }, locale: lang });
+  const problems = watch(context, origin);
+  const page = await context.newPage();
+  await visit(page, origin, 'classic/haricots-verts-beurre', undefined);
+  await page.locator('.classic-copy .keep-button').click();
+  await page.waitForURL(/#\/dishes\//);
+  await page.locator('.dish-card .version-lines').waitFor();
+  await page.getByLabel(lang === 'de' ? 'Portionen' : 'Portions', { exact: true }).fill('4');
+  await page.getByRole('link', { name: t.cook }).click();
+  await page.locator('.cook-step').waitFor();
+  const amounts = await page.locator('.cook-step .recipe-amount').allInnerTexts();
+  const note = await page.locator('.cook-step .part-note').allInnerTexts();
+  check(
+    note.length === 1 && note[0] === t.note && same(amounts, ['250 g']),
+    `${label}: step 1 shows the boiled beans as written, one run, and says why (${note.join(' | ')})`,
+  );
+  await layout(page, label);
+  // Through the boiled beans' steps to the next part, whose step has no such note.
+  for (let i = 0; i < 12; i++) {
+    const from = await page
+      .locator('.cook-step .muted')
+      .first()
+      .innerText()
+      .catch(() => '');
+    if (!from.includes(lang === 'de' ? 'Gekochte' : 'Boiled')) break;
+    await page.locator('.cook-next').click();
+  }
+  check(
+    (await page.locator('.cook-step .part-note').count()) === 0,
+    `${label}: the step of the other part has no such note (the control)`,
+  );
+  check(problems.length === 0, `${label}: no console errors or foreign requests ${problems}`);
+  await context.close();
+};
+
 export const amountsWritten = async (browser, server) => {
   await run(browser, server.origin, 'en');
   await run(browser, server.origin, 'de');
+  await keptBeans(browser, server.origin, 'en');
+  await keptBeans(browser, server.origin, 'de');
 };

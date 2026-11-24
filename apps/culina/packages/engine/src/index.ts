@@ -90,7 +90,7 @@ export type { SaltBasis, SaltErrorCode, SaltInput, SaltResult } from './salt/per
 
 export { flourAndWater } from './components/composition';
 export type { CompositionOptions } from './components/composition';
-export { expandComponent } from './components/expand';
+export { expandComponent, runWeight } from './components/expand';
 export { convertComponentLines } from './components/convert';
 export type { ConvertLinesResult, LineEntry } from './components/convert';
 export { componentLineGrams } from './components/lines';

@@ -30,6 +30,8 @@ export interface ComponentView {
   id: string;
   name: string;
   lines: LineView[];
+  /** A quiet line under the heading: why the amounts are one run as written (own dishes only). */
+  note?: string;
 }
 
 /** What the source section lists apart from the one-line source: remarks about lines and steps. */

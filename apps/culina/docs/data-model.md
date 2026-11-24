@@ -418,7 +418,29 @@ One stored record is one [version](#version).
 
 Weight per portion, the roles covered ("no crunch") and what is missing
 from stock are derived. A slot's amount is mass, volume or count, not
-percent.
+percent, and it is **per portion**; a component slot without an amount
+stands for one run of the component at `portions` (without `portions` it
+is not added up)
+([dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)).
+
+**A copy kept before 2026-11-24 holds a total in its ingredient slots.**
+Until then `copyClassic` stored a slot's amount as derived for all the
+copy's portions, and the dish reads it per portion, so such a slot counts
+`portions` times. Only copies whose slots name an ingredient with an
+amount are affected: of the 130 files that can be kept, the pizza
+(sauce, mozzarella, basil), the miso ramen (noodles, spring onions), the
+soup with dumplings (carrots, chives; also with the egg royale as its
+filling) and the risotto (parsley, an optional slot). Every other copy
+has only component slots without an amount and is right. Nothing stored
+is rewritten and reading does not guess (an old total cannot be told from
+an amount the cook typed); keeping the dish again gives a right copy.
+Since 2026-11-24 an old copy of the pizza, the miso ramen or the soup with
+dumplings also shows nutrition figures computed from its doubled amounts
+(930, 1050 and 340 kcal a portion against the shipped 720, 660 and 330),
+where it showed none before; an old risotto is right. What becomes of old
+copies (left, a note on the page, their figures hidden, or a repair the
+cook confirms) is a question for the owner. The recipe import has the
+same defect for an ingredient slot (open, [behaviour](behaviour.md)).
 
 **Course and cuisine (since 2026-11-21).** The two things a shipped
 classic states, so that one filter works over every dish

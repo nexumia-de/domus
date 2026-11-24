@@ -76,6 +76,15 @@ export type CopyResult =
         | { code: 'wanted-ingredient'; wanted: string[] };
     };
 
+/** Trims binary noise (10 significant digits), as `deriveClassic` does. */
+const clean = (n: number): number => Number(n.toPrecision(10));
+
+/** A slot's amount for the whole dish as an amount per portion, which a dish record stores. */
+const perPortion = (amount: Amount, portions: number): Amount => ({
+  ...amount,
+  value: clean(amount.value / portions),
+});
+
 /** The source's remark about a step stays with the classic; the copy is the cook's own. */
 const withoutSourceNote = (step: Step): Step => {
   const { sourceNote, ...rest } = step;
@@ -94,7 +103,8 @@ const noteOf = (
 /**
  * Copies a classic into the notebook as version 1 of a new family per record, with its origin.
  * The records are the derived dish and components for `portions` (amounts in grams, millilitres or
- * counts); component references point at the new ids. A line keeps the source's wording as a note
+ * counts; a component's lines for all portions, a slot's amount per portion, as a dish record
+ * reads it); component references point at the new ids. A line keeps the source's wording as a note
  * `(1 Pfund)` and a range as `(2-3 g)`. The dish keeps the classic's course, and its country as
  * the cuisine. The source is named in the version's `change` and in
  * `x-origin`. A classic that still has a `wanted` line cannot be copied: the notebook has no
@@ -186,10 +196,12 @@ export function copyClassic(classic: Classic, options: CopyOptions): CopyResult 
     portions: derived.dish.portions,
     course: classic.course,
     cuisine: classic.country,
+    // A dish of the notebook reads a slot's amount per portion; the derived amount is for all of
+    // them (until 2026-11-24 it was stored as it is, so a kept slot counted `portions` times).
     slots: derived.dish.slots.map((s: DerivedSlot) => ({
       role: s.role,
       ref: ref(s.ref),
-      ...(s.amount === undefined ? {} : { amount: s.amount }),
+      ...(s.amount === undefined ? {} : { amount: perPortion(s.amount, derived.dish.portions) }),
       ...(s.optional === undefined ? {} : { optional: s.optional }),
     })),
     ...(classic.note === undefined ? {} : { note: pickText(classic.note, options.lang) }),

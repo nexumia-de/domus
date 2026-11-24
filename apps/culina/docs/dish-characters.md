@@ -427,41 +427,294 @@ the catalogue, which this change did not touch.
 
 [^pr11]: https://github.com/suitably/domus/pull/11
 
-## A kept copy is not judged like its shipped dish
+## A kept copy is judged like its shipped dish (2026-11-24)
 
-Open, found on 2026-11-24 by a review of the kept frame in Cook's groups
-([behaviour](behaviour.md#cook)). A dish kept in the notebook is judged
-by `factsOfDish`, its shipped dish by `factsOfClassic`, and the two give
-other characters for many dishes. Counted that day by keeping each of
-the 130 shipped files that can be kept, in a fresh notebook (a
-throwaway test, not kept): of the 103 that Cook lists, 36 copies differ
-from their shipped dish, three of them frames. The pizza loses "cheesy",
-the tacos "lemony", the souvlaki plate loses "lemony" and gains
-"tomatoey"; among the others the tamagoyaki, the yude tamago and the
-soufflé lose "eggy", the horiatiki "cheesy", the köfte "rich", the
-kachumber "lemony" and "light", and the bulgur pilavı gains "tomatoey".
-Since a kept frame stands beside the shipped one under "Put together",
-the filter "Cheesy" keeps the shipped pizza and drops the kept one.
+**What was wrong.** Found on 2026-11-24 by a review of the kept frame in
+Cook's groups ([behaviour](behaviour.md#cook)). A dish kept in the
+notebook is judged by `factsOfDish`, its shipped dish by `factsOfClassic`,
+and the two gave other characters. Recounted the same day by a script that
+keeps every shipped file by the app's own code (`keepClassic`) into a
+notebook on a fake IndexedDB, at 2 and at 4 portions, and every frame once
+more per filling it offers (14), and compares the copy's characters with
+those of the shipped dish as chosen. Of the 130 files that can be kept (18
+cannot: a `wanted` line), 51 copies differed, 36 of them among the 103
+dishes Cook lists (3 frames); and 4 of the 14 fillings. The same at 2 and
+at 4 portions. The kept pizza lost "cheesy", the tacos "lemony", the
+souvlaki plate "lemony" and gained "tomatoey"; the table of every copy is
+kept outside the repository (the scratch folder of the session, not
+committed). Three causes, the first hiding the other two:
 
-**The cause**, read in the code: a copy's slots name its components
-without an amount (the copy holds each component for the dish's
-portions), and `linesWithoutMass` (`src/characters/dish.ts`) then gives
-the component's lines no mass, so the rules by share fall back to
-presence: a share rule with `presence: false` ("cheesy" from 8 percent,
-"lemony" from 2) says nothing, a rule that counts presence ("tomatoey"
-without amounts) says more. Confirmed by the reviewer for the three
-frames and for four copies that are no frame (the tamagoyaki, the
-horiatiki, the köfte and the bulgur pilavı: one component slot without
-an amount, so every line is without mass); likely for the other 29, not
-checked one by one.
+| Cause                                                                                                                                                                                                                                                | Copies                                              | Where                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------- |
+| A component slot of a copy has no amount (a shipped slot never states one: a shipped dish counts each of its components at its own amounts), and the own-dish path gave every line of such a slot no mass, so the share rules fell back to presence. | all 51, and the 4 fillings                          | `slotLines` and `linesWithoutMass` in `src/characters/dish.ts` |
+| An amount in pieces or spoons of a group (eggs, yolks, whites) was weighed with the notebook's own figures, which a group lacks; the shipped path takes the figure the group's foods agree on (`conversionOf`).                                      | 10 of them (eggy, and cheesy on the scrambled eggs) | `nb.facts` in the same file                                    |
+| The expansion merged the lines of one ingredient (the sugar of the snow eggs and of their custard), so the copy had fewer lines and less of it counted as measured.                                                                                  | 1 (the snow eggs)                                   | `expandComponent`'s aggregation                                |
 
-**Not fixed, and why.** A sound fix changes how every dish of the
-notebook with such a slot is judged, not only frames: for example, a
-component slot without an amount on a copy could count one whole run of
-the component, which is what the copy wrote. That is a rule of the
-character model for own dishes and needs its own test over all 130
-copies (every copy unchanged in its parts judged like its shipped dish)
-and the controls of own dishes written by hand; it is larger than the
-small fix it was found in. Not decided either: whether a copy the cook
-changed should be judged by its own lines (yes, by the rule above) or an
-unchanged one take its shipped dish's characters (an alternative).
+Techniques, plain actions and course were the same on every copy, no role
+was lost, portions did not matter, and a `wanted` line never reaches a copy.
+
+**How it is judged now.** The own-dish path writes a slot out as the
+shipped path counts a component, in one derivation that the totals, the
+nutrition and the characters share (`slotMass` in `src/dishes/slots.ts`,
+`expandSlot` in `src/dishes/raw.ts`):
+
+- a component slot without an amount stands for **one run of the
+  component at the dish's stored portions** (`runsWithoutAmount`): what a
+  copy wrote (each component for the copy's portions), and what the cook
+  screen has always cooked for such a slot; at other portions it scales
+  with them. A dish that stores no portions gives no runs: such a slot is
+  not added up and counts by presence, as before (nothing is guessed);
+- a component named without an amount inside another is one run of it per
+  run of the one naming it (`expandComponent`, `withoutAmount: 'run'`),
+  where before it was left without mass; and one run of a component that
+  is taken as what goes in includes that run (`runWeight`), for every
+  reader of the page alike: the ingredients and the cook screen
+  (`dishParts`), "What goes in, all the way down" and the nutrition
+  (`dishRaw`). A first version of this change left the ingredients on the
+  old weight, so a macaroni cheese of 400 g a portion for 2 whose recipe
+  names its béchamel without amount showed 500 g of pasta in the
+  ingredients and 417 g in the total list (found by the review);
+- **a run's weight that cannot be known is not guessed** (since the second
+  review of 2026-11-24). A run taken as what goes in, with a line that
+  cannot be weighed at any depth (a unit whose density or piece weight is
+  not recorded), has no known weight, as a run without a yield always had
+  (`no-yield`); before, that line was left out of the weight and every
+  scaled amount came out too large without a word. In the macaroni cheese
+  the béchamel's 500 ml of milk has no density in a notebook without one:
+  the 417 g above left the milk out; with a density of 1.03 g/ml the run
+  weighs 995 g and the dish asks for 201 g of pasta and 121 g of cheddar.
+  Without one, no reader scales it: the page shows the component as
+  written, one run, with a quiet line under its heading, and the cook
+  screen the same line at every step of it, under the amounts: "Béchamel
+  cannot be scaled: milk has no weight here. Weigh its output, or give milk
+  a weight. For one run as written." ("Béchamel lässt sich nicht
+  skalieren: Milch hat hier kein Gewicht. Wiege das Ergebnis oder gib
+  Milch ein Gewicht. Für einen Ansatz wie notiert."); the total list and
+  the nutrition do not add it up and list it under "Not added up" with all
+  but the last sentence. No density is invented. The same
+  holds for a component a line names by mass whose run, without a yield,
+  holds kitchen water (`notWeighedByLine`: tap water, mostly poured away);
+  whether cooking water counts into a run's weight is not settled here;
+- the runs of one component from every place it is needed add up, in
+  whatever order the slots come: a dish with the macaroni cheese and the
+  béchamel as two slots makes two runs of béchamel (before, with the
+  macaroni cheese first, the page made one and the total list two);
+- every component a dish makes is a part of its page and its cook screen,
+  nested ones too, each once, with its lines for the runs it is needed
+  (`runsOfParts` in `src/components/steps-view.ts`). Before, only the
+  components of the slots were: a kept crème caramel showed no caramel
+  lines and no caramel steps, and so did the snow eggs' custard, the
+  cauliflower's béchamel, the fennel's batter and the boiled beans of the
+  green beans in butter (found by the review; on f4f9f59 too). The parts of
+  one filling come in the order the notebook keeps its components, which
+  is by name, not the order of a shipped file: of the five copies with a
+  nested component, two come in another order than their shipped file,
+  the snow eggs (Custard, then Snow eggs; shipped the reverse) and the
+  cauliflower with béchamel (Béchamel, then Cauliflower; shipped the
+  reverse). Both can be cooked in either order;
+- for the characters, an amount in pieces or spoons is weighed as on a
+  shipped dish (`conversionOf`), and the lines are counted one per line of
+  the recipe (`rawBy: 'line'`), not merged by ingredient.
+
+A copy is judged by what is in it, never by its origin: a kept pizza
+without its cheese is not cheesy, though `x-origin` still names the pizza
+(an origin is history). Nothing stored is rewritten; a copy kept before
+reads right at once.
+
+**What changed for own dishes that are not copies.** Every own dish with a
+component slot without an amount, or a component nested without one, is
+now judged by shares where it was judged by presence. On four dishes built
+by hand from components (a test outside the repository): pasta with a
+tomato sauce and parmesan stays tomatoey; an omelette plate (three eggs by
+the piece, butter, chives) gains "eggy", which it was missing; a lemon
+chicken with rice gains "lemony" (40 ml of lemon juice to 500 g of
+chicken); a macaroni cheese with a béchamel named without amount is cheesy
+and baked before and after, as its bake step makes the cheese count
+without a share (built without that step, it gains "cheesy" by share, as
+the review found). As a cook, each "after" is right. What now reads "cannot
+be scaled" on an own dish that showed a number before: a slot with an
+amount, or a line naming a component by mass, whose component has no yield
+and a line that cannot be weighed (an onion by the piece without a piece
+weight, a cup of a group without a density), or by mass a component
+without a yield that holds tap water. Each such number was the scaled
+recipe without that line's weight, too large by its share
+(`test/amounts-written.test.ts`: a sauce with one onion was halved as if
+it weighed 448 g; with the onion's 110 g it weighs 558 g). The app's two
+example dishes are not affected. The two example dishes
+of the app state every amount and do not change. The random pick's
+combinations (one slot per component, no amounts, no portions) are judged
+by presence, as before.
+
+**Differences that remain.** In characters none among copies kept
+unchanged: 0 of 130 at 2 and at 4 portions, 0 of 14 fillings. A copy the
+cook changed differs where its content differs, which is right. On the
+page one, open: the green beans in butter (`haricots-verts-beurre`) name
+500 g of boiled beans, a component without a yield whose run holds 1500 ml
+of boiling water. The run can be weighed (water has a density), so the
+first rule does not make it unknown; taken as what goes in it weighed
+about 3.5 kg, and the copy asked for a seventh of the beans (36 g for 2
+beside the source's "500 grammes"). Now a run that holds tap water is not
+weighed for a line that names it by mass: the copy's page and cook screen
+show the boiled beans as written, one run (250 g of beans, 1500 ml of
+water, 5 g of salt for the copy kept for 2), under "The output of Boiled
+green beans is not weighed yet, so it cannot be scaled. For one run as
+written.", and the total list
+and the nutrition do not add them up. At the copy's own portions that is
+the shipped amount; at others it is one run, said as one run. A rule for
+kitchen water in a run's weight, or a yield on the component, is still
+open.
+
+**A copy's ingredient slots held a total (fixed for new copies).**
+`copyClassic` stored a slot's amount as derived for all the copy's portions,
+and an own dish reads a slot's amount per portion, so such a slot counted
+`portions` times. Seen in a browser on 2026-11-24 at 2 portions, against
+the shipped dish at 2: the kept pizza's slots showed 125 g per portion and
+250 g in all of tomato sauce and of mozzarella and 10 g of basil (shipped:
+125 g, 125 g, 5 g in all); the kept miso ramen 400 g of noodles and 60 g of
+spring onions (200 g, 30 g); the soup with dumplings 122 g of carrots and
+9 g of chives (61 g, 4.5 g); the risotto 10 g of parsley (5 g, an optional
+slot). The components' own lines were right. Before this change the
+nutrition of those copies was hidden ("Pizza dough cannot be counted"), so
+only the amounts were wrong on screen; with the run rule above it showed
+figures from the doubled slots (the kept pizza 930 kcal a portion against
+720, the miso ramen 1050 against 660, the soup 340 against 330; the risotto
+was right, as an optional slot is not counted). Since 2026-11-24 keeping
+stores a slot's amount per portion, for every portion count and for a
+frame with a chosen filling: a copy kept now shows its shipped dish's
+amounts at any portions, its characters and, but the 17 below, its
+nutrition figures.
+
+**Copies kept before.** Only the copies whose slots name an ingredient with
+an amount are affected, and of the 130 files that can be kept these are
+four: the pizza, the miso ramen, the soup with dumplings (with either
+filling) and the risotto. Every other copy has only component slots
+without an amount and is right. An old copy of the four shows the amounts
+above (`portions` times the shipped ones) and, since this change, the
+nutrition from them; its characters come out as the shipped dish's all the
+same (the cheese stays above 8 percent, and so on). Nothing stored is
+rewritten and reading does not guess: an old total cannot be told from an
+amount the cook typed. Keeping the dish again gives a right copy. Plainly,
+for the nutrition: an old copy of the pizza, the miso ramen or the soup
+with dumplings showed no figures before this change and now shows figures
+computed from its doubled amounts, 930, 1050 and 340 kcal a portion
+against the shipped 720, 660 and 330; an old risotto is right (its parsley
+is optional and not counted). **Owner question:** what should become of
+old copies: left as they are, a note on their page, their figures hidden,
+or a repair the cook confirms?
+
+**The nutrition** of an own dish adds up the same way (it shares `dishRaw`):
+on f4f9f59 a copy's component slots were "not added up", so no kept copy
+showed figures. Now, for a copy kept unchanged at 2 or at 4 portions, 72
+of the 130 show the shipped dish's figures, 41 show none as their shipped
+dish shows none, and 17 show none where the shipped dish shows some
+(listed in `test/kept-characters.test.ts`). An optional component slot
+without an amount is weighed by its run and not counted, as on a shipped
+dish (it hid the figures of the set meal).
+
+**Open, owner questions (2026-11-24):**
+
+- **The kitchen-water rule reaches further than the green beans.**
+  `notWeighedByLine` (tap water) makes any component named by mass, without
+  a yield, whose run holds tap water "cannot be scaled": an own "Pizza
+  base" naming 250 g of a "Bread dough" (500 g flour, 325 ml water, 10 g
+  salt, no yield) now shows the whole dough run with the note, and the
+  total list and the nutrition leave the base out; a stock, broth or
+  batter named by mass likewise, since that water stays in. It fails safe
+  and is not worse than before this change (then the dough was no part of
+  the page and the base was not added up), but it is too wide. Needed: a
+  way to tell water that stays from water poured away (a yield on the
+  component, a mark on the line, or a rule by the steps), the owner's
+  decision.
+- **"A run weighs what goes in" is narrowed.** A run with a line that
+  cannot be weighed has no known weight. An own pancake batter (250 g
+  flour, 500 ml milk, 3 eggs) given as 200 g a portion was scaled about
+  20 percent too high before (the eggs left out of the weight) and now
+  shows one run as written. Eggs, yolks and whites have no piece weight in
+  the notebook; weighing them as the characters already do (`conversionOf`,
+  44 g an egg) would keep such dishes scalable: proposed as the next small
+  change, not built.
+
+**Also open:**
+
+- **17 copies show no nutrition where the shipped dish does**, for two
+  reasons. 14 (`patatas-bravas`, `tortilla-de-patatas`,
+  `macaroni-a-l-italienne-maigre`, `mayonnaise`, `oeufs-a-la-neige`,
+  `omelette-fines-herbes`, `pommes-de-terre-au-lait`, `sauce-hollandaise`,
+  `souffle-parmesan`, `soupe-aux-poireaux`, `crema-cotta`,
+  `gnocchi-di-semolino`, `latte-brule`, `passato-di-patate`): the nutrition
+  of an own dish weighs a spoon or a piece of a group (flour, milk, eggs) by
+  the notebook's own figures, which a group lacks, where the shipped dish's
+  nutrition can weigh it; left so on purpose on 2026-11-21 ("the
+  notebook's own conversion of a cup of a group to grams is not changed
+  here", [behaviour](behaviour.md#dishes)). 3 (`salsa-de-tomate`,
+  `haricots-verts-beurre`, `sauce-maitre-d-hotel`, found by the review):
+  nothing is unweighed, but their lines without an amount (water, salt,
+  lemon juice) reach the own nutrition by name only (`#unmeasured-i` in
+  `ownNutritionView`), so they cannot be known as seasonings or water and
+  keep the figures back. The characters weigh and know them as a shipped
+  dish does; bringing the nutrition to the same rule is its own change.
+- **"Only with every amount given" leaves a kept copy out**: it asks a
+  stored amount of every slot of an own dish, and a copy's component slots
+  have none, where the shipped dish stays.
+- **The recipe import counts an ingredient slot `portions` times**, the
+  same class of defect as the copies (traced by the review, confirmed by
+  reading the code, not run): the import asks for an ingredient slot's
+  amount "as written, per dish" (`src/screens/import/ai-prompt.ts`,
+  `slot.amount`) and stores it as it is (`engine/src/recipes/import.ts`,
+  the slots of the dish), and the dish reads it per portion. A recipe for 4
+  with 200 g of rice as a slot shows 800 g. With the run rule its
+  component slots are now added up, so its figures show where they were
+  hidden. To fix next: divide by the stored portions on import.
+- Found by the review, not rerun here, small: the kept barbecue sauce is
+  not "without meat and fish" where the shipped one is (before and after
+  this change); the dish editor shows a copy's amounts per portion with
+  ten digits ("11.09007359 ml"); changing a copy's portions in the editor
+  doubles its ingredient slots but leaves a component slot at one run (the
+  stored portions now say what one run makes); a copy shows grams where
+  the shipped page shows ml, pieces or spoons.
+
+**Not changed:** the meat line reads the classes of the lines, not their
+mass, and was right before; the native app lists shipped dishes only and
+is not touched.
+
+**Tests:** `test/kept-characters.test.ts` (every file kept at 2 and 4
+portions and every filling against its shipped dish, 51 files and 4
+fillings failing on f4f9f59; the pizza cheesy, the tacos lemony, the
+souvlaki plate lemony and not tomatoey, the tamagoyaki eggy, the horiatiki
+cheesy, the köfte rich, the bulgur pilavı not tomatoey, the soufflé and the
+snow eggs eggy; controls: three copies that were right before, a kept pizza
+without its cheese not cheesy; "Dishes like this" of a copy is that of its
+shipped dish and never names it, which passed before too; the nutrition of
+four copies equals the shipped figures; since the keeping fix also: every
+file at 2 and 4 portions and every filling has its shipped dish's slot and
+component amounts shown at 1, 3 and its own portions, and on its page and
+cook screen (`dishParts`) every component of the shipped dish, nested ones
+too, with as many lines and steps and the same grams, but the green beans
+in butter (named; this failed for the crème caramel, the snow eggs, the
+cauliflower and the fennel with the `dishParts` before the review), the kept pizza for 2
+has 125 g of mozzarella, and every copy's nutrition is the shipped dish's
+but the 17 named; these three failed with the old `copyClassic` for the
+pizza, the miso ramen, the soup with dumplings and, for amounts, the
+risotto), `test/classics-vectors.test.ts` (the vectors `copy-basic` and
+`copy-ingredient-remap` pinned the total and now hold the amount per
+portion), `test/characters.test.ts` (a
+component slot without amount is one run; the test that pinned presence
+was replaced),
+`engine/test/expand-without-amount.test.ts`, `test/dish-nested-run.test.ts`
+(the reviewers' macaroni cheese: with the milk weighed, the ingredients,
+the cook screen and the total list say 201 g of pasta and 121 g of
+cheddar, which passed before too (the control); without a density no
+reader scales it and each says why; with the béchamel also a slot, 1030 g
+of milk on the page and in the total list in either order; both failed
+with the code before the second review; control: a component ready in
+stock is not made, nor what is below it), `test/amounts-written.test.ts`
+B (a sauce with an onion without a piece weight is not scaled and says
+why; it pinned the halved sauce before), the engine's
+`components.test.ts` and the vector `expand-without-yield-input` (they
+pinned a run weighed without its unweighable line), `test/dishes-view.test.ts` (a dish without stored portions does not
+add up such a slot; failed with the first version, which took one run a
+portion), `e2e/cook-groups.mjs` (the
+kept pizza and the shipped one both under "Cheesy"; the tacos leave; failed
+on f4f9f59). Not proved: a notebook kept on a real device, copies kept in
+the other language, a copy kept before the keeping fix in a browser, and
+whether the owner agrees with the judgement of the own dishes above.

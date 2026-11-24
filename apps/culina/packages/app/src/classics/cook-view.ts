@@ -19,6 +19,8 @@ export interface StepView {
   technique?: Technique;
   /** True when the note of that technique shows at this step: first use, not yet learned. */
   note: boolean;
+  /** Why the amounts of this step are one run as written, not scaled (own dishes only). */
+  amountsNote?: string;
   /**
    * The step as one line of the method list, where it is not the text with time and temperature:
    * an own step without a copied text names the lines it uses ("Searing: Beef · 10 min").

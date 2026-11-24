@@ -18,6 +18,9 @@ export const MEAT_AND_FISH: { readonly classes: readonly string[]; readonly basi
 export const NOT_COUNTED: { readonly classes: readonly string[]; readonly basis: string } =
   table.notCounted;
 
+/** Kitchen water: the ingredient ids of `NOT_COUNTED`. */
+export const KITCHEN_WATER: readonly string[] = NOT_COUNTED.classes;
+
 /** Whether an ingredient line is left out of the facts: kitchen water. */
 export const isNotCounted = (ingredientId: string): boolean =>
   NOT_COUNTED.classes.includes(ingredientId);

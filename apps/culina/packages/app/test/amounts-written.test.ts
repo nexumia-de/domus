@@ -94,26 +94,41 @@ test('A: the steps name their lines by name, never by id, and the cook screen ha
   expect(cook[0]?.lines[0]?.note).toBe(stringsEn.notebook.lacks['needs-unit-weight']);
 });
 
-test('B: the dish total list and the cook screen scale an unweighed component by one rule', () => {
+// Until 2026-11-24 the run was taken to weigh 448 g, the onion (no piece weight) left out, and
+// both readers scaled by it: a half run, a number too large by the onion's weight and said
+// nowhere. Since then a run with a line that cannot be weighed has no known weight (a review of
+// 2026-11-24): neither reader scales it, and both say why.
+test('B: an unweighed component with a line that cannot be weighed is scaled by no reader', () => {
   const rows = slotRows(nb, plate, 2);
   const raw = dishRaw(nb, rows);
-  // 224 g of a sauce whose run weighs 448 g (what goes in, the onion not counted): half a run.
-  expect(raw.skipped).toEqual([]);
-  expect(raw.unweighed).toEqual(['Quick tomato sauce']);
-  expect(raw.rows.map((r) => [r.name, r.g])).toEqual([
-    ['Tomatoes', 200],
-    ['Butter', 15],
-    ['Salt', 9],
-    ['Potato', 500],
-  ]);
-  expect(raw.unconverted).toEqual([{ name: 'Onion', where: 'Quick tomato sauce' }]);
+  const why = stringsEn.notebook.problem.lineUnweighed('Quick tomato sauce', 'Onion');
+  expect(raw.skipped).toEqual([{ name: 'Quick tomato sauce', why }]);
+  expect(raw.rows.map((r) => [r.name, r.g])).toEqual([['Potato', 500]]);
   const parts = dishParts(nb, plate, 2, { fromStock: (n) => n });
+  expect(parts[0]?.note).toBe(`${why} ${stringsEn.notebook.rawAsWritten}`);
   expect(parts[0]?.lines.map((l) => [l.name, l.amount])).toEqual([
-    ['Tomatoes', '200 g'],
-    ['Onion', '½ pcs'],
-    ['Butter', '15 g'],
-    ['Salt', '9 g'],
+    ['Tomatoes', '400 g'],
+    ['Onion', '1 pcs'],
+    ['Butter', '30 g'],
+    ['Salt', '18 g'],
   ]);
+  // Control: with the onion's piece weight recorded, both scale by the same run, 558 g.
+  const weighed = buildNotebook(
+    [
+      { id: 'fdc-group-tomatoes', name: 'Tomatoes' },
+      { id: 'onion', name: 'Onion', unitWeightG: { value: 110, source: 'test' } },
+      { id: 'butter', name: 'Butter' },
+      { id: 'salt', name: 'Salt' },
+      { id: 'potato', name: 'Potato' },
+    ] as Parameters<typeof buildNotebook>[0],
+    [sauce],
+  );
+  const scaled = dishRaw(weighed, slotRows(weighed, plate, 2));
+  expect(scaled.skipped).toEqual([]);
+  expect(scaled.rows.find((r) => r.name === 'Tomatoes')?.g).toBeCloseTo((224 / 558) * 400, 6);
+  const page = dishParts(weighed, plate, 2, { fromStock: (n) => n });
+  expect(page[0]?.note).toBeUndefined();
+  expect(page[0]?.lines[0]?.amount).toBe('161 g');
 });
 
 test('C: pieces to a whole or a half with the exact count beside; spoons as the spoon', () => {

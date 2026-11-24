@@ -1,4 +1,5 @@
 // Names for references and roles, and the plain-words reasons for engine errors.
+import { componentLineGrams } from '@culina/engine';
 import type { ComponentError, ComponentRef } from '@culina/engine';
 import type { Notebook } from '../records';
 import { appLang } from '../shared/locale';
@@ -23,6 +24,23 @@ export const roleInvite = (role: string): string =>
 
 const componentName = (nb: Notebook, id: string | undefined): string =>
   id === undefined ? '' : refName(nb, { kind: 'component', id });
+
+/**
+ * Why a run of a component cannot be scaled on a dish (`no-yield` where a run is taken as what
+ * goes in): the first line of it that cannot be weighed, and what would help; else (no yield and
+ * a run not weighed by its input, such as one that holds kitchen water) that its output is not
+ * weighed.
+ */
+export const cannotScale = (nb: Notebook, componentId: string): string => {
+  const text = strings.notebook.problem;
+  const component = nb.components.find((c) => c.id === componentId);
+  const name = componentName(nb, componentId);
+  if (component === undefined) return text.noYield(name);
+  const lines = componentLineGrams(component, nb.facts);
+  const first = lines.ok ? lines.unconverted[0] : undefined;
+  const line = first === undefined ? undefined : component.lines[first.index];
+  return line === undefined ? text.noYield(name) : text.lineUnweighed(name, refName(nb, line.ref));
+};
 
 /**
  * What an engine error means, in plain words and no verdict. The screens show this line

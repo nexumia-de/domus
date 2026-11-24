@@ -143,9 +143,31 @@ export interface ExpandOptions {
   /**
    * What a component without a recorded yield weighs when one is needed. Absent: nothing is
    * assumed and it is `no-yield`. `'input'`: one run is taken as weighing what went in (its
-   * measured lines), and the component is listed in `unweighed`.
+   * measured lines), and the component is listed in `unweighed`; but a run with a line that
+   * cannot be weighed (a unit whose density or piece weight is not recorded), at any depth, has
+   * no known weight and is `no-yield` all the same (since 2026-11-24: before, such a line was left
+   * out of the weight, and the scaled amounts were too large without a word).
    */
   withoutYield?: 'input';
+  /**
+   * A line that names a component without an amount. Absent: listed in `unmeasured`, nothing
+   * assumed. `'run'`: one run of that component per run of the component that names it, as a
+   * shipped dish counts a component it names (its lines at their own amounts); a run taken as its
+   * input (`withoutYield: 'input'`) then weighs that run too.
+   */
+  withoutAmount?: 'run';
+  /**
+   * `'line'`: one raw entry per line of the tree, as the recipe writes it, in place of one per
+   * ingredient, state and role (for rules that count lines, such as the share of a dish measured).
+   */
+  rawBy?: 'line';
+  /**
+   * Ingredient ids that a run taken as its input is not weighed by when a line names that
+   * component by mass (kitchen water that is mostly poured away): such a component without a
+   * recorded yield is `no-yield` there. The rule for kitchen water in a run's weight is not settled;
+   * this says "unknown" rather than a wrong figure until it is.
+   */
+  notWeighedByLine?: readonly string[];
 }
 
 /** Result of `expandComponent`. */

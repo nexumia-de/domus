@@ -13,7 +13,7 @@ import { nutritionView, ownNutritionView } from '../classics/nutrition-view';
 import type { NutritionViewResult } from '../classics/nutrition-view';
 import { dishParts, partSteps, type DishCookOptions } from '../components/steps-view';
 import type { DishRecord, Notebook } from '../records';
-import { dishRaw, type DishRaw } from './raw';
+import { dishRaw, expandSlot, type DishRaw } from './raw';
 import { slotRows, type SlotRow } from './slots';
 
 export interface ShownDish {
@@ -150,7 +150,12 @@ export function shownOfDish(
       unweighed: [...counted.unconverted.map((u) => u.name), ...counted.skipped.map((s) => s.name)],
       optional: rows
         .filter((r) => r.optional)
-        .map((r) => ({ name: r.name, ...(r.totalG === undefined ? {} : { g: r.totalG }) })),
+        .map((r) => {
+          // A component slot without an amount weighs its runs (`expandSlot`), as it is added up.
+          const run = r.totalG === undefined ? expandSlot(nb, r) : undefined;
+          const g = r.totalG ?? (run?.ok === true ? run.rawG : undefined);
+          return { name: r.name, ...(g === undefined ? {} : { g }) };
+        }),
     },
     portions,
     ctx.lookup,
@@ -168,7 +173,16 @@ export function shownOfDish(
     characters: withoutMeatFlags(entry.characters),
     portions,
     components: parts.flatMap((p) =>
-      p.componentId === undefined ? [] : [{ id: p.componentId, name: p.name, lines: [...p.lines] }],
+      p.componentId === undefined
+        ? []
+        : [
+            {
+              id: p.componentId,
+              name: p.name,
+              lines: [...p.lines],
+              ...(p.note === undefined ? {} : { note: p.note }),
+            },
+          ],
     ),
     slots: own === undefined ? [] : [...own.lines],
     steps: partSteps(parts, ctx.lang, ctx.known, ctx.learned),

@@ -259,14 +259,28 @@ describe('a dish of the notebook', () => {
     expect(characterIds(factsOfDish(nb, dish('c-cream'), lookup))).toEqual(['creamy', 'rich']);
   });
 
-  test('a slot without amount gives lines without mass, so presence decides', () => {
+  // Until 2026-11-24 such a slot gave lines without mass, so presence decided (and a kept copy,
+  // whose component slots have no amount, was judged otherwise than its shipped dish).
+  test('a component slot without amount is one run of the component, at the dish’s portions', () => {
     const open: DishRecord = {
       ...dish('c-tomato'),
-      slots: [{ role: 'sauce', ref: { kind: 'component', id: 'c-tomato' } }],
+      portions: 2,
+      slots: [
+        {
+          role: 'starch',
+          ref: { kind: 'ingredient', id: PASTA },
+          amount: { value: 100, unit: 'g' },
+        },
+        { role: 'sauce', ref: { kind: 'component', id: 'c-tomato' } },
+      ],
     };
     const facts = factsOfDish(nb, open, lookup);
-    expect(facts.lines.every((l) => l.g === undefined)).toBe(true);
+    // 100 g of pasta for each of 2 portions, and one run of the sauce (300 g tomato, 5 g garlic).
+    expect(facts.lines.map((l) => l.g)).toEqual([200, 300, 5]);
     expect(characterIds(facts)).toEqual(['tomatoey']);
+    // Control: the same run of sauce over 20 portions of pasta is 13 percent tomato, under the 15
+    // percent of the rule (with presence alone it would still be tomatoey).
+    expect(characterIds(factsOfDish(nb, { ...open, portions: 20 }, lookup))).toEqual([]);
   });
 
   test('the techniques are those of the components’ steps', () => {

@@ -312,7 +312,15 @@ amounts. Now:
   adds up the rest and lists it under "Not weighed"; the editor shows the
   same note in place of the line's figure; the dish and cook screens show
   it with its amount (pieces scaled and rounded to a half) and the note
-  beside its own; the nutrition lists it as not counted. Only a percent line
+  beside its own; the nutrition lists it as not counted. A dish that needs
+  such a component by weight, and the component has no recorded output,
+  cannot scale it (since 2026-11-24: its run's weight is not known without
+  that line; before, the run was weighed without it and the sauce came out
+  too large without a word): the dish and cook screens show it as written,
+  one run, under "Quick tomato sauce cannot be scaled: Onion has no weight
+  here. Weigh its output, or give Onion a weight. For one run as written.",
+  and the total list leaves it out under "Not added up" (`test/amounts-written.test.ts` B,
+  `e2e/amounts-written.mjs`). Only a percent line
   that rests on such a line still gives the one sentence.
 - **A name is never an id.** Every line, on every screen, takes its name
   from the notebook (`refName`), whatever the engine says about the amounts
@@ -393,7 +401,15 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
   the note of an own dish; what the dish can do (own: version, Edit and
   the rest as before; shipped: **Keep in my notebook**, the same copy as at
   the end of cooking, left out for a dish with an ingredient the catalogue
-  lacks); the character chips (without "with meat" and "with fish", which
+  lacks; since 2026-11-24 a copy's ingredient slots hold their amount per
+  portion, so it shows its shipped dish's amounts at any portions; a copy
+  kept before holds the total, `portions` times too much, which only the
+  pizza, the miso ramen, the soup with dumplings and the risotto have
+  (their ingredient slots), and is not rewritten: keeping the dish again
+  gives a right copy, and what becomes of old copies is a question for the
+  owner ([data model](data-model.md#dish),
+  [dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24));
+  **Test:** `test/kept-characters.test.ts`); the character chips (without "with meat" and "with fish", which
   the quiet line says); **Portions**; **Ingredients**, a heading per
   component and "For the dish", each line with its amount for the
   portions, its note, "optional", the settled mark of a shipped line and
@@ -409,10 +425,40 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
   its stored `portions` or 1. The cook screen cooks the portions chosen on
   the dish screen, for both origins; before, an own dish was always
   cooked for its stored portions.
-- **An own dish's ingredients.** A component that fills a slot is a group
-  with its lines at what the dish needs of it (the grams its slots ask for
-  over one run, as when cooking); a component ready in stock still lists
-  its lines. The "For the dish" lines are the slots with their totals.
+- **An own dish's ingredients.** Every component the dish makes is a group
+  with its lines at what the dish needs of it: a component that fills a
+  slot by the grams its slots ask for over one run, as when cooking, and,
+  since 2026-11-24, each component its lines name too, by the line's grams
+  over one run of it, or one run per run where the line has no amount
+  (before, a nested component had no group and no steps: a kept crème
+  caramel showed no caramel). One run weighs what the engine says
+  (`runWeight`: its yield, else what goes in, with one run of a component
+  named without an amount), for the ingredients, the cook screen, the
+  total list and the nutrition alike (`dishParts`, `dishRaw`; until the
+  review of 2026-11-24 the ingredients left the nested run out and showed
+  500 g of pasta where the total list said 417 g). The runs of one
+  component from every place it is needed add up, whatever the order of the
+  slots. **A run whose weight is not known is not scaled** (since the second
+  review): a component without a yield with a line that cannot be weighed
+  (no density or piece weight), or named by mass while its run holds tap
+  water, is shown as written, one run, under a quiet line that names the
+  cause and what would help, on the page under its heading and on the cook
+  screen at every step of it, under the amounts: for a line that cannot be
+  weighed "Béchamel cannot be scaled: milk has no weight here. Weigh its
+  output, or give milk a weight. For one run as written." ("Béchamel lässt
+  sich nicht skalieren: Milch hat hier kein Gewicht. Wiege das Ergebnis
+  oder gib Milch ein Gewicht. Für einen Ansatz wie notiert."); for a run
+  that holds tap water "The output of Boiled green beans is not weighed
+  yet, so it cannot be scaled. For one run as written." ("Das Ergebnis von
+  Gekochte grüne Bohnen ist noch nicht gewogen, deshalb lässt es sich nicht
+  skalieren. Für einen Ansatz wie notiert."); the total list and the
+  nutrition list it under "Not added up" with all but the last sentence.
+  Both rules are open questions for the owner
+  ([dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)); before, the line was left out of the run's weight and the
+  amounts came out too large without a word. Parts come in the order the
+  notebook keeps components (by name). A component ready in stock still
+  lists its lines, and what is below it is not made.
+  **Test:** `test/dish-nested-run.test.ts`, `test/kept-characters.test.ts`. The "For the dish" lines are the slots with their totals.
   The role slot table below says the same totals again, with the role,
   the amount per portion and Swap.
 - **An own dish's method** lists every step the cook screen cooks, the
@@ -421,7 +467,15 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
 - **Nutrition per portion of an own dish** counts its raw ingredients all
   the way down (`dishRaw`, the engine's expansion) with the same
   `dishNutrition`, rounding, coverage and words as a shipped dish. An
-  optional slot is not counted, as on a shipped dish. A line without an
+  optional slot is not counted, as on a shipped dish. A component slot
+  without an amount is one run of the component at the dish's stored
+  portions, and a component named without an amount inside another one run
+  of it (since 2026-11-24, the rule of a shipped dish; before, such a slot
+  was "not added up" and hid the figures of every kept copy). A dish that
+  stores no portions does not add such a slot up and shows no figures, as
+  before: what one run makes is not known (`runsWithoutAmount`;
+  [dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)).
+  A line without an
   amount is listed as not counted with "no amount"; a slot that cannot be
   added up (a component without an output weight, an unknown component, an
   amount without a known weight) with "weight not known" (since
@@ -608,8 +662,9 @@ together from components, and a component names the role it usually fills
   per picked component, no amounts) and judged as a dish of the notebook is
   (`entryOfDish`): its characters, and "without meat and fish" derived the
   same way, so a component with an ingredient the catalogue does not place
-  is never meat-free. Without amounts a character that needs a share is
-  judged on what is there, as for a dish of the notebook without amounts.
+  is never meat-free. Without amounts and stored portions a character
+  that needs a share is judged on what is there, as for a dish of the
+  notebook without them.
   With a character or "Without meat and fish" chosen, the roll is among the
   combinations that have it, and a quiet line above **Roll** names the
   choice: "Only combinations like your choice under "What you feel
@@ -704,9 +759,17 @@ and never go below 1; text that is not a number above 0 gets the hint "Enter
 a number above 0." and keeps the last results. The totals are per-portion
 amounts times the portions; the list "What goes in, all the way down" expands
 each component slot by the engine with its total as the wanted output (the
-nested-yield rule) and adds the ingredient slots. A component without an
+nested-yield rule) and adds the ingredient slots. A component slot without
+an amount is one run of the component at the dish's stored portions, scaled
+with the portions shown, and so are its lines in the ingredients and the cook
+screen (`runsWithoutAmount`, since 2026-11-24; before, it was "not added up",
+and the cook screen showed one run at any portions); its row in the slot
+table still shows no amount, as none is stored. In a dish without stored
+portions such a slot is "not added up", as before. A component without an
 output weight is taken as weighing what goes into it, the same rule as the
-cook screen, with a quiet note under the list
+cook screen, unless a line of it cannot be weighed (then it is not added up
+and the dish's page shows it as written, said; since 2026-11-24), with a
+quiet note under the list
 ([amounts as a cook writes them](#components)); a slot that still cannot be
 expanded (a circle, a component that is gone) stays in the table, the sum
 leaves it out and a "Not added up" list says why; the other slots still add
@@ -1162,6 +1225,19 @@ never stored ([analysis](dish-characters.md),
 (`table.ts`, `classes.ts`, `dish.ts`, `classic.ts`, `view.ts`), the table
 `data/dish-characters.json`, `src/screens/character-chips.ts`.
 
+- **A dish of the notebook is judged as a shipped dish is** (since
+  2026-11-24): a component slot without an amount is one run of the
+  component at the dish's stored portions (without stored portions it
+  counts by presence), a component named without an amount inside another
+  one run of it, an amount in pieces or spoons is
+  weighed as on a shipped dish (an egg of a group at the 44 g its foods
+  agree on) and each line of a recipe counts as a line. So a shipped dish
+  kept unchanged has its shipped dish's characters, for all 130 that can be
+  kept and every filling of a frame; before, 36 of the 103 dishes Cook lists
+  did not (the kept pizza was not cheesy). A copy is judged by what is in
+  it, not by its origin. What was wrong, the counts and what changed for
+  own dishes: [dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24).
+  **Test:** `test/kept-characters.test.ts`, `e2e/cook-groups.mjs`.
 - **Chips on a dish.** A dish of the notebook and a shipped classic show
   their characters as quiet chips under the name: text in a pill, no
   control, the muted text colour; the chip's title says what its rule rests
@@ -1917,11 +1993,11 @@ shipped, under the one filter, with:
   where the dish came from, not what is in it now. A variation (a new
   family, "Make a variation") copies the record with its origin and so
   stands among the frames too, under its new name; whether it should is
-  a question for the owner. **Not fixed:** the characters of a kept copy
-  are not those of the shipped dish (see [dish
-  characters](dish-characters.md#a-kept-copy-is-not-judged-like-its-shipped-dish)):
-  the kept pizza is not "cheesy" where the shipped one is, so beside each
-  other in this group the filter "Cheesy" keeps one and drops the other.
+  a question for the owner. **A kept copy has its shipped dish's
+  characters** (since 2026-11-24, [dish
+  characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)):
+  under the filter "Cheesy" the kept pizza stands beside the shipped one;
+  before, the filter kept one and dropped the other (`e2e/cook-groups.mjs`).
   An empty group is not shown. In a course's group the row's
   quiet line drops the course, which the heading says; in the frames group
   it keeps it. On the shipped content: 13 frames (12 main courses and a
@@ -2742,6 +2818,13 @@ it is read.
   version 1, of the dish and of each of its components ("Imported from an AI answer; source:
   Family card, Anna, back side"); a later version has the change its author gives it. It is not
   a link and not searchable.
+
+**Open (found on 2026-11-24, by reading the code, not run):** the prompt asks for an ingredient
+slot's amount "as written, per dish" (`src/screens/import/ai-prompt.ts`) and the import stores it as
+it is (`engine/src/recipes/import.ts`), but a dish reads a slot's amount per portion, so an imported
+dish with stored portions counts such a slot `portions` times (200 g of rice for 4 shows 800 g), the
+same defect a kept copy had ([dish characters](dish-characters.md#a-kept-copy-is-judged-like-its-shipped-dish-2026-11-24)).
+Since its component slots are now added up, its nutrition shows figures from it. To fix next.
 
 **Test:** `test/ai-import.test.ts` (fence, refusals one sentence each, names once over the answer,
 guessed, roles, yields, one transaction, Undo), `test/ai-prompt.test.ts` (the prompt and the schema
