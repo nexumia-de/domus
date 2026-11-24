@@ -52,7 +52,7 @@ test('the links file is what the rule and the corrections give, without problems
     expect(ids.has(id), id).toBe(true);
     expect(entities.has(entity), id).toBe(true);
   }
-  expect(links.size).toBe(681);
+  expect(links.size).toBe(682);
 });
 
 test('the corrections hold: a black turtle bean is a bean, a sweet pepper a capsicum', () => {

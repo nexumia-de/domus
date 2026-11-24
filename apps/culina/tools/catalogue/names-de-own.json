@@ -11,6 +11,7 @@
     "fdc-167782": "Fruit of Crateva religiosa; no common German word, descriptive name chosen",
     "fdc-167783": "unknown fruit; plain descriptive name",
     "fdc-167875": "USDA \"unheated\" cured ham is a US wet-cured ham; not claimed to be raw ham (Rohschinken) or prosciutto",
+    "fdc-168287": "US salt pork; USDA names no cut. Salzspeck (salted, unsmoked bacon fat) is the nearest German word",
     "fdc-168419": "Corchorus olitorius leaves; word chosen by the translator",
     "fdc-168446": "the old German word may mean starch (Kartoffelstärke); kept literal because USDA lists potato flour",
     "fdc-168578": "Hungarian wax pepper; no exact German word",
@@ -86,6 +87,7 @@
     "fdc-168195": { "name": "Clementine", "aliases": ["Clementinen"] },
     "fdc-168203": { "name": "Granny Smith", "aliases": ["Apfel Granny Smith"] },
     "fdc-168277": { "name": "Speck, gepökelt, roh", "aliases": ["Bacon", "Frühstücksspeck"] },
+    "fdc-168287": { "name": "Salzspeck, roh", "aliases": ["Gesalzener Speck"] },
     "fdc-168385": { "name": "Amaranthblätter", "aliases": ["Amaranth, Blätter"] },
     "fdc-168389": { "name": "Spargel" },
     "fdc-168391": {
@@ -698,6 +700,7 @@
     "fdc-174311": { "name": "Lammkeule, mit Fett", "aliases": ["Keule vom Lamm"] },
     "fdc-174531": { "name": "Fischsauce", "aliases": ["Fischsoße"] },
     "fdc-174683": { "name": "Weintrauben, europäische Sorten, rot oder grün" },
+    "fdc-174815": { "name": "Spirituose, 40 % vol", "aliases": ["Branntwein"] },
     "fdc-174837": { "name": "Weißwein", "aliases": ["Weißwein, Tafelwein"] },
     "fdc-174928": {
       "name": "Semmelbrösel",

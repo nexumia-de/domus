@@ -264,13 +264,17 @@
         },
         {
           "key": "stock",
-          "wanted": {
-            "en": "Meat stock",
-            "de": "Fleischbrühe"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-soup-stock"
+          },
+          "note": {
+            "en": "Beef or chicken stock.",
+            "de": "Rinder- oder Hühnerbrühe."
           },
           "sourceNote": {
-            "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given.",
-            "de": "„0 décilitres de bouillon“ im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Eine lesbare Menge gibt es daher nicht."
+            "en": "\"0 décilitres de bouillon\" in the printed text: the first digit is not legible in either scan (the second scan reads a G). The source gives no amount that can be read, so no amount is given. The book names no meat for the bouillon.",
+            "de": "„0 décilitres de bouillon“ im gedruckten Text: die erste Ziffer ist in beiden Scans nicht lesbar (der zweite Scan liest ein G). Eine lesbare Menge gibt es daher nicht. Das Buch nennt kein Fleisch für die Bouillon."
           }
         },
         {

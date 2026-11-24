@@ -31,6 +31,10 @@
       "en": "Bacon",
       "de": "Bacon (Frühstücksspeck)"
     },
+    "fdc-168287": {
+      "en": "Salt pork",
+      "de": "Salzspeck"
+    },
     "fdc-168407": {
       "en": "Garden cress",
       "de": "Gartenkresse"
@@ -551,6 +555,10 @@
       "en": "Fish sauce",
       "de": "Fischsauce"
     },
+    "fdc-174815": {
+      "en": "Spirit, 40 % alcohol",
+      "de": "Spirituose, 40 % Alkohol"
+    },
     "fdc-174837": {
       "en": "White wine",
       "de": "Weißwein"
@@ -682,6 +690,10 @@
     "fdc-group-semolina": {
       "en": "Semolina",
       "de": "Hartweizengrieß"
+    },
+    "fdc-group-soup-stock": {
+      "en": "Stock (beef or chicken)",
+      "de": "Brühe (Rind oder Huhn)"
     },
     "fdc-group-sugars": {
       "en": "Sugar",

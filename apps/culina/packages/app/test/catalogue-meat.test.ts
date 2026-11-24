@@ -32,8 +32,8 @@ const named = (read('../../../tools/catalogue/extras.json') as { foods: { id: nu
   .filter((id) => CATEGORIES.includes(byFdc.get(id)?.['x-fdc']?.category ?? ''));
 
 describe('named meat, poultry, fish and shellfish', () => {
-  test('there are 28, all raw or unprepared, in all six categories', () => {
-    expect(named).toHaveLength(28);
+  test('there are 29, all raw or unprepared, in all six categories', () => {
+    expect(named).toHaveLength(29);
     const cats = new Set(named.map((id) => byFdc.get(id)?.['x-fdc']?.category));
     expect([...cats].sort()).toEqual([...CATEGORIES].sort());
     for (const id of named) {

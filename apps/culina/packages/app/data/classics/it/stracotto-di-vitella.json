@@ -46,9 +46,9 @@
         },
         {
           "key": "carnesecca",
-          "wanted": {
-            "en": "Carnesecca (dry-cured pork)",
-            "de": "Carnesecca (luftgetrockneter Schweinespeck)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168287"
           },
           "amount": {
             "value": 50,
@@ -56,8 +56,8 @@
             "original": "Carnesecca, grammi 50"
           },
           "note": {
-            "en": "Cut into small dice.",
-            "de": "In kleine Würfel geschnitten."
+            "en": "Cut into small dice. Carnesecca is salted pork belly; the catalogue's is US salt pork of no named cut.",
+            "de": "In kleine Würfel geschnitten. Carnesecca ist gesalzener Schweinebauch; der Katalog hat US-Salzspeck ohne genannten Teil."
           },
           "sourceNote": {
             "en": "The source says it may replace the Tuscan oil in whole or in part. No oil amount is given, so no oil line is written.",

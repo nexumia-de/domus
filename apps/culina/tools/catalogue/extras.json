@@ -288,6 +288,15 @@
       "id": 173647,
       "why": "tap water: 75 shipped recipes name water, and a recipe with a line outside the catalogue cannot be kept in the notebook",
       "volume": [{ "modifier": "fl oz", "unit": "tbsp", "per": 2 }]
+    },
+    {
+      "id": 168287,
+      "why": "salt pork, 2 dish lines: Artusi's carnesecca, which his own word list calls salted pork belly (maccheroni alla bolognese, stracotto di vitella)"
+    },
+    {
+      "id": 174815,
+      "why": "distilled spirit, 80 proof, 1 dish line: Artusi's acquavite in the batter of the fried fennel",
+      "volume": [{ "modifier": "fl oz", "unit": "tbsp", "per": 2 }]
     }
   ]
 }

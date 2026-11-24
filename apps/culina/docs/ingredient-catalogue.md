@@ -160,8 +160,9 @@ food in the dataset (the SR Legacy JSON, by its `description`), add the id and r
 rebuild ([development](development.md#ingredient-catalogue)), then replace the
 dish line's `wanted` by its `ref`. What USDA does not have stays `wanted`:
 juniper, bouquet garni, soup vegetables, fine herbs, orange-flower water,
-herring milt, chicken blood, prosciutto grasso, carnesecca, fruit brandy, beef
-bones and beef extract. The catalogue has no route for a food without USDA
+herring milt, chicken blood, prosciutto grasso, beef bones and beef extract
+(carnesecca and the acquavite, once in this list, were matched on 2026-11-24
+in the third pass below). The catalogue has no route for a food without USDA
 data: no entry is typed by hand. A food the rule excludes and that is not
 named stays out.
 
@@ -206,7 +207,8 @@ wine" are table wine, red; breadcrumbs and "grated bread roll" are dry grated
 plain breadcrumbs; stale bread and a bread crumb are wheat bread, rye bread
 crust is rye bread. "Cacio" (a sheep's cheese: the dataset's Romano is not
 that), tarragon (only dried is in the dataset), chocolate (the dataset's baking
-chocolate is unsweetened) and shallot-for-onion were not forced.
+chocolate is unsweetened) and shallot-for-onion were not forced (looked at again in the third
+pass, 2026-11-24: still not).
 
 **For the project's own recipes (48 named foods, 2026-11-23).** The own
 recipes of 13 cuisines ([own recipes](decisions/own-recipes.md)) need foods
@@ -246,6 +248,128 @@ role it is asked for). The characters leave it out
 ([dish characters](dish-characters.md)); the nutrition counts it with its
 0 kcal. FlavorDB's link for it is taken out. 21 shipped recipes still have a
 `wanted` line and cannot be kept.
+
+**The lines that kept a recipe from the notebook (2 named foods,
+2026-11-24, third pass).** 21 of the 135 shipped recipes had a `wanted` line
+and could not be kept in the notebook. Each of the 26 names was looked up
+again in SR Legacy 2018-04 (the downloaded JSON, SHA-256 as in the envelope,
+by its `description`; each id, description, portion and figure read there).
+The rule of this pass: a line points at a food only when the row is the food
+the line names, and at a group only when every row of the group is that food;
+a row that is merely like it is not taken. Two foods are added:
+
+- "Pork, cured, salt pork, raw" (FDC 168287, Pork Products; portions in ounces
+  only, so a row for mass amounts) for the carnesecca of the maccheroni alla
+  bolognese and of the stracotto di vitella. Artusi's own word list, quoted in
+  the lines' `sourceNote`, says "Carnesecca. Pancetta del maiale salata.":
+  salted, unsmoked pork belly. US salt pork is salt-cured, unsmoked pork, as
+  a rule from the belly or side; USDA names no cut. The note says that the row
+  is US salt pork of no named cut. This revises the earlier "the dataset has no
+  dry-cured Italian pork" for this word: the book defines carnesecca as salted
+  belly, not as an air-dried product. Judgement: USDA's sample is fat (80.5 g
+  fat in 100 g), fatter than a streaky belly would usually be; the nutrition
+  of the two dishes counts it as such. "Pork, fresh, belly, raw" (FDC 167812,
+  53 g fat, 32 mg sodium in 100 g) has the cut but is not salted: the salt
+  (2680 mg sodium in the salt pork) is what makes carnesecca, so the cured
+  row is the food and the fresh belly only its cut. Its parent is "Pork, cured" (2 rows to
+  3, "Pork" 6 to 7); no line points at either group.
+- "Alcoholic beverage, distilled, all (gin, rum, vodka, whiskey) 80 proof"
+  (FDC 174815, Beverages; 1 fl oz = 27.8 g read as 2 tbsp, density 0.94) for
+  the acquavite of the fried fennel's batter. Acquavite is the Italian word
+  for a distilled spirit of any kind; the earlier wording "Fruit brandy" was
+  narrower than the book. USDA's row is its row for all distilled spirits at
+  40 % alcohol, and the note says "a spirit of no named kind". The parent
+  "Alcoholic beverage" now has 4 rows and no longer a density (0.94 against
+  0.994 of the wines and sake is beyond the 1.05 the parent rule allows); no
+  line points at it. The line has no amount.
+
+Neither has a Wikidata item for its NDB number (10165, 14037; asked on
+2026-11-24, no item), so both have own German names ("Salzspeck, roh", marked
+`uncertain`; "Spirituose, 40 % vol") and kitchen names ("Salt pork" /
+"Salzspeck", "Spirit, 40 % alcohol" / "Spirituose, 40 % Alkohol"). FlavorDB's
+rule links the salt pork to its pork entity (682 links); the spirit has none.
+
+Two names now point at a group the catalogue had: "Meat broth" of the
+maccheroni alla bolognese and of the minestrone, and "Meat stock" (bouillon)
+of the poulet bourguignonne point at "Soup, stock", which holds exactly the
+home-prepared beef and chicken stock (FDC 172883, 172884), each of them a meat
+stock. This reverses the judgement of the second pass, which knew both rows
+("the dataset has home-prepared beef and chicken stock, but the lines name no
+animal") and left the lines `wanted`. The reason for reversing it: a line that
+names no animal is not asked to point at one animal's stock; a group that
+holds exactly the two meat stocks names no animal either, as the beef group
+names no cut for "Beef, from the joint". Every row of the group is a meat
+stock, so the group is the food the lines name. The note says "Beef or chicken stock.", the
+`sourceNote` that the book names no meat; kitchen name "Stock (beef or
+chicken)" / "Brühe (Rind oder Huhn)". A fish or vegetable stock joining the
+group would make it wrong for these lines. None of the three has an amount.
+
+Not matched, though the catalogue or the dataset has something near:
+
+- "Cheese (cacio)" of the gnocchi di patate and the tagliatelle verdi. The
+  cheese group holds 21 rows, cottage cheese, cream cheese and ricotta among
+  them, which are not what is grated over pasta; whether Artusi's plain
+  "cacio" is any cheese or a sheep's cheese, the group is not that food, and
+  Romano is not it either. The earlier judgement stands.
+- "Chocolate" of Muro's crema de chocolate (1894). The catalogue's dark
+  chocolate (70-85 % cacao, FDC 170273, since 2026-11-23) is a modern bitter
+  chocolate; the source names no kind, and the chocolate of the time was as a
+  rule sweetened tablet chocolate. Dark chocolate, unsweetened baking chocolate
+  and the sweet candies are each like it, none is clearly it. The earlier
+  judgement stands.
+- Tarragon (marinated herrings): only dried tarragon (FDC 170937); the herbs
+  of that recipe are fresh (fresh thyme, garden cress), and dried tarragon
+  would count a fresh herb as a dried one, several times as dense in
+  nutrients.
+- Kidney suet (frikandelle): "Beef, variety meats and by-products, suet, raw"
+  (FDC 170193) is the food, but the reason of the second pass stands: its
+  name puts it under the beef group, which the frikandelle's "Beef, from the
+  joint" points at, so a pantry with suet alone would count as having the
+  beef. Left for the owner; the parent rule has no way to keep a row out of
+  its group. The frikandelle stays blocked by its juniper anyway.
+- Shelled fresh beans (minestrone; the source names no kind): the dataset's
+  immature (fresh) beans are lima beans, broad beans (FDC 170377, raw),
+  hyacinth beans and winged beans, other species than the common bean
+  (Phaseolus vulgaris) that an Italian minestrone's beans are as a rule (a
+  judgement from general knowledge; the source text was not read again), and pinto
+  beans, immature seeds, frozen (FDC 169958), which are the common bean but
+  one named variety and a frozen product, while the source names no variety;
+  the rest are dried beans. None is clearly a handful of fresh shelled beans
+  of no named kind, and the dataset has no group of fresh common beans.
+- Beef extract (fine potato soup): the dataset has bouillon powders and cubes,
+  salted soup bases, and a yeast extract; none is a meat extract.
+
+18 recipes still cannot be kept (117 of 135 can, 114 before), 22 names in 25
+lines stay `wanted`; `test/classics-wanted-list.test.ts` names every recipe
+with the lines that block it and checks that the engine's copy refuses exactly
+those and copies every other:
+
+- not in the dataset: juniper berries (frikandelle, sauerbraten),
+  orange-flower water (flan clásico, huevos amerengados), bouquet garni and
+  chicken blood (poulet bourguignonne), fine herbs (arlequín de judías), soup
+  vegetables (fine potato soup), herring milt (marinated herrings; the dataset
+  has roe, which is not milt), dashi (miso shiru; no dashi, kombu or bonito),
+  red curry paste (kaeng phet kai; only curry powder), beef bone and bones
+  (cocido, pot-au-feu; no bone row);
+- in the dataset only as something near (above): cacio (gnocchi di patate,
+  tagliatelle verdi), chocolate (crema de chocolate), tarragon (marinated
+  herrings), shelled fresh beans (minestrone), beef extract (fine potato
+  soup), and kidney suet (frikandelle, left for the owner);
+- no single food: "Fatty ham (prosciutto grasso)" (minestrone; the dataset's
+  cured ham is a US wet-cured ham), fresh berries and fresh berries, sugared
+  (rote Grütze; the dataset names each berry and has no berry group), the
+  boiled meat (lesso) of the minestrone, which names neither animal nor cut,
+  and the cooking water of the peas (potage aux pois verts maigre), which is
+  not tap water.
+
+What changed for the dishes: the nutrition counts one line more for the
+stracotto (6 of 15) and the maccheroni (6 of 13), the 50 g of carnesecca;
+neither shows figures (lines without an amount stay). The characters of every
+shipped dish are as before (compared dish by dish before and after). A kept
+copy of the maccheroni, the stracotto or the fried fennel is a dish of the
+notebook like any other. Not verified: nobody cooked these with the
+catalogue's food; that US salt pork is cut from the belly rests on general
+knowledge, not on a source.
 
 **Savoy cabbage, tomato sauce and tomato paste (3 named foods,
 2026-11-21, second pass).** The dish lines still `wanted` were looked up
@@ -354,7 +478,7 @@ fewer than the name has).
    `x-group: { rows }`, the number of food rows below it, and, for a parent
    named in `tools/catalogue/usual.json`, `usual` ([usual member](#usual-member)).
 
-Result for SR Legacy 2018-04, counted on the file on 2026-11-24: 638 food rows (539 by the rule, 99 [named foods](#named-foods)) and 140 parents, 778 entries (a file of 519 kB, 68 kB gzipped; 777 before tap water, 720 entries before the foods for the own recipes, 716 before savoy and the tomato products, 681 before the meat and fish).
+Result for SR Legacy 2018-04, counted on the file on 2026-11-24: 640 food rows (539 by the rule, 101 [named foods](#named-foods)) and 140 parents, 780 entries (minified 525 kB, 70 kB gzipped, as measured that day; 778 before the third pass of the named foods, 777 before tap water, 720 entries before the foods for the own recipes, 716 before savoy and the tomato products, 681 before the meat and fish).
 449 food rows have a parent. The figures of the tree that follow were counted on 2026-11-21 at 720 entries and not again: 420 food rows had a parent, 162 stood alone and 7 food rows were
 roots of a group. The tree has 6 levels (233 entries at the top, 316, 122,
 37, 10 and 2 below). 64 parents are at the top, 47, 16 and 4 at the next
@@ -598,10 +722,10 @@ the generator, with its SHA-256 in the envelope (`kitchenNamesDataset`).
   kitchen name wherever an ingredient is named, in both languages; the
   entry's `name` and `names` stay what they are, and a search finds the
   entry by all of them.
-- **Which entries.** Every ingredient a shipped recipe names (169 on
-  2026-11-24); a new recipe line without one fails
-  `test/kitchen-names.test.ts`. The other 609 entries show the catalogue's
-  name as before.
+- **Which entries.** Every ingredient a shipped recipe names (177 on
+  2026-11-24, 174 before the third pass of the named foods; the overlay has
+  180 names); a new recipe line without one fails `test/kitchen-names.test.ts`.
+  The other 600 entries show the catalogue's name as before.
 - **Honest about the row.** A kitchen name does not claim another food:
   distilled vinegar is not called rice vinegar, the yellow mustard not
   Dijon; "Weizenmehl 405" for US all-purpose flour is the nearest German
@@ -612,7 +736,8 @@ their catalogue name, where the long name tells rows apart.
 
 ### Own translation
 
-The 595 entries without a Wikidata name (foods 467, groups 128) have a
+The 598 entries without a Wikidata name (foods 470, groups 128; two of the
+foods, salt pork and the spirit, since 2026-11-24) have a
 German name that the project translated from the USDA description on
 2026-11-19 (556 of them; 40 were added on 2026-11-23 with the foods for the
 own recipes, and savoy cabbage left the overlay because Wikidata names it
@@ -731,12 +856,14 @@ line that names such a parent has no nutrition and is reported as not counted.
 
 - No baked goods, beverages, soups, sauces, canned, frozen, cooked or
   prepared foods, no cuts of meat beyond a short list, and no brand
-  products, apart from the 50 [named foods](#named-foods) (bread,
-  breadcrumbs, wine, canned tomato sauce and paste and 26 raw meats and fish
-  among them). Meat, poultry,
-  fish and shellfish are only those 26: no game, no duck or goose, no
-  offal, no cured meat except bacon and a cured ham, no dry-cured pork
-  (prosciutto, carnesecca), no smoked or salted fish.
+  products, apart from the 101 [named foods](#named-foods) (counted on
+  2026-11-24; bread, breadcrumbs, canned tomato sauce and paste, seven
+  sauces and stocks, five beverages: red and white wine, sake, tap water and
+  a distilled spirit of 80 proof; and 29 raw meats and fish among them).
+  Meat, poultry, fish and shellfish are only those 29: no game, no duck or
+  goose, no offal (beef suet is in the dataset and left out, see the third
+  pass), no cured meat except bacon, a US wet-cured ham and US salt pork, no
+  air-dried pork (prosciutto), no smoked or salted fish.
 - No shelf life, seasons or allergens, no nutrition beyond the seven
   [nutrients](#nutrition) above (no vitamins or minerals), and no roles in the
   file (the app's [role table](data-model.md#roles) adds a few when it reads it); yields only
@@ -749,7 +876,7 @@ line that names such a parent has no nutrition and is reported as not counted.
   edible portion); a medium apple is 182 g without its core, not as
   bought. Leafy greens and herbs have low densities because the source's
   cup is loosely packed.
-- English as the canonical language; a German name for every entry, 170 from Wikidata, 12 derived and 595 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
+- English as the canonical language; a German name for every entry, 170 from Wikidata, 12 derived and 598 translated by the project ([German names](#german-names), [own translation](#own-translation)), no other language; US customary portions
   only; the data is from 2018.
 - Several rows are variants of the same food (milks with different added
   vitamins, margarines, oils); the source's variants are kept, and the
