@@ -77,9 +77,13 @@
         },
         {
           "key": "cheese",
-          "wanted": {
-            "en": "Cheese (cacio)",
-            "de": "Käse (Cacio)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese"
+          },
+          "sourceNote": {
+            "en": "Cacio is the source's word for cheese; it names the kind where it means one (cacio parmigiano, cacio gruiera).",
+            "de": "Cacio ist das Wort der Quelle für Käse; wo sie eine Sorte meint, nennt sie sie (cacio parmigiano, cacio gruiera)."
           }
         },
         {

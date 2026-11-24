@@ -202,9 +202,12 @@ describe('on the shipped dishes', () => {
     expect(like('gratin-dauphinois')).toEqual(['baked-potatoes-cheese', 'cavolfiore-balsamella']);
   });
 
-  test('crème caramel: latte brûlé first, the other egg custards after', () => {
-    // Eggy and sweet desserts; latte brûlé has exactly those two, the others are also creamy.
+  test('crème caramel: chocolate cream and latte brûlé first, the other egg custards after', () => {
+    // Eggy and sweet desserts; the chocolate cream and latte brûlé have exactly those two, the
+    // others are also creamy. The chocolate cream is eggy since its chocolate has a catalogue row
+    // (2026-11-24): its measured share of yolk leaves out the milk, which has no mass here.
     expect(like('creme-caramel')).toEqual([
+      'crema-de-chocolate',
       'latte-brule',
       'oeufs-a-la-neige',
       'huevos-amerengados',

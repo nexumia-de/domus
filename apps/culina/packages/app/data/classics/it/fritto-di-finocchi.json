@@ -176,13 +176,13 @@
         },
         {
           "key": "brandy",
-          "wanted": {
-            "en": "Fruit brandy (acquavite)",
-            "de": "Obstbrand (Acquavite)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174815"
           },
           "note": {
-            "en": "One spoonful (una cucchiaiata).",
-            "de": "Ein Löffel (una cucchiaiata)."
+            "en": "One spoonful (una cucchiaiata). Acquavite is a spirit of no named kind.",
+            "de": "Ein Löffel (una cucchiaiata). Acquavite ist eine Spirituose ohne genannte Sorte."
           },
           "sourceNote": {
             "en": "The book gives no size for the spoon, so no amount.",

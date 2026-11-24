@@ -37,14 +37,22 @@
       "lines": [
         {
           "key": "chocolate",
-          "wanted": {
-            "en": "Chocolate",
-            "de": "Schokolade"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170273"
           },
           "amount": {
             "value": 2,
             "unit": "onza",
             "original": "dos onzas de chocolate"
+          },
+          "note": {
+            "en": "Dark chocolate stands for the chocolate of 1894, which was usually sweetened.",
+            "de": "Dunkle Schokolade steht für die Schokolade von 1894, die meist gesüßt war."
+          },
+          "sourceNote": {
+            "en": "The source names chocolate of no kind.",
+            "de": "Die Quelle nennt Schokolade ohne Sorte."
           }
         },
         {

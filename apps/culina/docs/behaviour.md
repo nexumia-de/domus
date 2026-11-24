@@ -1647,8 +1647,8 @@ uses <ingredient>" only.
   the dish screen beside "Open: add a crunch"); for a shipped dish a line the
   catalogue has no ingredient for yet is not counted and is named apart,
   "Not in the catalogue yet, so not counted: Bouquet garni" (a `wanted` line,
-  such as "Cheese (cacio)", is not matched to any stock, even to cheese in
-  stock: the catalogue has no food for it). Water is never asked for: a shipped
+  such as "Juniper berries", is not matched to any stock: the catalogue has
+  no food for it). Water is never asked for: a shipped
   dish names it as `wanted` and is not asked, a ratio card's role water and an
   own line whose ingredient has the role water are the kitchen's (engine
   rule). For both origins the ingredient tree is the notebook's completed by

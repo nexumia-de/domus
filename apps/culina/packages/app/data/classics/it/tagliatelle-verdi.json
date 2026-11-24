@@ -76,13 +76,13 @@
         },
         {
           "key": "cheese",
-          "wanted": {
-            "en": "Cheese (cacio)",
-            "de": "Käse (Cacio)"
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-cheese"
           },
           "sourceNote": {
-            "en": "Dressing: cheese and butter, as the source's simplest option.",
-            "de": "Zum Anrichten: Käse und Butter, die einfachste Möglichkeit der Quelle."
+            "en": "Dressing: cheese and butter, as the source's simplest option. Cacio is the source's word for cheese; it names the kind where it means one (cacio parmigiano, cacio gruiera).",
+            "de": "Zum Anrichten: Käse und Butter, die einfachste Möglichkeit der Quelle. Cacio ist das Wort der Quelle für Käse; wo sie eine Sorte meint, nennt sie sie (cacio parmigiano, cacio gruiera)."
           }
         },
         {

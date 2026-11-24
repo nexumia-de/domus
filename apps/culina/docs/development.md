@@ -205,7 +205,13 @@ The German names that Wikidata does not have are the hand-kept overlay
 merges it; with the USDA data not at hand, `node tools/catalogue/merge-own-names.mjs`
 merges it into the shipped file offline and gives the same bytes. A new
 catalogue entry needs a line in the overlay, or the test
-`catalogue-german-own.test.ts` fails with its id.
+`catalogue-german-own.test.ts` fails with its id. Before writing one, ask
+Wikidata for the row's NDB number (the second field of `FOOD_DES.txt`) with
+one SPARQL query, `SELECT ?i ?l WHERE { ?i wdt:P1978 ?n . FILTER(?n IN
+("10165")) OPTIONAL { ?i rdfs:label ?l FILTER(lang(?l)="de") } }`, sent like
+the queries below; only when it has no item is an own name written (done on
+2026-11-24 for salt pork and the spirit: no item, the snapshot not
+refreshed).
 
 Hosts tested on 2026-11-18 and again on 2026-11-23 (the catalogue was rebuilt and the snapshot refreshed that day), all answered 200 through the proxy:
 
@@ -263,7 +269,7 @@ files in `packages/app/data/` are committed and rebuilt, never edited:
 - `flavour-pairings.json`, derived from FlavorDB's entity documents
   (fetched on 2026-11-23: 936 entities, 1788 molecules, 606 kB);
 - `flavour-links.json`, which entity stands for an ingredient of the
-  catalogue (681 of 778), from the rule of `tools/flavordb/link.mjs` and
+  catalogue (682 of 780), from the rule of `tools/flavordb/link.mjs` and
   the corrections of `tools/flavordb/links-own.json`.
 
 To fetch again and rebuild, from `apps/culina`:

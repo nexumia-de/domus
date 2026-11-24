@@ -160,8 +160,9 @@ food in the dataset (the SR Legacy JSON, by its `description`), add the id and r
 rebuild ([development](development.md#ingredient-catalogue)), then replace the
 dish line's `wanted` by its `ref`. What USDA does not have stays `wanted`:
 juniper, bouquet garni, soup vegetables, fine herbs, orange-flower water,
-herring milt, chicken blood, prosciutto grasso, carnesecca, fruit brandy, beef
-bones and beef extract. The catalogue has no route for a food without USDA
+herring milt, chicken blood, prosciutto grasso, beef bones and beef extract
+(carnesecca and the acquavite, once in this list, were matched on 2026-11-24;
+see below). The catalogue has no route for a food without USDA
 data: no entry is typed by hand. A food the rule excludes and that is not
 named stays out.
 
@@ -206,7 +207,8 @@ wine" are table wine, red; breadcrumbs and "grated bread roll" are dry grated
 plain breadcrumbs; stale bread and a bread crumb are wheat bread, rye bread
 crust is rye bread. "Cacio" (a sheep's cheese: the dataset's Romano is not
 that), tarragon (only dried is in the dataset), chocolate (the dataset's baking
-chocolate is unsweetened) and shallot-for-onion were not forced.
+chocolate is unsweetened) and shallot-for-onion were not forced. Cacio and
+chocolate were matched on 2026-11-24, with the reasons given there (below).
 
 **For the project's own recipes (48 named foods, 2026-11-23).** The own
 recipes of 13 cuisines ([own recipes](decisions/own-recipes.md)) need foods
@@ -246,6 +248,104 @@ role it is asked for). The characters leave it out
 ([dish characters](dish-characters.md)); the nutrition counts it with its
 0 kcal. FlavorDB's link for it is taken out. 21 shipped recipes still have a
 `wanted` line and cannot be kept.
+
+**The lines that kept a recipe from the notebook (2 named foods,
+2026-11-24, third pass).** 21 of the 135 shipped recipes had a `wanted` line
+and could not be kept in the notebook. Each of the 26 names was looked up
+again in SR Legacy 2018-04 (the downloaded JSON, by its `description`), and
+the lines of the Artusi and Davidis recipes were read again in the archive.org
+texts the recipes cite. Two foods are added:
+
+- "Pork, cured, salt pork, raw" (FDC 168287, Pork Products; portions in ounces
+  only, so a row for mass amounts) for the carnesecca of the maccheroni alla
+  bolognese and of the stracotto di vitella. Artusi's own word list says
+  "Carnesecca. Pancetta del maiale salata.": salted pork belly. US salt pork is
+  salted, unsmoked pork; USDA names no cut. The line's note says that the row
+  is US salt pork of no named cut. This overturns the earlier "the dataset has
+  no dry-cured Italian pork" for this word: the book defines carnesecca as
+  salted belly, not as an air-dried product, and that is what the row is.
+  Its parent is "Pork, cured" (2 rows to 3, "Pork" 6 to 7); no line points at
+  either group.
+- "Alcoholic beverage, distilled, all (gin, rum, vodka, whiskey) 80 proof"
+  (FDC 174815, Beverages; 1 fl oz = 27.8 g read as 2 tbsp, density 0.94) for
+  the acquavite of the fried fennel's batter. Acquavite is Italian for any
+  distilled spirit; the earlier wording "Fruit brandy" was narrower than the
+  book. USDA's row is a spirit of 40 % alcohol of no kind, and the note says
+  "a spirit of no named kind". The parent "Alcoholic beverage" now has 4 rows
+  and no longer a density (0.94 against 0.994 of the wines and sake is above
+  the 1.05 the parent rule allows); no line points at it.
+
+Neither has a Wikidata item for its NDB number (10165, 14037; asked on
+2026-11-24), so both have own German names ("Salzspeck, roh", marked
+`uncertain`; "Spirituose, 40 % vol") and kitchen names ("Salt pork" /
+"Salzspeck", "Spirit, 40 % alcohol" / "Spirituose, 40 % Alkohol"). FlavorDB's
+rule links the salt pork to its pork entity (682 links); the spirit has none.
+
+Four names now point at entries the catalogue had (judgements):
+
+- "Cheese (cacio)" of the gnocchi di patate and the tagliatelle verdi: the
+  cheese group. The earlier judgement took cacio for a sheep's cheese, which
+  Romano is not. Artusi uses "cacio" as his word for cheese of any kind and
+  names the kind where he means one ("cacio parmigiano", "cacio gruiera");
+  "cacio e burro" is cheese and butter. A source that names no kind points at
+  the group, as "Beef, from the joint" points at the beef group. The line's
+  `sourceNote` says so.
+- "Meat broth" of the maccheroni alla bolognese and of the minestrone, and
+  "Meat stock" (bouillon) of the poulet bourguignonne: the group "Soup,
+  stock", which holds exactly the home-prepared beef and chicken stock. The
+  earlier judgement left them `wanted` because the lines name no animal; the
+  group stands for a stock of no named meat, as the beef group for a beef of no
+  cut. Artusi's broth (No. 2, "Brodo") is of "la carne", no animal named. The
+  note says "beef or chicken stock", the `sourceNote` that the book names no
+  meat. A fish stock joining the group would make it wrong for these lines.
+- "Chocolate" of Muro's crema de chocolate (1894): dark chocolate, 70-85 %
+  cacao solids (FDC 170273, in the catalogue since 2026-11-23). The earlier
+  judgement found only unsweetened baking chocolate and sweet candies. A
+  judgement: the source names no kind, and the chocolate sold in Spain then
+  was mostly sweetened tablet chocolate, so the line's note says that dark
+  chocolate stands for it and that it was usually sweetened; the figures are
+  those of modern dark chocolate, not of the source's. The recipe adds its own
+  sugar (2 onzas) besides.
+
+20 names in 21 lines stay `wanted`, and 15 recipes cannot be kept (120 of 135
+can, 114 before; `test/classics-wanted-list.test.ts` names each with the lines
+that block it and checks that keeping refuses exactly those):
+
+- not in the dataset: juniper berries (frikandelle, sauerbraten),
+  orange-flower water (flan, huevos amerengados), bouquet garni and chicken
+  blood (poulet bourguignonne), fine herbs (arlequín de judías), soup
+  vegetables (fine potato soup), herring milt (the dataset has roe, which is
+  not milt), dashi (miso shiru; no dashi, kombu or bonito) and red curry paste
+  (kaeng phet kai);
+- in the dataset, but not the food the line names: beef bone(s) (cocido,
+  pot-au-feu; no bone row), beef extract (fine potato soup; the bouillon
+  powders are salted soup bases, not a meat extract), tarragon (marinated
+  herrings; only dried, while the herbs layered in the jar with fresh cress
+  and fresh thyme are fresh), fatty ham (minestrone; only US wet-cured ham),
+  shelled fresh beans (minestrone; fresh shelled beans of no species, the
+  dataset has frozen immature pinto and lima beans), fresh berries and fresh
+  berries, sugared (rote Grütze; Davidis says "fresh fruits", "also fresh
+  blackberries", and the dataset has no berry group);
+- in the dataset and left for the owner: kidney suet (FDC 170193; the reason
+  above stands, and the frikandelle stays blocked by its juniper anyway);
+- not a food: "the usual boiled meat" (lesso) of the minestrone, which names
+  neither animal nor cut, and the cooking water of the peas.
+
+What changed for the dishes: the nutrition counts one line more for the
+crema de chocolate (4 of 5), the stracotto (6 of 15) and the maccheroni
+(6 of 13); none of them shows figures (a line without an amount stays). The
+crema de chocolate is now "eggy" besides "sweet": with the chocolate weighed,
+enough of the dish has a mass to judge shares, and the yolks are 41 % of the
+weighed mass, because the quarter litre of milk is not weighed (the milk group
+has no density); with the milk the raw share would be about 18 %, below the
+20 %, and after the reduction by a third about a quarter. A yolk-set custard
+is an egg dish in the sense of the rule, so the answer is right, by a weak
+reason. It is now "like" the crème caramel. "Without meat and fish" became
+known: yes for the crema de chocolate, the fried fennel, the gnocchi di patate
+and the tagliatelle verdi (all were "not known"), no for the minestrone (its
+broth is a stock). Not verified: nobody cooked any of these with the
+catalogue's food; the chocolate's sweetness in 1894 rests on general
+knowledge, not on a source.
 
 **Savoy cabbage, tomato sauce and tomato paste (3 named foods,
 2026-11-21, second pass).** The dish lines still `wanted` were looked up
@@ -598,10 +698,10 @@ the generator, with its SHA-256 in the envelope (`kitchenNamesDataset`).
   kitchen name wherever an ingredient is named, in both languages; the
   entry's `name` and `names` stay what they are, and a search finds the
   entry by all of them.
-- **Which entries.** Every ingredient a shipped recipe names (169 on
-  2026-11-24); a new recipe line without one fails
-  `test/kitchen-names.test.ts`. The other 609 entries show the catalogue's
-  name as before.
+- **Which entries.** Every ingredient a shipped recipe names (182 on
+  2026-11-24, after the lines matched in the third pass of the named foods);
+  a new recipe line without one fails `test/kitchen-names.test.ts`. The other
+  598 entries show the catalogue's name as before.
 - **Honest about the row.** A kitchen name does not claim another food:
   distilled vinegar is not called rice vinegar, the yellow mustard not
   Dijon; "Weizenmehl 405" for US all-purpose flour is the nearest German
@@ -612,7 +712,8 @@ their catalogue name, where the long name tells rows apart.
 
 ### Own translation
 
-The 595 entries without a Wikidata name (foods 467, groups 128) have a
+The 598 entries without a Wikidata name (foods 470, groups 128; two of the
+foods, salt pork and the spirit, since 2026-11-24) have a
 German name that the project translated from the USDA description on
 2026-11-19 (556 of them; 40 were added on 2026-11-23 with the foods for the
 own recipes, and savoy cabbage left the overlay because Wikidata names it
