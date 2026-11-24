@@ -21,6 +21,66 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-24: a kept frame's place, two sauces said to be uncooked, the German review
+
+Two agents under one lead, both on the second-largest model. One fixed
+three small defects of Culina. The other, which wrote none of it and
+was given the task and the staged diff, established from the documents
+which place is the designed one, drove the kept frame through the
+editor in a browser, read the changed steps on their pages and checked
+the German review row by row. The builder fixed what was found; the
+reviewer looked a second time; one last fix after that was read by
+nobody else. The entry of this day on "Dishes like this" listed the
+kept frame's place as not fixed; it is fixed here.
+
+| Part                                               | Done by | Checked by                                                              |
+| -------------------------------------------------- | ------- | ----------------------------------------------------------------------- |
+| A kept frame under "Put together", in reading only | agent 1 | agent 2 (all 13 frames kept, both languages; a kept gratin as control)  |
+| The editors carrying the fields they do not edit   | agent 1 | agent 2, second pass, in a browser (save, rename, swap, variation)      |
+| The steps of the two sauces and of the peas        | agent 1 | agent 2 (the pages read in both languages; characters of all 147 files) |
+| The German review brought up to date               | agent 1 | agent 2 (123 of 126 dish rows match, the three notes true)              |
+| The dish page reading a lost origin like the lists | agent 1 | nobody but its test                                                     |
+
+**What the checks found, and where it was fixed.**
+
+- _The lead's brief had the defect the wrong way round_ (it said the
+  kept frame should stand in its course). The builder found the
+  designed place in the documents, the reviewer confirmed it.
+- _The fix lasted until the first edit:_ keep the tacos, open Edit,
+  save with nothing changed, and they moved to "Main course". The
+  editor built the next version from its form fields and dropped the
+  origin. The editors now carry a record's `x-…` fields; a family
+  already stored without its origin is read from the version that was
+  kept, in the lists and on the dish page.
+- _A teaching note that contradicted its step:_ the first fix gave the
+  sauce blanche the technique of thickening with starch, whose note
+  ("stir the starch smooth in a little cool liquid") was then shown
+  after "work the butter and the flour into a paste". The format says
+  a technique is a promise to teach and, in doubt, the plain action.
+  Both sauces now carry the plain heat action; the peas, cited as the
+  precedent, had the same misfit and were treated alike.
+- _The German review's record had been reworded_ in two places instead
+  of annotated; the sentences of 2026-11-21 are back, the notes beside
+  them.
+- _Found and left open:_ a kept copy is not judged like its shipped
+  dish for 36 of 103 dishes (the builder's count; the reviewer
+  confirmed the cause on four that are no frames: a component slot
+  without an amount). Now that copy and frame stand side by side it
+  shows. It is the first item of what is left in Culina's handover.
+
+**Test counts** (each agent's own run): `npm run check:culina` passes
+with 1279 engine, 1266 app (1267 after the last fix) and 25 native
+tests; Culina's e2e passes with 2191 checks, run alone. Each fix has a
+check seen failing without it, named in Culina's log; the test that
+"Dishes like this" shows nothing for a kept frame passes with and
+without the fix and proves nothing about it.
+
+**What nobody verified.** The last fix by a second reader. An import of
+an exported notebook holding a kept frame. A real notebook on a device,
+the native app, a cook's reading of the three steps; nothing was
+cooked. The count of 36 was not recounted. For the owner: a kept frame
+the cook rebuilt entirely still stands under "Put together".
+
 ## 2026-11-24: the offer on a dish's page to put what it lacks on the shopping list
 
 Two agents under one lead, both on the second-largest model. One built

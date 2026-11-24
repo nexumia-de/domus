@@ -95,7 +95,16 @@ export interface ComponentForm {
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
+  /**
+   * The record's vendor fields (`x-…`), which the form does not edit, kept as they are through a
+   * save (`x-origin`: the recipe a kept component was taken from). Absent when there are none.
+   */
+  vendor?: Record<string, unknown>;
 }
+
+/** The vendor fields (`x-…`) of a record: what no form edits and a save keeps. */
+export const vendorFields = (record: object): Record<string, unknown> =>
+  Object.fromEntries(Object.entries(record).filter(([key]) => key.startsWith('x-')));
 
 export type Problem =
   | { code: 'name' }
@@ -210,6 +219,7 @@ export const formFromRecord = (record: ComponentRecord): ComponentForm => ({
     source: k.source,
   })),
   version: record.version,
+  ...(Object.keys(vendorFields(record)).length === 0 ? {} : { vendor: vendorFields(record) }),
 });
 
 /** The line as the engine reads it: an amount only when the typed text is a number above 0. */
@@ -309,6 +319,8 @@ export const formToRecord = (form: ComponentForm, today: string): RecordResult =
   return {
     ok: true,
     record: {
+      // First, so that no field the form edits can be overwritten by one of them.
+      ...vendorFields(form.vendor ?? {}),
       id: form.id,
       name: form.name.trim(),
       ...(form.role === '' ? {} : { role: form.role }),

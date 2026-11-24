@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 import { isDishOfItsOwn, withoutAlternatives } from '@culina/engine';
-import { CLASSICS, FRAMES } from '../src/classics/index';
+import { CLASSICS, FRAMES, PACK } from '../src/classics/index';
 import { belowOf, classesOf, conversionOf } from '../src/characters/classes';
 import { factsOfClassic } from '../src/characters/classic';
 import { factsOfDish } from '../src/characters/dish';
@@ -479,13 +479,40 @@ describe('uncooked on the shipped dishes and frames', () => {
     expect(ofAny('achat')).not.toContain('uncooked');
   });
 
-  test('a sauce base: saure Eiersauce is cooked; two cited sauces stay wrong (known)', () => {
+  test('a sauce base: saure Eiersauce, Spargelsauce and sauce blanche are cooked', () => {
     expect(ofAny('saure-eiersauce')).not.toContain('uncooked');
-    // Their heat is in a step "whisk over the heat" with neither a heat action nor a technique;
-    // the cited recipes' steps are not changed for it (docs/dish-characters.md).
-    expect(ofAny('spargelsauce')).toContain('uncooked');
-    expect(ofAny('sauce-blanche')).toContain('uncooked');
-    // Control: a cold sauce keeps it.
+    // Since 2026-11-24 the step that brings each to the boil is named by the plain action "cook",
+    // a heat action, not "whisk" or "stir"; the text of the step is the same
+    // (docs/dish-characters.md).
+    expect(ofAny('spargelsauce')).not.toContain('uncooked');
+    expect(ofAny('sauce-blanche')).not.toContain('uncooked');
+    // Control: a cold sauce keeps it, the mayonnaise too, whose boiling water is poured in, not
+    // heated in a step.
     expect(ofAny('mayonnaise')).toContain('uncooked');
+  });
+
+  // The scan of 2026-11-24 over every shipped file (dishes, bases, frames, the import pack): a
+  // dish said to be uncooked whose step text speaks of heat, i.e. heat only in the words. Five
+  // speak of it without heating anything, and are named here; any other is a step whose word
+  // misses its heat. A word list in English, so it does not prove that no step hides heat in
+  // other words ("until it sets on the stove" would pass).
+  test('no shipped dish said to be uncooked has heat only in the words of a step', () => {
+    const HEAT =
+      /\b(heat|heated|hot|boil|boils|boiled|boiling|simmer|simmered|fry|fried|bake|baked|oven|roast|roasted|toast|toasted|grill|grilled|melt|melted|warm|warmed|stove|fire|cook|cooked|scald|scalded|steam|steamed|sear|seared|brown|browned)\b/i;
+    const named: Record<string, string> = {
+      mayonnaise: 'boiling water is poured in, not heated in a step',
+      'pesto-genovese': 'the pasta is tossed off the heat with its cooking water',
+      guacamole: '"turns brown" when it stands',
+      'salsa-vinagreta': 'its eggs are hard-boiled before; no step of the sauce heats',
+      ladolemono: 'spooned over grilled fish, meat or boiled vegetables, cooked elsewhere',
+    };
+    const found = [...CLASSICS, ...FRAMES, ...PACK]
+      .map(withoutAlternatives)
+      .filter((c) => characterIds(factsOfClassic(c, lookup, below)).includes('uncooked'))
+      .filter((c) =>
+        (c.components ?? []).some((k) => (k.steps ?? []).some((s) => HEAT.test(s.text?.en ?? ''))),
+      )
+      .map((c) => c.id);
+    expect(found.sort()).toEqual(Object.keys(named).sort());
   });
 });

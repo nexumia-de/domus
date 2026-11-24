@@ -10,6 +10,7 @@ import {
   stepFormOf,
   stepProblemsOf,
   stepRecordOf,
+  vendorFields,
   type StepForm,
 } from './component-form';
 import type { VersionNote } from './version-save';
@@ -45,6 +46,12 @@ export interface DishForm {
   version?: VersionInfo;
   /** Change, reason and tasting note for the version Save adds. */
   versionNote?: VersionNote;
+  /**
+   * The record's vendor fields (`x-…`), which the form does not edit, kept as they are through a
+   * save: `x-origin`, the shipped dish a copy was kept from, is a fact of the dish (a kept frame
+   * stands among the frames by it). Absent when the record has none.
+   */
+  vendor?: Record<string, unknown>;
 }
 
 export type DishProblem =
@@ -87,6 +94,7 @@ export const dishFormFromRecord = (dish: DishRecord): DishForm => ({
   })),
   steps: (dish.steps ?? []).map(stepFormOf),
   version: dish.version,
+  ...(Object.keys(vendorFields(dish)).length === 0 ? {} : { vendor: vendorFields(dish) }),
 });
 
 /** A course the schema knows, else none: the select offers no other. */
@@ -144,6 +152,8 @@ export const dishFormToRecord = (form: DishForm, today: string): DishResult => {
   return {
     ok: true,
     record: {
+      // First, so that no field the form edits can be overwritten by one of them.
+      ...vendorFields(form.vendor ?? {}),
       id: form.id,
       name: form.name.trim(),
       ...(portions === undefined ? {} : { portions }),

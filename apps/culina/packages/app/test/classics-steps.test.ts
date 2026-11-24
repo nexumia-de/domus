@@ -58,10 +58,14 @@ describe('the steps of the shipped dishes', () => {
       if (step.uses !== undefined) expect(uses.length, at).toBeGreaterThan(0);
     }
   });
-  test('the counts of 2026-11-24 with the bowl and the soup frame: 996 steps, 256 with a technique, 738 with a plain action', () => {
+  // One technique became a plain action on 2026-11-24: guisantes al natural "stir hard", where the
+  // note of thickening with starch says hard stirring thins it (docs/dish-characters.md); the steps
+  // of Spargelsauce and sauce blanche that bring them to the boil changed from one plain action to
+  // another ("cook").
+  test('the counts of 2026-11-24 with the bowl and the soup frame: 996 steps, 255 with a technique, 739 with a plain action', () => {
     expect(steps.length).toBe(996);
-    expect(steps.filter(({ step }) => step.technique !== undefined).length).toBe(256);
-    expect(steps.filter(({ step }) => step.action !== undefined).length).toBe(738);
+    expect(steps.filter(({ step }) => step.technique !== undefined).length).toBe(255);
+    expect(steps.filter(({ step }) => step.action !== undefined).length).toBe(739);
     expect(steps.filter(({ step }) => step.uses !== undefined).length).toBe(781);
   });
   test('every plain action the list gained on 2026-11-20 is used by a step', () => {

@@ -1898,8 +1898,31 @@ shipped, under the one filter, with:
   first is a main course, then what goes with it or before it, then the
   rest of the day and the sweet things), not tested with a cook. Own and
   shipped dishes share a group, by name within it; the origin stays on the
-  row as before. A frame kept in the notebook is an own dish and stands in
-  its course. An empty group is not shown. In a course's group the row's
+  row as before. A frame kept in the notebook stands under **Put
+  together** beside the shipped one, as an own dish (since 2026-11-24;
+  until then it stood in its course, a defect found by a review): the copy
+  stores no mark, so its entry reads it from the shipped dish its
+  `x-origin` names, with that frame's parts for "Dishes like this"; a
+  frame kept before the change comes right without a migration. A copy
+  whose shipped frame is not there (the content not loaded, or a frame no
+  longer shipped) stands in its course. A kept dish that is no frame
+  stands in its course. **Through an edit:** the dish and component
+  editors keep the record's vendor fields (`x-…`), which they do not
+  edit, so a version saved in the editor keeps `x-origin` (until
+  2026-11-24 it was dropped, and an edited kept frame moved back to its
+  course; found by a review). A family edited before keeps its origin in
+  the version that was kept, and the lists read it from there
+  (`withKeptOrigin`); nothing stored is rewritten. Every version of a kept
+  frame stays a frame, whatever the cook changed in it: the mark says
+  where the dish came from, not what is in it now. A variation (a new
+  family, "Make a variation") copies the record with its origin and so
+  stands among the frames too, under its new name; whether it should is
+  a question for the owner. **Not fixed:** the characters of a kept copy
+  are not those of the shipped dish (see [dish
+  characters](dish-characters.md#a-kept-copy-is-not-judged-like-its-shipped-dish)):
+  the kept pizza is not "cheesy" where the shipped one is, so beside each
+  other in this group the filter "Cheesy" keeps one and drops the other.
+  An empty group is not shown. In a course's group the row's
   quiet line drops the course, which the heading says; in the frames group
   it keeps it. On the shipped content: 13 frames (12 main courses and a
   soup), 38 main courses, 13 soups, 2 starters, 42 side dishes, 1
@@ -1931,7 +1954,18 @@ shipped, under the one filter, with:
   frames ("1 dish") and 13 soups; "Dessert" leaves 9 rows and no heading
   (the control; it was "Soup" until the soup frame came on 2026-11-24);
   "Use up first" is one flat list of 121; the way back; no horizontal
-  scroll, 44 px targets), `e2e/dish-browse.mjs` (the fixture: two groups,
+  scroll, 44 px targets; a kept frame: the tacos kept in the notebook
+  stand under "Put together · 14 dishes" beside the shipped tacos after a
+  reload, and, the control, a kept gratin in "Side dish"; the kept tacos
+  opened, edited and saved unchanged, still under "Put together"),
+  `test/kept-frame.test.ts` (the real files and catalogue, a fake
+  IndexedDB: the kept tacos' entry is a frame with the shipped tacos'
+  parts and stands among the frames; the control, a kept gratin in its
+  course; a copy read before the content loaded is a frame once it has;
+  an edit in the dish editor keeps the origin and the frame; a version
+  saved without it, as the editor did before, is still a frame by its
+  family; the component editor keeps a component's origin),
+  `e2e/dish-browse.mjs` (the fixture: two groups,
   the pan dish's quiet line without its course). Not proved: a screen
   reader reading the headings, a real phone, an own dish without a course
   in a browser (only in the unit test), that the order of the courses is

@@ -319,16 +319,72 @@ Eiersauce is no longer uncooked, and sauce maître d'hôtel loses it too (its
 bowl is set near the stove to soften the butter, a step "heat"); the cold
 sauces keep it.
 
-**Known and left**: Spargelsauce and sauce blanche are still said to be
-uncooked. Their heat is in a step "whisk over the heat" whose word is
-"whisk", neither a heat action nor a technique; they are cited recipes and
-their steps are not changed for a rule. **Test:**
+**Known and left** (until the fix below): Spargelsauce and sauce blanche
+were still said to be uncooked. Their heat is in a step "whisk over the
+heat" whose word was "whisk" (sauce blanche: "stir"), neither a heat
+action nor a technique; they are cited recipes and their steps are not
+changed for a rule. **Test:**
 `test/characters.test.ts` ("uncooked on the shipped dishes and frames": the
 seven exactly, the 20 not, the two that lose it, the sauces with the two
-known ones; "heat written as a plain action counts" on a dish of the
+known ones, which that test pinned as wrong until the fix below; "heat
+written as a plain action counts" on a dish of the
 notebook, with a control), the engine's `test/characters.test.ts`
 ("withoutActions", with controls). All of them fail on the code before the
 change, the engine's controls aside.
+
+**The two sauces, fixed** (2026-11-24). The rule was right and the word
+of one step in each sauce was not. A step carries exactly one word, a
+technique or a plain action ([steps](classic-format.md#steps)); the word
+is the project's reading of the step, not the source's text, which stays
+as it was, with every amount and the order. The step that brings each
+sauce to the boil, Spargelsauce's "beat the sauce with a whisk over a
+brisk heat until it is just short of boiling and has bound" and sauce
+blanche's "stir with a spoon over the heat until it first boils", is now
+the plain action **cook**, a heat action: it is a fact of the step that
+the sauce is cooked on the heat. Not the technique "thickening with
+starch": a technique is a promise to teach, and its note does not fit
+either step. It tells the cook to stir the starch smooth in a little cool
+liquid (sauce blanche works the flour into butter and pours in hot
+water) and that hard stirring thins the sauce (Spargelsauce is beaten
+with a whisk, after lemon juice, an acid, went in). Neither sauce is
+uncooked now; no other character of a shipped file changed (the first
+version of this fix used the technique, which also made Spargelsauce
+"creamy"; with the plain action it does not).
+
+**Guisantes al natural, by the same rule.** Its step "add the butter
+kneaded with the flour, and stir hard for two minutes" was named
+`thicken-with-starch`, whose note says that hard stirring thins a starch
+sauce and asks for a cool liquid, not butter. The step is now the plain
+action **stir** (the action that handles the line it names); it changes
+no character (the dish has other heat steps), and the technique's note
+is no longer shown there. Holl. Sauce keeps the technique: its yolks and
+flour are stirred smooth in wine and water and stirred to the boil,
+which is what the note teaches (that wine is an acid is a judgement left
+as it is).
+
+**The same pattern in every shipped file**, scanned on 2026-11-24 (the
+dishes, the bases, the frames and the import pack, with alternatives as
+shipped): a dish said to be uncooked whose step text speaks of heat
+(heat, boil, boiled, simmer, fry, bake, roast, grill, grilled, melt,
+warm, stove, fire, cook, …). Seven were found: the two sauces above, and
+five that heat nothing in a step and rightly stay uncooked: the
+mayonnaise (boiling water is poured in), the pesto (tossed with the
+pasta off the heat, with its cooking water), the guacamole (its flesh
+"turns brown"), the salsa vinagreta (its eggs are hard-boiled before)
+and the ladolemono (spooned over grilled fish, meat or boiled
+vegetables). Heat in a cooked dish's text under a word that is no heat
+(macaroni "stir over the heat") changes no character and was not
+counted. **Test:** `test/characters.test.ts` "a sauce base: saure
+Eiersauce, Spargelsauce and sauce blanche are cooked" (it pinned the two
+as known and wrong before; fails on the old files) and "no shipped dish
+said to be uncooked has heat only in the words of a step" (the scan,
+with the five named; fails on the old files with the two sauces); the
+controls, the seven uncooked dishes, the 20 cooked ones, kyuri no
+sunomono and achat, and the mayonnaise, pass before and after.
+`test/classics-steps.test.ts` counts 255 steps with a technique and 739
+with a plain action (256 and 738 before). Not proved: the scan reads
+English words, so heat said in other words would pass; nobody cooked
+the sauces or the peas.
 
 **Without meat and fish on a dish of the notebook** (from a review the
 same day). It was derived from the characters "with meat" and "with fish"
@@ -370,3 +426,42 @@ the catalogue, which this change did not touch.
 [^catalogue]: [Ingredient catalogue](ingredient-catalogue.md).
 
 [^pr11]: https://github.com/suitably/domus/pull/11
+
+## A kept copy is not judged like its shipped dish
+
+Open, found on 2026-11-24 by a review of the kept frame in Cook's groups
+([behaviour](behaviour.md#cook)). A dish kept in the notebook is judged
+by `factsOfDish`, its shipped dish by `factsOfClassic`, and the two give
+other characters for many dishes. Counted that day by keeping each of
+the 130 shipped files that can be kept, in a fresh notebook (a
+throwaway test, not kept): of the 103 that Cook lists, 36 copies differ
+from their shipped dish, three of them frames. The pizza loses "cheesy",
+the tacos "lemony", the souvlaki plate loses "lemony" and gains
+"tomatoey"; among the others the tamagoyaki, the yude tamago and the
+soufflé lose "eggy", the horiatiki "cheesy", the köfte "rich", the
+kachumber "lemony" and "light", and the bulgur pilavı gains "tomatoey".
+Since a kept frame stands beside the shipped one under "Put together",
+the filter "Cheesy" keeps the shipped pizza and drops the kept one.
+
+**The cause**, read in the code: a copy's slots name its components
+without an amount (the copy holds each component for the dish's
+portions), and `linesWithoutMass` (`src/characters/dish.ts`) then gives
+the component's lines no mass, so the rules by share fall back to
+presence: a share rule with `presence: false` ("cheesy" from 8 percent,
+"lemony" from 2) says nothing, a rule that counts presence ("tomatoey"
+without amounts) says more. Confirmed by the reviewer for the three
+frames and for four copies that are no frame (the tamagoyaki, the
+horiatiki, the köfte and the bulgur pilavı: one component slot without
+an amount, so every line is without mass); likely for the other 29, not
+checked one by one.
+
+**Not fixed, and why.** A sound fix changes how every dish of the
+notebook with such a slot is judged, not only frames: for example, a
+component slot without an amount on a copy could count one whole run of
+the component, which is what the copy wrote. That is a rule of the
+character model for own dishes and needs its own test over all 130
+copies (every copy unchanged in its parts judged like its shipped dish)
+and the controls of own dishes written by hand; it is larger than the
+small fix it was found in. Not decided either: whether a copy the cook
+changed should be judged by its own lines (yes, by the rule above) or an
+unchanged one take its shipped dish's characters (an alternative).

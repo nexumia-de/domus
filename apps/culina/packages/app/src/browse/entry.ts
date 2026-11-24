@@ -10,6 +10,7 @@ import {
 } from '@culina/engine';
 import type { Classic, Course, Lang } from '@culina/engine';
 import { catalogueBelow } from '../characters/below';
+import { classicOf } from '../classics/content';
 import type { Below, Lookup } from '../characters/classes';
 import { CHARACTER_ORDER } from '../characters/correction';
 import { factsOfClassic } from '../characters/classic';
@@ -46,9 +47,9 @@ export interface DishEntry {
   /** True when every line that names an ingredient has an amount; for a dish of the notebook, every slot. */
   complete: boolean;
   /**
-   * True for a shipped frame (tacos, ramen, pizza): the app's own composition of its recipes
-   * (docs/classic-format.md, A frame). Absent otherwise; a frame kept in the notebook is a dish of
-   * its own and has none.
+   * True for a frame (tacos, ramen, pizza): the app's own composition of its recipes
+   * (docs/classic-format.md, A frame), shipped or kept in the notebook. A kept copy stores no mark:
+   * its entry reads it from the shipped dish it was kept from (`x-origin`). Absent otherwise.
    */
   frame?: true;
   /**
@@ -57,9 +58,9 @@ export interface DishEntry {
    */
   copyOf?: string;
   /**
-   * For a shipped frame: the ids of the shipped recipes its components are (`from.recipe`), the
-   * chosen ones and the alternatives, so that "Dishes like this" does not offer a frame as like
-   * one of its own parts. Absent on every other dish.
+   * For a frame, shipped or kept: the ids of the shipped recipes its components are
+   * (`from.recipe`, of the file as shipped), the chosen ones and the alternatives, so that "Dishes
+   * like this" does not offer a frame as like one of its own parts. Absent on every other dish.
    */
   parts?: readonly string[];
 }
@@ -72,25 +73,61 @@ const keptFrom = (dish: DishRecord): string | undefined => {
   return typeof classic === 'string' && classic !== '' ? classic : undefined;
 };
 
+/** The shipped recipes the components of a frame are, each once, in file order. */
+const partsOf = (classic: Classic): string[] => [
+  ...new Set(
+    (classic.components ?? []).flatMap((c) => (c.from === undefined ? [] : [c.from.recipe])),
+  ),
+];
+
 export const entryKey = (origin: Origin, id: string): string => `${origin}:${id}`;
+
+/**
+ * The dish with the origin its family was kept with, where its own record lost it: the dish
+ * editor dropped `x-origin` from the version it saved until 2026-11-24 (src/editor/dish-form.ts),
+ * while the version that was kept, and every version before the edit, still carry it. Read, not
+ * written: nothing stored is changed. A dish that has its own origin, or whose family never had
+ * one, is returned as it is.
+ *
+ * @param versions - Every stored version of every dish.
+ */
+export const withKeptOrigin = (dish: DishRecord, versions: readonly DishRecord[]): DishRecord => {
+  if (keptFrom(dish) !== undefined) return dish;
+  const kept = versions.find(
+    (v) => v.version.family === dish.version.family && keptFrom(v) !== undefined,
+  );
+  if (kept === undefined) return dish;
+  const origin = (kept as unknown as Record<string, unknown>)['x-origin'];
+  return { ...dish, 'x-origin': origin } as DishRecord;
+};
 
 /**
  * The entry of a dish of the notebook. Without meat and fish is derived (`meatFreeOf`): said only
  * when every line is known, and never of a line of an animal's body.
  *
+ * A dish kept from a shipped frame is a frame too, with that frame's parts: read from the shipped
+ * dish its `x-origin` names, since the copy stores no mark of its own (copies kept before
+ * 2026-11-24 come right without a migration). When that dish is not there (the content not loaded
+ * yet, or a frame no longer shipped) the copy is an own dish like any other.
+ *
  * @param below - The foods below a catalogue group; by default those of the loaded catalogue.
+ * @param shippedOf - A shipped dish by id, as shipped (with its alternatives); by default from the
+ *   loaded content.
  */
 export const entryOfDish = (
   nb: Notebook,
   dish: DishRecord,
   lookup: Lookup,
   below: Below = catalogueBelow,
+  shippedOf: (id: string) => Classic | undefined = classicOf,
 ): DishEntry => {
   const facts = factsOfDish(nb, dish, lookup, below);
   // The cook's correction of this dish counts everywhere the characters are read: chips, filter.
   const characters = correctCharacters(characterIds(facts), dish.characters, CHARACTER_ORDER);
   const meatFree = meatFreeOf(facts, lookup, below);
   const copyOf = keptFrom(dish);
+  const from = copyOf === undefined ? undefined : shippedOf(copyOf);
+  const parts = from?.frame === true ? partsOf(from) : [];
   return {
     key: entryKey('own', dish.id),
     origin: 'own',
@@ -104,6 +141,8 @@ export const entryOfDish = (
     characters,
     complete: dish.slots.length > 0 && dish.slots.every((s) => s.amount !== undefined),
     ...(copyOf === undefined ? {} : { copyOf }),
+    ...(from?.frame === true ? { frame: true as const } : {}),
+    ...(parts.length === 0 ? {} : { parts }),
   };
 };
 
@@ -117,13 +156,6 @@ const classicComplete = (classic: Classic): boolean => {
   );
   return lines.length > 0 && lines.every((l) => l.amount !== undefined);
 };
-
-/** The shipped recipes the components of a frame are, each once, in file order. */
-const partsOf = (classic: Classic): string[] => [
-  ...new Set(
-    (classic.components ?? []).flatMap((c) => (c.from === undefined ? [] : [c.from.recipe])),
-  ),
-];
 
 /**
  * The entry of a shipped classic.
