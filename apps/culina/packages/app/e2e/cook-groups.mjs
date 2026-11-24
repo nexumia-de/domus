@@ -20,11 +20,15 @@ const openFilter = async (page) => {
 const TEXT = {
   en: {
     locale: 'en-US',
-    frames: 'Put together · 11 dishes',
-    main: 'Main course · 37 dishes',
+    frames: 'Put together · 13 dishes',
+    mainFrames: 'Put together · 12 dishes',
+    main: 'Main course · 38 dishes',
     course: 'Course',
     mainOption: 'Main course',
     soupOption: 'Soup',
+    soupFrames: 'Put together · 1 dish',
+    soup: 'Soup · 13 dishes',
+    dessertOption: 'Dessert',
     anyCourse: 'Any course',
     order: 'Order',
     useUp: 'Use up first',
@@ -34,11 +38,15 @@ const TEXT = {
   },
   de: {
     locale: 'de-DE',
-    frames: 'Zusammengestellt · 11 Gerichte',
-    main: 'Hauptgericht · 37 Gerichte',
+    frames: 'Zusammengestellt · 13 Gerichte',
+    mainFrames: 'Zusammengestellt · 12 Gerichte',
+    main: 'Hauptgericht · 38 Gerichte',
     course: 'Gang',
     mainOption: 'Hauptgericht',
     soupOption: 'Suppe',
+    soupFrames: 'Zusammengestellt · 1 Gericht',
+    soup: 'Suppe · 13 Gerichte',
+    dessertOption: 'Nachspeise',
     anyCourse: 'Jeder Gang',
     order: 'Reihenfolge',
     useUp: 'Zuerst verbrauchen',
@@ -80,9 +88,9 @@ const oneLanguage = async (browser, server, lang) => {
     );
   check(
     counts.every(([rows, said, labelled]) => rows === said && rows > 0 && labelled) &&
-      counts.reduce((n, [rows]) => n + rows, 0) === 113 &&
-      (await page.locator('.dish-row').count()) === 113,
-    `${label}: every group says how many it holds, none is empty, 113 rows in all (${JSON.stringify(counts)})`,
+      counts.reduce((n, [rows]) => n + rows, 0) === 121 &&
+      (await page.locator('.dish-row').count()) === 121,
+    `${label}: every group says how many it holds, none is empty, 121 rows in all (${JSON.stringify(counts)})`,
   );
   const firstGroup = await page
     .locator('.dish-group')
@@ -90,7 +98,7 @@ const oneLanguage = async (browser, server, lang) => {
     .locator('.entry-name')
     .allInnerTexts();
   check(
-    firstGroup.includes('Tacos') && firstGroup.length === 11,
+    firstGroup.includes('Tacos') && firstGroup.length === 13,
     `${label}: the tacos are among the frames (${firstGroup.join(', ')})`,
   );
   await layout(page, label);
@@ -101,17 +109,24 @@ const oneLanguage = async (browser, server, lang) => {
   const two = tidy(await headings(page));
   check(
     two.length === 2 &&
-      two[0] === t.frames &&
+      two[0] === t.mainFrames &&
       two[1] === t.main &&
-      (await page.locator('.dish-count').innerText()) === t.count(48),
+      (await page.locator('.dish-count').innerText()) === t.count(50),
     `${label}: main course leaves the frames and the main courses (${two.join(' | ')})`,
   );
-  // The control: one group left is one list without a heading.
+  // Soup leaves two groups too: the soup frame stays among the frames, not in its course.
   await page.getByLabel(t.course, { exact: true }).selectOption({ label: t.soupOption });
+  const soups = tidy(await headings(page));
+  check(
+    same(soups, [t.soupFrames, t.soup]),
+    `${label}: soup leaves the soup frame and the soups (${soups.join(' | ')})`,
+  );
+  // The control: one group left is one list without a heading.
+  await page.getByLabel(t.course, { exact: true }).selectOption({ label: t.dessertOption });
   check(
     (await page.locator('.dish-group-heading').count()) === 0 &&
-      (await page.locator('.dish-rows-list .dish-row').count()) === 12,
-    `${label}: soup leaves one group, shown as one list without a heading`,
+      (await page.locator('.dish-rows-list .dish-row').count()) === 9,
+    `${label}: dessert leaves one group, shown as one list without a heading`,
   );
   await page.getByLabel(t.course, { exact: true }).selectOption({ label: t.anyCourse });
 
@@ -119,7 +134,7 @@ const oneLanguage = async (browser, server, lang) => {
   await page.getByLabel(t.order, { exact: true }).selectOption({ label: t.useUp });
   check(
     (await page.locator('.dish-group-heading').count()) === 0 &&
-      (await page.locator('.dish-row').count()) === 113,
+      (await page.locator('.dish-row').count()) === 121,
     `${label}: Use up first is one flat list of every dish`,
   );
   await page.getByLabel(t.order, { exact: true }).selectOption({ label: t.byName });
@@ -141,7 +156,7 @@ const oneLanguage = async (browser, server, lang) => {
   await page.locator('.dish-group').first().waitFor();
   check(
     hashOf(page) === '#/cook' &&
-      same(tidy(await headings(page)), [t.frames, t.main]) &&
+      same(tidy(await headings(page)), [t.mainFrames, t.main]) &&
       (await page.getByLabel(t.course, { exact: true }).inputValue()) === 'main',
     `${label}: back from ${name}, Cook in the same two groups under the same filter`,
   );

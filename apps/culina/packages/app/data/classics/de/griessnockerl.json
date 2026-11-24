@@ -1,0 +1,201 @@
+{
+  "id": "griessnockerl",
+  "kind": "base",
+  "name": {
+    "en": "Semolina dumplings",
+    "de": "Grießnockerl"
+  },
+  "originalName": "Grießnockerl",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "griessnockerl-main",
+      "name": {
+        "en": "Semolina dumplings",
+        "de": "Grießnockerl"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 50,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Soft.",
+            "de": "Weich."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "semolina",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-semolina"
+          },
+          "amount": {
+            "value": 100,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Soft wheat semolina is usual; durum semolina works too.",
+            "de": "Üblich ist Weichweizengrieß; Hartweizengrieß geht auch."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "amount": {
+            "value": 0.125,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 2000,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For cooking.",
+            "de": "Zum Garen."
+          }
+        },
+        {
+          "key": "salt-water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Stir the soft butter until creamy.",
+            "de": "Die weiche Butter cremig rühren."
+          },
+          "action": "stir",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Stir in the egg, then the semolina, the salt and the nutmeg, to a smooth dough.",
+            "de": "Das Ei unterrühren, dann Grieß, Salz und Muskat zu einem glatten Teig verrühren."
+          },
+          "action": "mix",
+          "uses": ["egg", "semolina", "salt", "nutmeg"]
+        },
+        {
+          "text": {
+            "en": "Cover and leave the dough in the fridge for 30 minutes, so that the semolina swells.",
+            "de": "Den Teig zugedeckt 30 Minuten in den Kühlschrank stellen, damit der Grieß quillt."
+          },
+          "action": "stand",
+          "time": {
+            "value": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Bring the water with the salt for it to the boil in a wide pot, then turn the heat down until it barely moves.",
+            "de": "Das Wasser mit dem Salz dafür in einem weiten Topf aufkochen, dann die Hitze reduzieren, bis es sich kaum noch bewegt."
+          },
+          "action": "heat",
+          "uses": ["water", "salt-water"]
+        },
+        {
+          "text": {
+            "en": "With two tablespoons dipped in water, shape the dough into 12 ovals and slide them into the water.",
+            "de": "Mit zwei in Wasser getauchten Esslöffeln aus dem Teig 12 Nocken formen und ins Wasser gleiten lassen."
+          },
+          "action": "shape"
+        },
+        {
+          "text": {
+            "en": "Cover and let them cook for 15 minutes without boiling, then leave them in the water off the heat for 5 minutes more.",
+            "de": "Zugedeckt 15 Minuten garen, ohne dass das Wasser kocht, dann vom Herd genommen weitere 5 Minuten darin ziehen lassen."
+          },
+          "technique": "poach",
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Lift them out with a slotted spoon.",
+            "de": "Mit einem Schaumlöffel herausheben."
+          },
+          "action": "take-out"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "griessnockerl-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24: 50 g butter, 1 egg and 100 g semolina is the classic ratio and holds, 15 minutes below the boil and 5 off the heat is usual. It changed the shaping step from two teaspoons to two tablespoons, since about 200 g of dough in 12 pieces is about 17 g each, a tablespoon size."
+  }
+}

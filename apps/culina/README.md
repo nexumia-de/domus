@@ -12,10 +12,10 @@ skills along the way
 
 Status: in use, as a web app and a native Linux app. Built: one Cook
 screen over own and shipped dishes with a filter and the stock, the
-notebook with versions, ratio cards, 129 shipped dishes of which 88 are
-bases (61 are the app's own recipes, written by an AI model, read a
-second time, cooked by nobody), technique notes, import and export. Eleven frames (tacos, burrito,
-ramen, pizza, risotto, plates of several cuisines) are put together from
+notebook with versions, ratio cards, 135 shipped dishes of which 94 are
+bases (67 are the app's own recipes, written by an AI model, read a
+second time, cooked by nobody), technique notes, import and export. Thirteen frames (tacos, burrito,
+ramen, pizza, risotto, a rice bowl, a soup, plates of several cuisines) are put together from
 the app's recipes, some with a choice of filling. Not built yet: taste
 profiles of ingredients that say what a dish still needs. The plan is in
 [docs/roadmap.md](docs/roadmap.md).

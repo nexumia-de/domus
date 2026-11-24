@@ -1,0 +1,156 @@
+{
+  "id": "eierstich",
+  "kind": "base",
+  "name": {
+    "en": "Egg custard for soup",
+    "de": "Eierstich"
+  },
+  "originalName": "Eierstich",
+  "country": "de",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "eierstich-main",
+      "name": {
+        "en": "Egg custard for soup",
+        "de": "Eierstich"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "butter",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-butter"
+          },
+          "amount": {
+            "value": 5,
+            "unit": "g"
+          },
+          "note": {
+            "en": "For the mould.",
+            "de": "Für die Form."
+          }
+        },
+        {
+          "key": "egg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171287"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "milk",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-group-milk-whole-3-25-milkfat"
+          },
+          "amount": {
+            "value": 150,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.25,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "nutmeg",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-171326"
+          },
+          "amount": {
+            "value": 0.125,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Butter a small heatproof bowl or mould of about 500 ml.",
+            "de": "Eine kleine hitzefeste Schüssel oder Form von etwa 500 ml ausbuttern."
+          },
+          "action": "grease",
+          "uses": ["butter"]
+        },
+        {
+          "text": {
+            "en": "Whisk the eggs with the milk, the salt and the nutmeg until even, without making foam.",
+            "de": "Die Eier mit Milch, Salz und Muskat gleichmäßig verquirlen, ohne dass Schaum entsteht."
+          },
+          "action": "whisk",
+          "uses": ["egg", "milk", "salt", "nutmeg"]
+        },
+        {
+          "text": {
+            "en": "Pour the mixture into the mould and cover it with foil.",
+            "de": "Die Masse in die Form gießen und mit Folie abdecken."
+          },
+          "action": "fill"
+        },
+        {
+          "text": {
+            "en": "Set the mould in a pot of hot water that reaches halfway up and let it set for 25 to 30 minutes over low heat; the water must not boil.",
+            "de": "Die Form in einen Topf mit heißem Wasser stellen, das bis zur halben Höhe reicht, und bei schwacher Hitze 25 bis 30 Minuten stocken lassen; das Wasser darf nicht kochen."
+          },
+          "technique": "water-bath",
+          "time": {
+            "value": 25,
+            "to": 30,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Let it cool a little, run a knife round the edge and turn it out.",
+            "de": "Etwas abkühlen lassen, mit einem Messer am Rand entlangfahren und stürzen."
+          },
+          "action": "turn-out"
+        },
+        {
+          "text": {
+            "en": "Cut it into cubes or diamonds of 1.5 cm.",
+            "de": "In Würfel oder Rauten von 1,5 cm schneiden."
+          },
+          "technique": "knife-cuts"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "eierstich-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 (3 eggs to 150 ml milk, 25 to 30 minutes in a water bath kept below the boil, covered) and changed nothing."
+  }
+}

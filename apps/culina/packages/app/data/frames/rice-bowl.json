@@ -1,0 +1,38 @@
+{
+  "id": "rice-bowl",
+  "name": {
+    "en": "Rice bowl with tofu, sesame spinach and cucumber",
+    "de": "Reisbowl mit Tofu, Sesamspinat und Gurkensalat"
+  },
+  "originalName": "Rice bowl",
+  "country": "us",
+  "course": "main",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "starch",
+      "parts": ["gohan", "khao-suai"]
+    },
+    {
+      "role": "main",
+      "parts": ["tofu-suteki", "sake-no-shioyaki", "chao-shi-cai"]
+    },
+    {
+      "role": "side",
+      "parts": ["horenso-no-goma-ae", "edamame"]
+    },
+    {
+      "role": "acid",
+      "parts": ["kyuri-no-sunomono", "pai-huanggua"]
+    },
+    {
+      "role": "sauce",
+      "parts": ["teriyaki-no-tare", "nam-chim-satay"]
+    }
+  ],
+  "note": {
+    "en": "Start the rice. Press the tofu meanwhile, then make the cucumber salad and the spinach or the edamame, which can stand, and the sauce. Fry the tofu last, or cook the salmon or the chicken in its place. Put the rice into four bowls, lay the parts side by side on it and pour the sauce over the tofu. The salted salmon and the stir-fry are seasoned as they are: with them the sauce goes on the table, to be used sparingly. Raw fish and avocado, usual in many bowls, are left out.",
+    "de": "Den Reis aufsetzen. Währenddessen den Tofu pressen, dann den Gurkensalat und den Spinat oder die Edamame zubereiten, die stehen können, und die Sauce. Den Tofu zuletzt braten oder an seiner Stelle Lachs oder Hähnchen garen. Den Reis auf vier Schalen verteilen, die Teile nebeneinander darauflegen und die Sauce über den Tofu geben. Der gesalzene Lachs und das Pfannengericht sind schon gewürzt: Zu ihnen kommt die Sauce auf den Tisch und wird sparsam genommen. Roher Fisch und Avocado, in vielen Bowls üblich, sind weggelassen."
+  }
+}

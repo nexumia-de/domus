@@ -67,7 +67,7 @@ describe('every shipped classic', () => {
   });
 });
 
-describe('the classics that are bases (issue 39, part 1; 16 more with the recipes of 2026-11-23, 50 more with the own recipes)', () => {
+describe('the classics that are bases (issue 39, part 1; 16 more with the recipes of 2026-11-23, 50 more with the own recipes, 6 more for the bowl and the soup frame)', () => {
   const BASES = [
     'achat',
     'alioli',
@@ -90,18 +90,23 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'creme-caramel',
     'crepes',
     'dan-chao-fan',
+    'edamame',
     'egg-noodles',
     'eierkuchen',
+    'eierstich',
     'fanqie-chao-dan',
     'flan-clasico',
     'frijoles-refritos',
     'gambas-al-ajillo',
+    'gemuesebruehe',
     'gnocchi-di-patate',
     'gnocchi-di-semolino',
     'gohan',
+    'griessnockerl',
     'guacamole',
     'hamburger-patties',
     'holl-sauce',
+    'horenso-no-goma-ae',
     'impasto-per-pizza',
     'kachumber',
     'kartoffelnudeln',
@@ -153,6 +158,7 @@ describe('the classics that are bases (issue 39, part 1; 16 more with the recipe
     'tagliatelle-verdi',
     'tamagoyaki',
     'teriyaki-no-tare',
+    'tofu-suteki',
     'tortillas-de-harina',
     'tzatziki',
     'vinaigrette-moutarde',

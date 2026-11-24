@@ -1,0 +1,184 @@
+{
+  "id": "tofu-suteki",
+  "kind": "base",
+  "name": {
+    "en": "Pan-fried tofu",
+    "de": "Gebratener Tofu"
+  },
+  "originalName": "Tofu suteki",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "main",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "tofu-suteki-main",
+      "name": {
+        "en": "Pan-fried tofu",
+        "de": "Gebratener Tofu"
+      },
+      "role": "main",
+      "lines": [
+        {
+          "key": "tofu",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172475"
+          },
+          "amount": {
+            "value": 600,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Firm tofu, not silken.",
+            "de": "Fester Tofu, kein Seidentofu."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "starch",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169698"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "soy",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 1.5,
+            "unit": "tbsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wrap the tofu in a clean kitchen towel, set a plate with a weight on it and leave it for 15 minutes to press out the water.",
+            "de": "Den Tofu in ein sauberes Küchentuch wickeln, einen Teller mit einem Gewicht daraufstellen und 15 Minuten stehen lassen, damit das Wasser austritt."
+          },
+          "action": "drain",
+          "uses": ["tofu"],
+          "time": {
+            "value": 15,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Cut the tofu into slices 1.5 cm thick.",
+            "de": "Den Tofu in 1,5 cm dicke Scheiben schneiden."
+          },
+          "technique": "knife-cuts",
+          "uses": ["tofu"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle the slices on both sides with the salt.",
+            "de": "Die Scheiben von beiden Seiten mit dem Salz bestreuen."
+          },
+          "action": "season",
+          "uses": ["tofu", "salt"]
+        },
+        {
+          "text": {
+            "en": "Turn the slices in the cornstarch and tap off what does not stick.",
+            "de": "Die Scheiben in der Speisestärke wenden und überschüssige Stärke abklopfen."
+          },
+          "action": "prepare",
+          "uses": ["tofu", "starch"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a large pan over medium-high heat.",
+            "de": "Das Öl in einer großen Pfanne bei mittlerer bis starker Hitze erhitzen."
+          },
+          "action": "heat",
+          "uses": ["oil"]
+        },
+        {
+          "text": {
+            "en": "Lay in the slices with room around them, in two batches if the pan is not large enough, and fry for 3 to 4 minutes, until golden and crisp underneath.",
+            "de": "Die Scheiben mit etwas Abstand hineinlegen, wenn die Pfanne nicht groß genug ist in zwei Portionen, und 3 bis 4 Minuten braten, bis die Unterseite goldbraun und knusprig ist."
+          },
+          "action": "cook",
+          "uses": ["tofu"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Turn them and fry the other side for 3 minutes.",
+            "de": "Wenden und die andere Seite 3 Minuten braten."
+          },
+          "action": "turn",
+          "uses": ["tofu"],
+          "time": {
+            "value": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Take the pan off the heat, drizzle the soy sauce over the tofu, turn the slices once in it and serve at once.",
+            "de": "Die Pfanne vom Herd nehmen, die Sojasauce über den Tofu träufeln, die Scheiben einmal darin wenden und sofort servieren."
+          },
+          "action": "pour",
+          "uses": ["soy"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "main",
+      "ref": {
+        "kind": "component",
+        "id": "tofu-suteki-main"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24. It changed only the frying step, which now says to fry in two batches when 600 g of tofu do not fit into the pan with room around the slices; amounts and times were left as they were."
+  }
+}

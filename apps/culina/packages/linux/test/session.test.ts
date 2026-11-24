@@ -471,17 +471,20 @@ test("Cook's list by name stands in the web app's groups, the frames first; Use 
   expect(ids.slice(1)).toEqual(GROUP_COURSES.filter((course) => ids.includes(course)));
   expect(groups.flatMap((group) => group.rows).length).toBe(view.rows.length);
   expect(must(groups[0]).rows.every((row) => row.entry.frame === true)).toBe(true);
-  expect(must(groups[0]).rows.length).toBe(11);
+  expect(must(groups[0]).rows.length).toBe(13);
   // In a course's group the row no longer carries its course (the heading says it); a frame does.
   expect(must(groups[1]).rows.every((row) => row.meta.course === undefined)).toBe(true);
   expect(must(groups[0]).rows.every((row) => row.meta.course !== undefined)).toBe(true);
   // "Main course" leaves two groups: the frames and the main courses.
   const main = session.cookView({ course: 'main' }, { have: false, order: 'name' });
   expect(must(main.groups).map((group) => group.id)).toEqual(['frames', 'main']);
-  // Control: "Soup" leaves one group, so the list is flat.
+  // "Soup" leaves two as well: the soup frame stays among the frames.
   const soup = session.cookView({ course: 'soup' }, { have: false, order: 'name' });
-  expect(soup.rows.length).toBeGreaterThan(0);
-  expect(soup.groups).toBeUndefined();
+  expect(must(soup.groups).map((group) => group.id)).toEqual(['frames', 'soup']);
+  // Control: "Dessert" leaves one group, so the list is flat.
+  const dessert = session.cookView({ course: 'dessert' }, { have: false, order: 'name' });
+  expect(dessert.rows.length).toBeGreaterThan(0);
+  expect(dessert.groups).toBeUndefined();
   // "Use up first" is one list in its own order.
   expect(session.cookView({}, { have: false, order: 'use-up' }).groups).toBeUndefined();
   session.stop();

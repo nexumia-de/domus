@@ -1,0 +1,42 @@
+{
+  "id": "suppe-mit-einlage",
+  "name": {
+    "en": "Clear vegetable soup with semolina dumplings",
+    "de": "Klare Gemüsesuppe mit Grießnockerl"
+  },
+  "originalName": "Suppe mit Einlage",
+  "country": "de",
+  "course": "soup",
+  "persons": 4,
+  "year": 2026,
+  "slots": [
+    {
+      "role": "soup",
+      "parts": ["gemuesebruehe"]
+    },
+    {
+      "role": "main",
+      "parts": ["griessnockerl", "eierstich"]
+    },
+    {
+      "role": "side",
+      "ingredient": "fdc-170393",
+      "amount": {
+        "value": 2,
+        "unit": "count"
+      }
+    },
+    {
+      "role": "garnish",
+      "ingredient": "fdc-169994",
+      "amount": {
+        "value": 3,
+        "unit": "tbsp"
+      }
+    }
+  ],
+  "note": {
+    "en": "Make the broth first; it simmers for an hour. Meanwhile make the dumpling dough, which rests, or the egg custard, which sets in its water bath. Cook the dumplings in their own water so that the broth stays clear. Dice the carrots small and cook them in the strained broth for 8 minutes, add the dumplings or the custard for the last minute and sprinkle with chopped chives. The usual broth is beef; the app has none, so its vegetable broth stands in.",
+    "de": "Zuerst die Brühe kochen; sie köchelt eine Stunde. Währenddessen den Nockerlteig zubereiten, der ruht, oder den Eierstich, der im Wasserbad stockt. Die Nockerl in eigenem Wasser garen, damit die Brühe klar bleibt. Die Karotten klein würfeln und 8 Minuten in der abgeseihten Brühe garen, Nockerl oder Eierstich für die letzte Minute dazugeben und mit gehacktem Schnittlauch bestreuen. Üblich ist Rinderbrühe; die App hat keine, deshalb steht ihre Gemüsebrühe dafür."
+  }
+}

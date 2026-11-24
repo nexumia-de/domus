@@ -1,0 +1,141 @@
+{
+  "id": "edamame",
+  "kind": "base",
+  "name": {
+    "en": "Salted edamame",
+    "de": "Gesalzene Edamame"
+  },
+  "originalName": "Edamame",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "edamame-side",
+      "name": {
+        "en": "Salted edamame",
+        "de": "Gesalzene Edamame"
+      },
+      "role": "side",
+      "lines": [
+        {
+          "key": "edamame",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169282"
+          },
+          "amount": {
+            "value": 300,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Shelled; frozen ones go into the water without thawing.",
+            "de": "Ausgelöst; tiefgekühlte kommen ohne Auftauen ins Wasser."
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 1500,
+            "unit": "ml"
+          }
+        },
+        {
+          "key": "salt-water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "For the cooking water.",
+            "de": "Für das Kochwasser."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 0.5,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "To finish.",
+            "de": "Zum Bestreuen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Bring the water with the salt for it to a rolling boil.",
+            "de": "Das Wasser mit dem Salz dafür sprudelnd aufkochen."
+          },
+          "technique": "boil",
+          "uses": ["water", "salt-water"]
+        },
+        {
+          "text": {
+            "en": "Add the edamame and cook for 3 to 4 minutes, until tender but still firm to the bite.",
+            "de": "Die Edamame hineingeben und 3 bis 4 Minuten kochen, bis sie weich sind, aber noch Biss haben."
+          },
+          "technique": "boil",
+          "uses": ["edamame"],
+          "time": {
+            "value": 3,
+            "to": 4,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Drain them in a sieve.",
+            "de": "In einem Sieb abgießen."
+          },
+          "action": "drain",
+          "uses": ["edamame"]
+        },
+        {
+          "text": {
+            "en": "Sprinkle with the salt while they are warm.",
+            "de": "Noch warm mit dem Salz bestreuen."
+          },
+          "action": "season",
+          "uses": ["edamame", "salt"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "side",
+      "ref": {
+        "kind": "component",
+        "id": "edamame-side"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "A second agent session read the recipe for proportions, times and order on 2026-11-24 (about 1.2 % salt in the cooking water, 0.5 tsp to finish 300 g of shelled beans, 3 to 4 minutes) and changed nothing."
+  }
+}
