@@ -1212,7 +1212,7 @@ own; the origin is only a choice of the filter.
 - **A sauce that is a base is no dish (since 2026-11-23).** The
   shipped bases of the course sauce (27 of them) are on no dish list, in
   the finder or the random pick; they are in the Components list. Cook
-  lists 102 of the 129 shipped files and the 11 frames, 113 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A choice starts cooking the dish again at its first step, since the method is another one (before 2026-11-24 the cook screen, reached by its address or the browser's way back rather than the Cook button, could resume at the same number of a different method); an id that is no recipe of the slot changes nothing, and the shipped filling clears the choice (`chooseFilling`, `test/frames.test.ts`: "a choice is kept against an id that is no recipe of the slot …"). Known: Cook's list and "Only with what I have" judge a frame by its shipped filling, not by the cook's choice: after choosing the omelette the set meal's row still says "with meat or fish" while its page says without, in this app and in the native one. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
+  lists 108 of the 135 shipped files and the 13 frames, 121 rows. A slot of a frame that has alternatives offers a choice under the ingredients; the screen, the cook screen and Keep follow it. A choice starts cooking the dish again at its first step, since the method is another one (before 2026-11-24 the cook screen, reached by its address or the browser's way back rather than the Cook button, could resume at the same number of a different method); an id that is no recipe of the slot changes nothing, and the shipped filling clears the choice (`chooseFilling`, `test/frames.test.ts`: "a choice is kept against an id that is no recipe of the slot …"). Known: Cook's list and "Only with what I have" judge a frame by its shipped filling, not by the cook's choice: after choosing the omelette the set meal's row still says "with meat or fish" while its page says without, in this app and in the native one. A frame is a dish of the app's own composition ([format](classic-format.md#a-frame)): its Source section says that the app put it together from its own recipes, names each part with where it comes from, and says that nobody read or cooked the combination; it can be kept in the notebook like a base (`test/frames.test.ts`, `e2e/kit-parts.mjs`). **Test:** `test/sauce-bases.test.ts`, `e2e/kit-parts.mjs`.
 - **The way back from a dish.** A dish, shipped or own, has one link back,
   "Back to the list" (`src/screens/list-return.ts`). Opened from a row of
   Cook, it is the browser's back to Cook, so the list is as the user left it
@@ -1389,11 +1389,11 @@ shipped, under the one filter, with:
   row as before. A frame kept in the notebook is an own dish and stands in
   its course. An empty group is not shown. In a course's group the row's
   quiet line drops the course, which the heading says; in the frames group
-  it keeps it. On the shipped content: 11 frames, 37 main courses, 12
-  soups, 2 starters, 38 side dishes, 1 breakfast, 9 desserts, 3 baking, 113
-  rows. **What was decided and why:** the filter, the search and "Only with
+  it keeps it. On the shipped content: 13 frames (12 main courses and a
+  soup), 38 main courses, 13 soups, 2 starters, 42 side dishes, 1
+  breakfast, 9 desserts, 3 baking, 121 rows. **What was decided and why:** the filter, the search and "Only with
   what I have" only drop rows, and the groups are drawn from what is left;
-  when one group is left (a course chosen that no frame has, such as soup)
+  when one group is left (a course chosen that no frame has, such as dessert)
   the list is one list without a heading, since the heading would only
   repeat the filter and the count line; choosing "Main course" leaves two
   groups, the frames and the main courses, both with their heading. The
@@ -1410,13 +1410,15 @@ shipped, under the one filter, with:
   group, the order by name within a group, one group left gives no groups,
   the course filter leaving two groups (and, the control, one), the quiet
   line in a group, every course of the engine placed once; and the shipped
-  content: 113 entries, 11 frames first, the main courses next, the
+  content: 121 entries, 13 frames first, the main courses next, the
   courses in order), `e2e/cook-groups.mjs` (the real content and an empty
   notebook at 360 x 720, English and German: the headings in order with
   their counts and as headings of level 2, each list labelled by its
-  heading, 113 rows; "Main course" leaves two headings with 11 and 37 and
-  the count line 48; "Soup" leaves 12 rows and no heading (the control);
-  "Use up first" is one flat list of 113; the way back; no horizontal
+  heading, 121 rows; "Main course" leaves two headings with 12 and 38 and
+  the count line 50; "Soup" leaves two headings, the soup frame among the
+  frames ("1 dish") and 13 soups; "Dessert" leaves 9 rows and no heading
+  (the control; it was "Soup" until the soup frame came on 2026-11-24);
+  "Use up first" is one flat list of 121; the way back; no horizontal
   scroll, 44 px targets), `e2e/dish-browse.mjs` (the fixture: two groups,
   the pan dish's quiet line without its course). Not proved: a screen
   reader reading the headings, a real phone, an own dish without a course
@@ -1687,7 +1689,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   nothing is counted), the coverage, and everything else behind the second
   tap. Before, figures were shown from two counted ingredients and a quarter of
   all (`MIN_COUNTED`, `MIN_SHARE`, removed), which let the herb omelette show 5
-  kcal from its salt and pepper. On the 129 shipped dishes 73 show figures (17 of 68 before the own recipes of 2026-11-24, 9 of 48 before the recipes of 2026-11-23)
+  kcal from its salt and pepper. On the 135 shipped dishes 79 show figures (73 of 129 before the bowl and the soup frame, 17 of 68 before the own recipes of 2026-11-24, 9 of 48 before the recipes of 2026-11-23)
   ([evaluation](nutrition-evaluation.md#figures-only-where-they-mean-something-2026-11-21)). **It never judges**: no
   "healthy", "high" or "low", no colour, no traffic light, no comparison with a
   daily value, no portion reference (none was found in a source that could be

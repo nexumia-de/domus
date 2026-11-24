@@ -104,12 +104,12 @@ describe("Cook's groups of the shipped dishes", () => {
     .map((c) => entryOfClassic(c, () => undefined, 'en'));
   const groups = groupRows(dishListView(entries, {}, '', 'en').rows) ?? [];
 
-  test('the eleven frames come first, every dish is in one group, no group is empty', () => {
-    expect(entries).toHaveLength(113);
+  test('the thirteen frames come first, every dish is in one group, no group is empty', () => {
+    expect(entries).toHaveLength(121);
     expect(groups[0]?.id).toBe('frames');
-    expect(groups[0]?.rows).toHaveLength(11);
+    expect(groups[0]?.rows).toHaveLength(13);
     expect(groups[0]?.rows.map((r) => r.entry.id)).toContain('tacos');
-    expect(groups.reduce((n, g) => n + g.rows.length, 0)).toBe(113);
+    expect(groups.reduce((n, g) => n + g.rows.length, 0)).toBe(121);
     expect(groups.every((g) => g.rows.length > 0)).toBe(true);
     expect(groups[1]?.id).toBe('main');
   });

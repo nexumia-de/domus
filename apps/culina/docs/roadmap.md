@@ -39,7 +39,7 @@ app and finds quickly what they want to cook or can cook.
    [helper build plan](helper-plan.md): technique notes, handling rules
    per ingredient and substitutes with their effect, each with source
    and evidence level; a skill marked as learned is not taught again;
-   129 shipped dishes cooked step by step. They are there so that the
+   135 shipped dishes cooked step by step. They are there so that the
    user can learn abilities ([helper](decisions/mentor.md)), no longer
    the app's purpose.
 6. **One list, one Cook screen.** Own and shipped dishes in one list
@@ -56,17 +56,24 @@ app and finds quickly what they want to cook or can cook.
    burrito, pizza, bowl, curry, risotto, stir-fry, soup) and more bases
    (sauces, doughs), so that a dish is put together instead of picked
    ([recipe app](decisions/scope-recipe-app.md),
-   [bases and the pack](decisions/bases-and-pack.md)). Done so far: 88
-   of the 129 shipped files are bases (16 came with the 20 recipes of
+   [bases and the pack](decisions/bases-and-pack.md)). Done so far: 94
+   of the 135 shipped files are bases (16 came with the 20 recipes of
    2026-11-23, [selection](classic-selection.md#added-on-2026-11-23-20-recipes-for-the-kit); 50 with the 56 own recipes of 13 cuisines of
-   2026-11-24, [own recipes](decisions/own-recipes.md)); none has an alternative.
-   Eleven frames exist since 2026-11-24 (tacos, burrito, a chickpea curry
+   2026-11-24, [own recipes](decisions/own-recipes.md); 6 with the bowl and the soup
+   frame, below); none has an alternative.
+   Thirteen frames exist since 2026-11-24 (tacos, burrito, a chickpea curry
    plate, a souvlaki plate, a Japanese set meal, miso ramen, a burger
-   plate, a rice plate with a stir-fry, a köfte plate, pizza, risotto),
+   plate, a rice plate with a stir-fry, a köfte plate, pizza, risotto, a
+   rice bowl, a clear soup with semolina dumplings or egg custard),
    composed by the build from the own recipes
-   ([format](classic-format.md#a-frame)); five have a choice of filling
-   for a slot, made on the dish screen. Open here: a bowl and a soup
-   frame, a choice in the native app, and taking the 31 older dishes
+   ([format](classic-format.md#a-frame)); seven have a choice of filling
+   for a slot, made on the dish screen and in the native app. The bowl
+   (rice, a main, a vegetable, a pickle, a sauce, each with a choice)
+   and the soup came with six recipes written for them (pan-fried tofu,
+   spinach with sesame, edamame, a vegetable broth, semolina dumplings,
+   egg custard), whose second reading is still to be done. Open here: a
+   soup frame of another cuisine with more than one broth (the kit has
+   no beef or chicken broth that can be a part), and taking the 31 older dishes
    apart into components. Decided by the owner on 2026-11-23
    ([building kit](decisions/building-kit.md), answers 1 and 2): a
    frame is the project's own composition, each component in it keeping

@@ -1,0 +1,200 @@
+{
+  "id": "horenso-no-goma-ae",
+  "kind": "base",
+  "name": {
+    "en": "Spinach with sesame dressing",
+    "de": "Spinat mit Sesamsauce"
+  },
+  "originalName": "Horenso no goma-ae",
+  "country": "jp",
+  "vegetarian": true,
+  "course": "side",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "horenso-no-goma-ae-side",
+      "name": {
+        "en": "Spinach with sesame dressing",
+        "de": "Spinat mit Sesamsauce"
+      },
+      "role": "side",
+      "lines": [
+        {
+          "key": "sesame",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170150"
+          },
+          "amount": {
+            "value": 4,
+            "unit": "tbsp"
+          },
+          "note": {
+            "en": "White sesame seeds.",
+            "de": "Weißer Sesam."
+          }
+        },
+        {
+          "key": "sugar",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169655"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "soy",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-174277"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 2000,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "For blanching; plus cold water for cooling.",
+            "de": "Zum Blanchieren; dazu kaltes Wasser zum Abschrecken."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          }
+        },
+        {
+          "key": "spinach",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-168462"
+          },
+          "amount": {
+            "value": 400,
+            "unit": "g"
+          },
+          "note": {
+            "en": "Leaf spinach with tender stems, washed.",
+            "de": "Blattspinat mit zarten Stielen, gewaschen."
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Toast the sesame seeds in a dry pan over medium heat for 2 to 3 minutes, shaking the pan, until golden.",
+            "de": "Den Sesam in einer trockenen Pfanne bei mittlerer Hitze 2 bis 3 Minuten rösten und die Pfanne dabei rütteln, bis er goldgelb ist."
+          },
+          "action": "toast",
+          "uses": ["sesame"],
+          "time": {
+            "value": 2,
+            "to": 3,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Grind the seeds coarsely in a mortar; some may stay whole.",
+            "de": "Den Sesam im Mörser grob zerstoßen; einige Körner dürfen ganz bleiben."
+          },
+          "action": "crush",
+          "uses": ["sesame"]
+        },
+        {
+          "text": {
+            "en": "Stir in the sugar and the soy sauce.",
+            "de": "Zucker und Sojasauce untermischen."
+          },
+          "action": "mix",
+          "uses": ["sesame", "sugar", "soy"]
+        },
+        {
+          "text": {
+            "en": "Bring the water with the salt to a rolling boil in a large pot.",
+            "de": "Das Wasser mit dem Salz in einem großen Topf sprudelnd aufkochen."
+          },
+          "technique": "boil",
+          "uses": ["water", "salt"]
+        },
+        {
+          "text": {
+            "en": "Put in the spinach, stems first, and cook for 30 to 60 seconds, until just wilted.",
+            "de": "Den Spinat, die Stiele zuerst, hineingeben und 30 bis 60 Sekunden garen, bis er gerade zusammenfällt."
+          },
+          "technique": "blanch",
+          "uses": ["spinach"],
+          "time": {
+            "value": 30,
+            "to": 60,
+            "unit": "s"
+          }
+        },
+        {
+          "text": {
+            "en": "Lift it out into cold water and take it out again as soon as it is cool.",
+            "de": "Herausheben, in kaltem Wasser abschrecken und herausnehmen, sobald er kalt ist."
+          },
+          "action": "cool",
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Squeeze the spinach firmly by the handful and cut it into lengths of 4 cm.",
+            "de": "Den Spinat portionsweise mit der Hand fest ausdrücken und in 4 cm lange Stücke schneiden."
+          },
+          "action": "drain",
+          "uses": ["spinach"]
+        },
+        {
+          "text": {
+            "en": "Mix the spinach with the sesame dressing just before serving.",
+            "de": "Den Spinat erst kurz vor dem Servieren mit der Sesamsauce mischen."
+          },
+          "action": "mix",
+          "uses": ["spinach", "sesame"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "side",
+      "ref": {
+        "kind": "component",
+        "id": "horenso-no-goma-ae-side"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}

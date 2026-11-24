@@ -43,7 +43,7 @@ const recipes = new Map(CLASSICS.map((c) => [c.id, c]));
 const frame = (id: string): Classic => must(FRAMES.find((f) => f.id === id));
 
 describe('the shipped frames', () => {
-  test('there are eleven, each a base marked as a frame, with an id no recipe has', () => {
+  test('there are thirteen, each a base marked as a frame, with an id no recipe has', () => {
     expect(FRAMES.map((f) => f.id)).toEqual([
       'burger-plate',
       'burrito',
@@ -52,8 +52,10 @@ describe('the shipped frames', () => {
       'kofte-plate',
       'miso-ramen',
       'pizza-margherita',
+      'rice-bowl',
       'risotto',
       'souvlaki-plate',
+      'suppe-mit-einlage',
       'tacos',
       'teishoku',
     ]);
@@ -145,6 +147,58 @@ describe('the shipped frames', () => {
     const omelette = must(slotAlternatives(meal, must(meal.slots[at]))[0]);
     expect(omelette.from?.recipe).toBe('tamagoyaki');
     expect(chooseAlternative(meal, at, omelette.id).vegetarian).toBe(true);
+  });
+
+  test('the rice bowl: a choice in five slots; the tofu bowl is without meat and fish until the salmon comes in', () => {
+    // On the shipped bowl. Not proved: that the parts go together in a bowl; nobody cooked it.
+    resetChoices();
+    const bowl = frame('rice-bowl');
+    expect(fillingChoices(bowl, 'en').map((c) => [c.role, c.options.length])).toEqual([
+      ['starch', 2],
+      ['main', 3],
+      ['side', 2],
+      ['acid', 2],
+      ['sauce', 2],
+    ]);
+    expect(bowl.vegetarian).toBe(true);
+    const main = bowl.slots.findIndex((s) => s.role === 'main');
+    const options = slotAlternatives(bowl, must(bowl.slots[main]));
+    expect(options.map((c) => c.from?.recipe)).toEqual(['sake-no-shioyaki', 'chao-shi-cai']);
+    const fish = must(options[0]).id;
+    const salmon = chooseAlternative(bowl, main, fish);
+    expect(salmon.slots[main]?.ref).toEqual({ kind: 'component', id: fish });
+    expect(salmon.vegetarian).toBe(false);
+    // Control: the edamame in place of the spinach keep the bowl without meat and fish.
+    const side = bowl.slots.findIndex((s) => s.role === 'side');
+    const edamame = chooseAlternative(bowl, side, 'edamame-side');
+    expect(edamame.slots[side]?.ref).toEqual({ kind: 'component', id: 'edamame-side' });
+    expect(edamame.vegetarian).toBe(true);
+    // As it is cooked, the bowl holds one recipe per slot: five, not the eleven it names.
+    expect((bowl.components ?? []).length).toBe(11);
+    expect((withoutAlternatives(bowl).components ?? []).map((c) => must(c.from).recipe)).toEqual([
+      'gohan',
+      'tofu-suteki',
+      'horenso-no-goma-ae',
+      'kyuri-no-sunomono',
+      'teriyaki-no-tare',
+    ]);
+  });
+
+  test('the soup: the custard can take the dumplings place; carrots and chives are plain ingredients', () => {
+    const soup = frame('suppe-mit-einlage');
+    expect(soup.course).toBe('soup');
+    expect(soup.slots.map((s) => [s.role, s.ref?.kind, s.ref?.id])).toEqual([
+      ['soup', 'component', 'gemuesebruehe-soup'],
+      ['main', 'component', 'griessnockerl-main'],
+      ['side', 'ingredient', 'fdc-170393'],
+      ['garnish', 'ingredient', 'fdc-169994'],
+    ]);
+    const at = soup.slots.findIndex((s) => s.role === 'main');
+    expect(slotAlternatives(soup, must(soup.slots[at])).map((c) => c.from?.recipe)).toEqual([
+      'eierstich',
+    ]);
+    // Control: the broth has no alternative.
+    expect(slotAlternatives(soup, must(soup.slots[0]))).toEqual([]);
   });
 
   test('the cook choice: the screens show it, Keep copies the base with it and the alternatives', () => {

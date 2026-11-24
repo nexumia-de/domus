@@ -1,0 +1,222 @@
+{
+  "id": "gemuesebruehe",
+  "kind": "base",
+  "name": {
+    "en": "Vegetable broth",
+    "de": "Gemüsebrühe"
+  },
+  "originalName": "Gemüsebrühe",
+  "country": "de",
+  "vegetarian": true,
+  "course": "soup",
+  "source": {
+    "own": true,
+    "year": 2026
+  },
+  "persons": {
+    "value": 4,
+    "basis": "stated"
+  },
+  "components": [
+    {
+      "id": "gemuesebruehe-soup",
+      "name": {
+        "en": "Vegetable broth",
+        "de": "Gemüsebrühe"
+      },
+      "role": "soup",
+      "lines": [
+        {
+          "key": "oil",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-172336"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tbsp"
+          }
+        },
+        {
+          "key": "onion",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170000"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "count"
+          },
+          "note": {
+            "en": "Unpeeled; the skin gives the broth its colour.",
+            "de": "Ungeschält; die Schale gibt der Brühe die Farbe."
+          }
+        },
+        {
+          "key": "carrot",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170393"
+          },
+          "amount": {
+            "value": 3,
+            "unit": "count"
+          }
+        },
+        {
+          "key": "celeriac",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170400"
+          },
+          "amount": {
+            "value": 250,
+            "unit": "g"
+          }
+        },
+        {
+          "key": "leek",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-169246"
+          },
+          "amount": {
+            "value": 200,
+            "unit": "g"
+          },
+          "note": {
+            "en": "The green part too.",
+            "de": "Auch das Grün."
+          }
+        },
+        {
+          "key": "parsley",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170416"
+          },
+          "amount": {
+            "value": 15,
+            "unit": "g"
+          },
+          "note": {
+            "en": "With the stalks.",
+            "de": "Mit den Stielen."
+          }
+        },
+        {
+          "key": "pepper",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-170931"
+          },
+          "amount": {
+            "value": 1,
+            "unit": "tsp"
+          },
+          "note": {
+            "en": "Whole peppercorns.",
+            "de": "Ganze Pfefferkörner."
+          }
+        },
+        {
+          "key": "water",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173647"
+          },
+          "amount": {
+            "value": 2000,
+            "unit": "ml"
+          },
+          "note": {
+            "en": "Cold.",
+            "de": "Kalt."
+          }
+        },
+        {
+          "key": "salt",
+          "ref": {
+            "kind": "ingredient",
+            "id": "fdc-173468"
+          },
+          "amount": {
+            "value": 2,
+            "unit": "tsp"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "text": {
+            "en": "Wash the carrots, the celeriac and the leek and cut them into pieces of about 3 cm. Halve the onion with its skin.",
+            "de": "Karotten, Sellerie und Lauch waschen und in etwa 3 cm große Stücke schneiden. Die Zwiebel mit der Schale halbieren."
+          },
+          "action": "prepare",
+          "uses": ["carrot", "celeriac", "leek", "onion"]
+        },
+        {
+          "text": {
+            "en": "Heat the oil in a large pot and brown the onion halves, cut side down, over medium heat for 5 minutes, until dark brown.",
+            "de": "Das Öl in einem großen Topf erhitzen und die Zwiebelhälften mit der Schnittfläche nach unten bei mittlerer Hitze 5 Minuten dunkelbraun anrösten."
+          },
+          "action": "cook",
+          "uses": ["oil", "onion"],
+          "time": {
+            "value": 5,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Add the vegetables, the parsley, the peppercorns and the cold water and bring slowly to the boil.",
+            "de": "Gemüse, Petersilie, Pfefferkörner und das kalte Wasser dazugeben und langsam aufkochen."
+          },
+          "action": "pour",
+          "uses": ["carrot", "celeriac", "leek", "parsley", "pepper", "water"]
+        },
+        {
+          "text": {
+            "en": "Turn the heat down and simmer, half covered, for 45 to 60 minutes.",
+            "de": "Die Hitze reduzieren und halb zugedeckt 45 bis 60 Minuten köcheln lassen."
+          },
+          "technique": "simmer",
+          "time": {
+            "value": 45,
+            "to": 60,
+            "unit": "min"
+          }
+        },
+        {
+          "text": {
+            "en": "Pour the broth through a fine sieve and press the vegetables lightly; discard them.",
+            "de": "Die Brühe durch ein feines Sieb gießen, das Gemüse leicht ausdrücken und wegwerfen."
+          },
+          "action": "strain"
+        },
+        {
+          "text": {
+            "en": "Season with the salt. It makes about 1.5 litres.",
+            "de": "Mit dem Salz abschmecken. Es ergibt etwa 1,5 Liter."
+          },
+          "action": "season",
+          "uses": ["salt"]
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "role": "soup",
+      "ref": {
+        "kind": "component",
+        "id": "gemuesebruehe-soup"
+      }
+    }
+  ],
+  "settled": [],
+  "check": {
+    "method": "second-reader",
+    "note": "second reading pending, to be done by another agent"
+  }
+}
