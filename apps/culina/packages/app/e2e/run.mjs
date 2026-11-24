@@ -12,6 +12,7 @@ import { cookGroups } from './cook-groups.mjs';
 import { dishBrowse } from './dish-browse.mjs';
 import { dishCook } from './dish-cook.mjs';
 import { dishCharacters } from './dish-characters.mjs';
+import { dishLike } from './dish-like.mjs';
 import { dishPairing } from './dish-pairing.mjs';
 import { dishSwap } from './dish-swap.mjs';
 import { editorPairing } from './editor-pairing.mjs';
@@ -57,6 +58,7 @@ try {
   await dishSwap(browser, server);
   await dishCharacters(browser, server);
   await dishPairing(browser, server);
+  await dishLike(browser, server);
   await editorPairing(browser, server);
   await kitParts(browser, server);
   await frameChoice(browser, server);

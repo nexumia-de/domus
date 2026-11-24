@@ -400,8 +400,10 @@ serves `#/dishes/<id>/cook`, `#/components/<id>/cook` and
   "Instead" where there are substitutes; for an own dish the role slots
   with Swap ([below](#dishes)); **Cook step by step**, where there are
   steps; **Method**, every step grouped by the part it belongs to; for an
-  own dish "What goes in, all the way down"; then behind a tap **Nutrition
-  per portion** and, for a shipped dish, **Source**.
+  own dish "What goes in, all the way down"; **Dishes like this**, only
+  where some dish is alike enough ([below](#dishes-like-this)); then behind
+  a tap **Goes with**, **Nutrition per portion** and, for a shipped dish,
+  **Source**.
 - **Portions** are kept in memory per dish while the app is open
   (`src/classics/session.ts`): a shipped dish starts at 2, an own dish at
   its stored `portions` or 1. The cook screen cooks the portions chosen on
@@ -1122,6 +1124,83 @@ dishes, 360 px; the ingredients there are the user's own, so only a
 technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
+## Dishes like this
+
+Since 2026-11-24, on the page of every dish (a shipped dish, a frame as
+the cook chose its filling, an own dish of the notebook as shown with a
+swap): a section **Dishes like this** ("Ähnliche Gerichte") under the
+recipe (after the method, and for an own dish after "What goes in, all
+the way down") and above the closed sections at the foot (Goes with,
+Nutrition per portion, Source). Up to five other dishes, each a row
+link to its page with its name and one quiet line of what it shares
+("Shares: Cheesy, From the oven, Creamy"). **When no dish is alike
+enough there is no section at all**: no heading, no sentence. Placed
+there because at 360 px the ingredients and the method fill the first
+screens and the list is a way on once the recipe is read; a link "Dishes
+like this" at the top was the plan's idea and was not taken, because on
+most dishes it would lead to nothing. Pure part `src/browse/alike.ts`
+(`dishesLike`, exported nowhere else yet; the native app does not show
+it), section `src/screens/dish-like.ts`, texts `strings.characters`.
+
+**The measure, the project's judgement:**
+
+- **What is compared**: the characters of the two dishes as the lists
+  have them ([characters](#characters): computed, with the cook's
+  correction on an own dish), without three: "with meat" and "with fish"
+  (what is in a dish, not what it is like: two dishes that share only
+  meat are not alike) and "uncooked" (said from the absence of a heat
+  technique, and on the shipped dishes said of pizza, tacos and scrambled
+  eggs, whose heat steps are plain actions; counted, it made tomato eggs
+  and pizza alike).
+- **Score**: the characters both have over the characters either has
+  (Jaccard). **A match needs at least two shared characters and a score
+  of at least one half.** One shared character is a weak match even when
+  it is all either dish has (red berry pudding and every other dish that
+  is only sweet); two of five is mostly unlike.
+- **Course**: a dish of another course is never like it, where both
+  state one (a dessert is not like a main; Napfkuchen is not like the
+  baked flan); a dish without a course is compared with every course.
+- **Ties**: more characters shared, then the same "without meat and
+  fish", then the same cuisine, then the order of the lists (own dishes
+  first).
+- **The dishes it chooses from** are those of the lists (`dishEntries`):
+  own (the head of each family) and shipped, never a sauce base that is
+  no dish, never the dish itself; for an older version the head of its
+  family counts as the dish itself. A shipped dish and its copy kept in
+  the notebook (the record's `x-origin`, now `copyOf` on the entry) are
+  never offered as like each other, nor two copies of one dish.
+- **No claim of taste**: the heading and the line say what was
+  compared, nothing more.
+
+On the 121 dishes of Cook on 2026-11-24, **27 get a section**; the
+other 94 have too few characters (of the 121, 43 have no character the
+measure counts and 37 only one) or share them with no dish of their
+course. What comes out, read once by the
+agent that built it: the cheese gratins together, the egg custards
+together, the two cakes together, chana masala with its plate; the
+weakest it gives are dal with tacos and with souvlaki (tomatoey,
+garlicky, lemony), which the line under the row says plainly.
+
+**Test:** `test/dish-like.test.ts`: on written entries the thresholds,
+one shared character not enough, two of five not enough beside two of
+four (control), the three characters left out, no characters no like,
+course, the dish itself and a kept copy (control: an own dish not kept
+from it is compared), the order of the ties, at most five; on the
+shipped dishes gratin dauphinois (the potato gratin, then the
+cauliflower), crème caramel (latte brûlé, then the three creamy egg
+custards), Napfkuchen (only the torta mantovana), chana masala (its
+plate), the controls pot-au-feu, cocido, Bratkartoffeln and rote Grütze
+(none), tomato eggs not like pizza, and 27 of 121. `e2e/dish-like.mjs`
+(English and German at 360 px: the heading, the two gratins in order
+with three shared characters each, its place between the recipe and
+the closed sections, a row opening the potato gratin whose page names
+the gratin back, the layout; the control pot-au-feu with no section;
+the copy kept in the notebook like the other gratins and the shipped
+gratin not naming its copy, which failed with the copy rule taken
+out). Not proved: what a cook thinks of the matches; a real notebook
+(own dishes are compared by the same entries, tested only with written
+ones and the one kept copy); desktop width; a screen reader.
+
 # One filter over every dish
 
 Since 2026-11-21 the shipped classics and the dishes of the notebook are
@@ -1641,7 +1720,7 @@ view logic is in `src/classics/` (no DOM), the screens in
   ingredients are on the first screen at 360 x 720: the name, the original
   name, the quiet line (course, cuisine, meat flag, "Shipped with the
   app"); Keep in my notebook; the characters; a portions stepper, default 2; the ingredient lines per component and
-  for the dish; "Cook step by step"; the whole method; then, each closed behind
+  for the dish; "Cook step by step"; the whole method; [Dishes like this](#dishes-like-this) where there are any; then, each closed behind
   a tap (`<details>`), **Goes with** (below), **Nutrition per portion** (below) and **Source**. **The
   app does no arithmetic**: amounts come from `deriveClassic` and are only
   rounded for display with the shared helpers (`formatMass` for grams,

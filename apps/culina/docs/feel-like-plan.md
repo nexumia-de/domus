@@ -29,7 +29,8 @@ The owner's question is "what do I cook, what do I feel like?"
 ([decision](decisions/one-dish-list.md)). After the unification, one
 filter narrows every dish by origin, character, course, cuisine, "Without
 meat and fish" and "Only with every amount given". This plan lists what
-the question still needs beyond that. Nothing here is decided or built.
+the question still needs beyond that. Written as a plan; item 3 is built
+and item 4 counted since 2026-11-24, each says so at its head.
 
 **Cost** is a rough size: **small** is a change in the app with no new
 data; **medium** is new data that the project can fill itself, or a new
@@ -69,6 +70,19 @@ or rereading the sources of the shipped dishes.
 
 ### 3. Something like this dish
 
+**Built on 2026-11-24** ([behaviour](behaviour.md#dishes-like-this)): a
+section "Dishes like this" on every dish page, under the method and above
+the closed sections, with up to five dishes and what each shares; none
+when nothing is alike enough. Decided: Jaccard over the characters
+without "with meat", "with fish" and "uncooked", at least two shared and
+a share of at least one half, the same course required where both state
+one (not only a tie-breaker, as written below: a dessert like a main
+was the plainest wrong match), then meat flag and cuisine as
+tie-breakers; a list on the page rather than a link to the filtered
+list. 27 of the 121 dishes get one. **Open**: whether the link into the
+list, ordered by likeness, is still wanted; the native app; how it reads
+on a real notebook. What follows is the plan as written.
+
 - **Now**: every dish has its characters, computed when it is shown
   ([analysis](dish-characters.md)).
 - **Needs**: a pure function that ranks other dishes by the characters
@@ -84,6 +98,30 @@ or rereading the sources of the shipped dishes.
   than a poor match.
 
 ### 4. Time and effort ("quick")
+
+**Counted on 2026-11-24, not built.** The small form (a total only where
+every step that takes time has one) was counted on the 121 dishes of
+Cook (108 shipped dishes that are no sauce base, and the 13 frames).
+Rule tried: a step blocks the total when its word heats or waits and it
+has no time: the heat techniques (boil, simmer, bake, braise, pan-fry,
+cook-rice, thicken-with-egg, roux, water-bath and the like) and the
+actions cook, heat, melt, preheat, cool, dry, stand, soak, chill, roast,
+grill, toast; handwork (knife-cuts, add, mix, stir, season, serve) does
+not block. Result: **22 of 121 dishes** (18 percent) would show a time,
+**1 of 13 frames** (the köfte plate); 88 dishes have at least one timed
+step. The commonest blockers: "heat" in 39 dishes, boil 19, "cook" 17,
+cool 9, melt 9. Leaving out heat, melt, preheat, cool and dry raises it
+to 53 of 121, but **the words cannot tell a quick step from a long one**:
+"heat" is "heat the oil" and "bring the water to the boil", "cool" is
+"take it out as soon as it is cool" and "let it cool completely", "dry"
+is "pat dry" and "let the sheets dry", and the pizza oven "needs about 30
+minutes". A total that left them out would be a guess, and even the 22
+leave the handwork out (no knife step has a time) and add up steps that
+run side by side (the broth kept hot while the onion is chopped). Below
+a third, and without an honest rule, the total was not built. What would
+make it possible is the second way below: a stored time per dish, or a
+time on every step that heats or waits, settled dish by dish. **Open**,
+for the owner as written in the recommendation.
 
 - **Now**: a step may carry a `time` as its source gives it, one value or
   a range in seconds, minutes or hours ([data model](data-model.md#steps)).
@@ -172,7 +210,8 @@ or rereading the sources of the shipped dishes.
    rather than from a list of choices.
 2. **Item 4 in its small form**: a total only where every step has a
    time, shown and not filtered, so that the gap is visible on real
-   dishes. Whether a stored total with active and waiting time is wanted,
+   dishes. (Counted on 2026-11-24 and not built: 22 of 121 dishes, and
+   the step words cannot tell quick from long; see item 4.) Whether a stored total with active and waiting time is wanted,
    and whether the shipped dishes get settled totals, is a question for
    the owner, because it is the costliest item and breaks "derived, not
    stored".

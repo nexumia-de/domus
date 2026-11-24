@@ -51,7 +51,20 @@ export interface DishEntry {
    * its own and has none.
    */
   frame?: true;
+  /**
+   * For a dish of the notebook kept from a shipped dish: the id of that dish (the record's
+   * `x-origin`), so that "Dishes like this" does not offer a dish as like its own copy.
+   */
+  copyOf?: string;
 }
+
+/** The shipped dish a record was kept from (`x-origin.classic`), read defensively. */
+const keptFrom = (dish: DishRecord): string | undefined => {
+  const origin = (dish as unknown as Record<string, unknown>)['x-origin'];
+  if (typeof origin !== 'object' || origin === null) return undefined;
+  const classic = (origin as Record<string, unknown>)['classic'];
+  return typeof classic === 'string' && classic !== '' ? classic : undefined;
+};
 
 export const entryKey = (origin: Origin, id: string): string => `${origin}:${id}`;
 
@@ -71,6 +84,7 @@ export const entryOfDish = (
   // The cook's correction of this dish counts everywhere the characters are read: chips, filter.
   const characters = correctCharacters(characterIds(facts), dish.characters, CHARACTER_ORDER);
   const meatFree = meatFreeOf(facts, lookup, below);
+  const copyOf = keptFrom(dish);
   return {
     key: entryKey('own', dish.id),
     origin: 'own',
@@ -83,6 +97,7 @@ export const entryOfDish = (
     ...(meatFree === undefined ? {} : { meatFree }),
     characters,
     complete: dish.slots.length > 0 && dish.slots.every((s) => s.amount !== undefined),
+    ...(copyOf === undefined ? {} : { copyOf }),
   };
 };
 

@@ -177,6 +177,9 @@ export const appStrings = {
     summaryCorrected: (n: number): string => `${n} changed by you`,
     diffAdded: (name: string): string => `added: ${name}`,
     diffRemoved: (name: string): string => `taken away: ${name}`,
+    // "Dishes like this" on a dish page: computed from the characters, no claim on taste.
+    likeHeading: 'Dishes like this',
+    likeShares: (names: string): string => `Shares: ${names}`,
   },
   dishes: {
     listLabel: 'All dishes',

@@ -185,6 +185,8 @@ export const appStringsDe: typeof appStrings = {
     summaryCorrected: (n: number): string => `${n} von dir geändert`,
     diffAdded: (name: string): string => `ergänzt: ${name}`,
     diffRemoved: (name: string): string => `entfernt: ${name}`,
+    likeHeading: 'Ähnliche Gerichte',
+    likeShares: (names: string): string => `Gemeinsam: ${names}`,
   },
   dishes: {
     listLabel: 'Alle Gerichte',

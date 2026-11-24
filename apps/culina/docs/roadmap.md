@@ -98,7 +98,11 @@ app and finds quickly what they want to cook or can cook.
    for a book on the [owner's list](../../../docs/owner-checks.md).
 9. **Finding faster.** What the question "what do I feel like" still
    needs without new data ([plan](feel-like-plan.md)): something like
-   this dish, time and effort in its small form. The notebook keeps
+   this dish is built (2026-11-24, "Dishes like this" on a dish page,
+   [behaviour](behaviour.md#dishes-like-this)); time in its small form
+   was counted and not built (22 of 121 dishes, and the step words cannot
+   tell a quick step from a long one; the plan's item 4 stays open for
+   the owner). The notebook keeps
    the date a dish was cooked (owner, 2026-11-23:
    [building kit](decisions/building-kit.md), answer 3), which
    favourites and "not cooked for long" build on; not built yet.
