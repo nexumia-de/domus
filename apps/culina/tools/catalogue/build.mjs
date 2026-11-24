@@ -32,6 +32,7 @@ export const USUAL = JSON.parse(readFileSync(usualFile, 'utf8'));
 
 const snapshotFile = fileURLToPath(new URL('./wikidata-de.json', import.meta.url));
 const ownNamesFile = fileURLToPath(new URL('./names-de-own.json', import.meta.url));
+const kitchenNamesFile = fileURLToPath(new URL('./kitchen-names.json', import.meta.url));
 const unitsFile = fileURLToPath(new URL('../../packages/engine/data/units.json', import.meta.url));
 const defaultOut = fileURLToPath(
   new URL('../../packages/app/data/ingredient-catalogue.json', import.meta.url),
@@ -120,6 +121,21 @@ export const buildRows = (foods, release, refuse = new Map(), wikidata = undefin
   return rows.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 };
 
+/**
+ * Entries with the kitchen names added as `x-kitchen` (kitchen-names.json: the name a cook writes,
+ * in English and German). The entry's `name` and `names` stay; an id the catalogue lacks is
+ * reported. The input is not changed.
+ */
+export const mergeKitchenNames = (ingredients, kitchen) => {
+  const known = new Set(ingredients.map((row) => row.id));
+  const unknown = Object.keys(kitchen.names).filter((id) => !known.has(id));
+  const rows = ingredients.map((row) => {
+    const own = kitchen.names[row.id];
+    return own === undefined ? row : { ...row, 'x-kitchen': { en: own.en, de: own.de } };
+  });
+  return { ingredients: rows, unknown };
+};
+
 /** The catalogue entries: the food rows with their parent links, and the parents. */
 export const buildCatalogue = (foods, release, refuse = new Map(), wikidata = undefined) =>
   groupRows(buildRows(foods, release, refuse, wikidata));
@@ -168,7 +184,13 @@ const main = () => {
   if (own.unknown.length > 0)
     throw new Error(`names-de-own.json: unknown ids ${own.unknown.join(', ')}`);
   // The usual member of a parent whose rows do not agree (a judgement, usual.json).
-  const ingredients = applyUsual(own.ingredients, USUAL);
+  const usual = applyUsual(own.ingredients, USUAL);
+  // The name a cook writes, beside the catalogue's own (a judgement, kitchen-names.json).
+  const kitchenText = readFileSync(kitchenNamesFile);
+  const kitchen = mergeKitchenNames(usual, JSON.parse(kitchenText.toString('utf8')));
+  if (kitchen.unknown.length > 0)
+    throw new Error(`kitchen-names.json: unknown ids ${kitchen.unknown.join(', ')}`);
+  const ingredients = kitchen.ingredients;
   const envelope = {
     format: 'culina-ingredient-catalogue',
     formatVersion: 1,
@@ -197,6 +219,12 @@ const main = () => {
       ownNames,
       createHash('sha256').update(ownNamesText).digest('hex'),
     ),
+    kitchenNamesDataset: {
+      name: 'Kitchen names for catalogue entries, written for the project by an AI model',
+      file: 'tools/catalogue/kitchen-names.json',
+      sha256: createHash('sha256').update(kitchenText).digest('hex'),
+      licence: 'AGPL-3.0-or-later (the licence of this repository)',
+    },
     generatedBy: 'tools/catalogue/build.mjs',
     ingredients,
   };

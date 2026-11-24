@@ -1,0 +1,683 @@
+{
+  "format": "culina-kitchen-names",
+  "formatVersion": 1,
+  "note": "The name a cook would write in a recipe for a catalogue entry, in English and German, where the catalogue's own name reads like the database it comes from (docs/ingredient-catalogue.md, Kitchen names). Written by an AI model for the project, a judgement; the catalogue's name stays the entry's name and stays searchable.",
+  "names": {
+    "fdc-167723": {
+      "en": "Sake",
+      "de": "Sake"
+    },
+    "fdc-167747": {
+      "en": "Lemon juice",
+      "de": "Zitronensaft"
+    },
+    "fdc-167749": {
+      "en": "Lemon zest",
+      "de": "Zitronenschale"
+    },
+    "fdc-167811": {
+      "en": "Pork back fat",
+      "de": "Schweinerückenspeck"
+    },
+    "fdc-168155": {
+      "en": "Limes",
+      "de": "Limetten"
+    },
+    "fdc-168156": {
+      "en": "Lime juice",
+      "de": "Limettensaft"
+    },
+    "fdc-168277": {
+      "en": "Bacon",
+      "de": "Bacon (Frühstücksspeck)"
+    },
+    "fdc-168407": {
+      "en": "Garden cress",
+      "de": "Gartenkresse"
+    },
+    "fdc-168446": {
+      "en": "Potato flour",
+      "de": "Kartoffelmehl"
+    },
+    "fdc-168462": {
+      "en": "Spinach",
+      "de": "Spinat"
+    },
+    "fdc-168556": {
+      "en": "Ketchup",
+      "de": "Ketchup"
+    },
+    "fdc-168576": {
+      "en": "Jalapeños",
+      "de": "Jalapeños"
+    },
+    "fdc-168694": {
+      "en": "Beef round",
+      "de": "Rinderkeule"
+    },
+    "fdc-168833": {
+      "en": "Brown sugar",
+      "de": "Brauner Zucker"
+    },
+    "fdc-168877": {
+      "en": "Long-grain white rice, enriched",
+      "de": "Langkornreis, angereichert"
+    },
+    "fdc-168879": {
+      "en": "Medium-grain white rice",
+      "de": "Mittelkornreis"
+    },
+    "fdc-168893": {
+      "en": "Whole-wheat flour",
+      "de": "Vollkornmehl"
+    },
+    "fdc-168894": {
+      "en": "All-purpose flour, enriched, bleached",
+      "de": "Weizenmehl 405, gebleicht, angereichert"
+    },
+    "fdc-168927": {
+      "en": "Dried pasta",
+      "de": "Nudeln, trocken"
+    },
+    "fdc-168931": {
+      "en": "Short-grain white rice",
+      "de": "Rundkornreis"
+    },
+    "fdc-169094": {
+      "en": "Black olives",
+      "de": "Schwarze Oliven"
+    },
+    "fdc-169225": {
+      "en": "Cucumber, peeled",
+      "de": "Gurke, geschält"
+    },
+    "fdc-169228": {
+      "en": "Eggplant",
+      "de": "Aubergine"
+    },
+    "fdc-169230": {
+      "en": "Garlic",
+      "de": "Knoblauch"
+    },
+    "fdc-169231": {
+      "en": "Fresh ginger",
+      "de": "Ingwer, frisch"
+    },
+    "fdc-169246": {
+      "en": "Leeks",
+      "de": "Lauch"
+    },
+    "fdc-169251": {
+      "en": "White mushrooms",
+      "de": "Champignons"
+    },
+    "fdc-169291": {
+      "en": "Zucchini",
+      "de": "Zucchini"
+    },
+    "fdc-169385": {
+      "en": "Fennel",
+      "de": "Fenchel"
+    },
+    "fdc-169491": {
+      "en": "Beef chuck pot roast",
+      "de": "Rinderschulter zum Schmoren"
+    },
+    "fdc-169655": {
+      "en": "Granulated sugar",
+      "de": "Kristallzucker"
+    },
+    "fdc-169656": {
+      "en": "Powdered sugar",
+      "de": "Puderzucker"
+    },
+    "fdc-169698": {
+      "en": "Cornstarch",
+      "de": "Speisestärke"
+    },
+    "fdc-169961": {
+      "en": "Green beans",
+      "de": "Grüne Bohnen"
+    },
+    "fdc-169975": {
+      "en": "Cabbage",
+      "de": "Weißkohl"
+    },
+    "fdc-169986": {
+      "en": "Cauliflower",
+      "de": "Blumenkohl"
+    },
+    "fdc-169988": {
+      "en": "Celery",
+      "de": "Staudensellerie"
+    },
+    "fdc-169991": {
+      "en": "Swiss chard",
+      "de": "Mangold"
+    },
+    "fdc-169997": {
+      "en": "Coriander leaves",
+      "de": "Koriandergrün"
+    },
+    "fdc-170000": {
+      "en": "Onions",
+      "de": "Zwiebeln"
+    },
+    "fdc-170005": {
+      "en": "Spring onions",
+      "de": "Frühlingszwiebeln"
+    },
+    "fdc-170028": {
+      "en": "Potatoes",
+      "de": "Kartoffeln"
+    },
+    "fdc-170054": {
+      "en": "Tomato sauce",
+      "de": "Tomatensauce"
+    },
+    "fdc-170106": {
+      "en": "Red chili peppers",
+      "de": "Rote Chilischoten"
+    },
+    "fdc-170108": {
+      "en": "Red bell pepper",
+      "de": "Rote Paprika"
+    },
+    "fdc-170150": {
+      "en": "Sesame seeds",
+      "de": "Sesam"
+    },
+    "fdc-170172": {
+      "en": "Coconut milk",
+      "de": "Kokosmilch"
+    },
+    "fdc-170388": {
+      "en": "Savoy cabbage",
+      "de": "Wirsing"
+    },
+    "fdc-170393": {
+      "en": "Carrots",
+      "de": "Karotten"
+    },
+    "fdc-170416": {
+      "en": "Parsley",
+      "de": "Petersilie"
+    },
+    "fdc-170417": {
+      "en": "Parsnips",
+      "de": "Pastinaken"
+    },
+    "fdc-170419": {
+      "en": "Green peas",
+      "de": "Grüne Erbsen"
+    },
+    "fdc-170427": {
+      "en": "Green bell pepper",
+      "de": "Grüne Paprika"
+    },
+    "fdc-170457": {
+      "en": "Tomatoes",
+      "de": "Tomaten"
+    },
+    "fdc-170459": {
+      "en": "Tomato paste",
+      "de": "Tomatenmark"
+    },
+    "fdc-170465": {
+      "en": "Turnips",
+      "de": "Speiserüben"
+    },
+    "fdc-170497": {
+      "en": "Green chili peppers",
+      "de": "Grüne Chilischoten"
+    },
+    "fdc-170499": {
+      "en": "Shallots",
+      "de": "Schalotten"
+    },
+    "fdc-170568": {
+      "en": "Blanched almonds",
+      "de": "Mandeln, blanchiert"
+    },
+    "fdc-170591": {
+      "en": "Pine nuts",
+      "de": "Pinienkerne"
+    },
+    "fdc-170688": {
+      "en": "Bulgur",
+      "de": "Bulgur"
+    },
+    "fdc-170859": {
+      "en": "Heavy whipping cream",
+      "de": "Schlagsahne"
+    },
+    "fdc-170917": {
+      "en": "Bay leaves",
+      "de": "Lorbeerblätter"
+    },
+    "fdc-170919": {
+      "en": "Cardamom",
+      "de": "Kardamom"
+    },
+    "fdc-170922": {
+      "en": "Coriander seeds",
+      "de": "Koriandersamen"
+    },
+    "fdc-170923": {
+      "en": "Cumin seeds",
+      "de": "Kreuzkümmel"
+    },
+    "fdc-170927": {
+      "en": "Ground mace",
+      "de": "Macis, gemahlen"
+    },
+    "fdc-170929": {
+      "en": "Ground mustard seed",
+      "de": "Senfpulver"
+    },
+    "fdc-170931": {
+      "en": "Black pepper",
+      "de": "Schwarzer Pfeffer"
+    },
+    "fdc-170932": {
+      "en": "Cayenne pepper",
+      "de": "Cayennepfeffer"
+    },
+    "fdc-170933": {
+      "en": "White pepper",
+      "de": "Weißer Pfeffer"
+    },
+    "fdc-170934": {
+      "en": "Saffron",
+      "de": "Safran"
+    },
+    "fdc-171016": {
+      "en": "Sesame oil",
+      "de": "Sesamöl"
+    },
+    "fdc-171077": {
+      "en": "Chicken breast, skinless",
+      "de": "Hähnchenbrust ohne Haut"
+    },
+    "fdc-171242": {
+      "en": "Gruyère",
+      "de": "Gruyère"
+    },
+    "fdc-171249": {
+      "en": "Romano (Pecorino Romano)",
+      "de": "Romano (Pecorino Romano)"
+    },
+    "fdc-171256": {
+      "en": "Sour cream, reduced fat",
+      "de": "Saure Sahne, fettreduziert"
+    },
+    "fdc-171284": {
+      "en": "Plain yogurt",
+      "de": "Naturjoghurt"
+    },
+    "fdc-171287": {
+      "en": "Eggs, fresh",
+      "de": "Eier, frisch"
+    },
+    "fdc-171304": {
+      "en": "Greek yogurt",
+      "de": "Griechischer Joghurt"
+    },
+    "fdc-171315": {
+      "en": "Ground allspice",
+      "de": "Piment, gemahlen"
+    },
+    "fdc-171320": {
+      "en": "Ground cinnamon",
+      "de": "Zimt, gemahlen"
+    },
+    "fdc-171321": {
+      "en": "Ground cloves",
+      "de": "Nelken, gemahlen"
+    },
+    "fdc-171325": {
+      "en": "Garlic powder",
+      "de": "Knoblauchpulver"
+    },
+    "fdc-171326": {
+      "en": "Ground nutmeg",
+      "de": "Muskatnuss, gemahlen"
+    },
+    "fdc-171327": {
+      "en": "Onion powder",
+      "de": "Zwiebelpulver"
+    },
+    "fdc-171328": {
+      "en": "Dried oregano",
+      "de": "Oregano, getrocknet"
+    },
+    "fdc-171329": {
+      "en": "Paprika powder",
+      "de": "Paprikapulver"
+    },
+    "fdc-171401": {
+      "en": "Lard",
+      "de": "Schweineschmalz"
+    },
+    "fdc-171413": {
+      "en": "Olive oil",
+      "de": "Olivenöl"
+    },
+    "fdc-171447": {
+      "en": "Chicken, with skin",
+      "de": "Hähnchen mit Haut"
+    },
+    "fdc-171610": {
+      "en": "Worcestershire sauce",
+      "de": "Worcestersauce"
+    },
+    "fdc-171705": {
+      "en": "Avocados",
+      "de": "Avocados"
+    },
+    "fdc-172231": {
+      "en": "Ground turmeric",
+      "de": "Kurkuma, gemahlen"
+    },
+    "fdc-172232": {
+      "en": "Fresh basil",
+      "de": "Basilikum, frisch"
+    },
+    "fdc-172233": {
+      "en": "Fresh dill",
+      "de": "Dill, frisch"
+    },
+    "fdc-172234": {
+      "en": "Yellow mustard",
+      "de": "Senf"
+    },
+    "fdc-172237": {
+      "en": "Distilled vinegar",
+      "de": "Branntweinessig"
+    },
+    "fdc-172239": {
+      "en": "Dried mint",
+      "de": "Minze, getrocknet"
+    },
+    "fdc-172240": {
+      "en": "Red wine vinegar",
+      "de": "Rotweinessig"
+    },
+    "fdc-172336": {
+      "en": "Canola oil",
+      "de": "Rapsöl"
+    },
+    "fdc-172442": {
+      "en": "Miso",
+      "de": "Miso"
+    },
+    "fdc-172470": {
+      "en": "Smooth peanut butter, unsalted",
+      "de": "Erdnussbutter, fein, ungesalzen"
+    },
+    "fdc-172475": {
+      "en": "Firm tofu",
+      "de": "Fester Tofu"
+    },
+    "fdc-172684": {
+      "en": "Rye bread",
+      "de": "Roggenbrot"
+    },
+    "fdc-172686": {
+      "en": "Wheat bread",
+      "de": "Weizenbrot"
+    },
+    "fdc-172883": {
+      "en": "Homemade beef stock",
+      "de": "Rinderbrühe, selbst gemacht"
+    },
+    "fdc-172884": {
+      "en": "Homemade chicken stock",
+      "de": "Hühnerbrühe, selbst gemacht"
+    },
+    "fdc-173190": {
+      "en": "Red wine",
+      "de": "Rotwein"
+    },
+    "fdc-173410": {
+      "en": "Salted butter",
+      "de": "Gesalzene Butter"
+    },
+    "fdc-173412": {
+      "en": "Clarified butter",
+      "de": "Butterschmalz"
+    },
+    "fdc-173414": {
+      "en": "Cheddar",
+      "de": "Cheddar"
+    },
+    "fdc-173420": {
+      "en": "Feta",
+      "de": "Feta"
+    },
+    "fdc-173468": {
+      "en": "Salt",
+      "de": "Salz"
+    },
+    "fdc-173469": {
+      "en": "Apple cider vinegar",
+      "de": "Apfelessig"
+    },
+    "fdc-173470": {
+      "en": "Fresh thyme",
+      "de": "Thymian, frisch"
+    },
+    "fdc-173471": {
+      "en": "Vanilla extract",
+      "de": "Vanilleextrakt"
+    },
+    "fdc-173473": {
+      "en": "Fresh rosemary",
+      "de": "Rosmarin, frisch"
+    },
+    "fdc-173475": {
+      "en": "Fresh mint",
+      "de": "Minze, frisch"
+    },
+    "fdc-173627": {
+      "en": "Chicken thighs, skinless, boneless",
+      "de": "Hähnchenschenkel ohne Haut und Knochen"
+    },
+    "fdc-173647": {
+      "en": "Water",
+      "de": "Wasser"
+    },
+    "fdc-173686": {
+      "en": "Wild Atlantic salmon",
+      "de": "Atlantiklachs, wild"
+    },
+    "fdc-173756": {
+      "en": "Chickpeas",
+      "de": "Kichererbsen"
+    },
+    "fdc-173817": {
+      "en": "Veal",
+      "de": "Kalbfleisch"
+    },
+    "fdc-174036": {
+      "en": "Ground beef, 80% lean",
+      "de": "Rinderhackfleisch, 20 % Fett"
+    },
+    "fdc-174210": {
+      "en": "Shrimp",
+      "de": "Garnelen"
+    },
+    "fdc-174277": {
+      "en": "Soy sauce",
+      "de": "Sojasauce"
+    },
+    "fdc-174284": {
+      "en": "Red lentils",
+      "de": "Rote Linsen"
+    },
+    "fdc-174529": {
+      "en": "Oyster sauce",
+      "de": "Austernsauce"
+    },
+    "fdc-174531": {
+      "en": "Fish sauce",
+      "de": "Fischsauce"
+    },
+    "fdc-174837": {
+      "en": "White wine",
+      "de": "Weißwein"
+    },
+    "fdc-174928": {
+      "en": "Breadcrumbs",
+      "de": "Semmelbrösel"
+    },
+    "fdc-175040": {
+      "en": "Baking soda",
+      "de": "Natron"
+    },
+    "fdc-175043": {
+      "en": "Active dry yeast",
+      "de": "Trockenhefe"
+    },
+    "fdc-175116": {
+      "en": "Herring",
+      "de": "Hering"
+    },
+    "fdc-175199": {
+      "en": "Pinto beans",
+      "de": "Pintobohnen"
+    },
+    "fdc-group-apples": {
+      "en": "Apples",
+      "de": "Äpfel"
+    },
+    "fdc-group-beef": {
+      "en": "Beef",
+      "de": "Rindfleisch"
+    },
+    "fdc-group-butter": {
+      "en": "Butter",
+      "de": "Butter"
+    },
+    "fdc-group-cheese-parmesan": {
+      "en": "Parmesan",
+      "de": "Parmesan"
+    },
+    "fdc-group-cream": {
+      "en": "Cream",
+      "de": "Sahne"
+    },
+    "fdc-group-cream-fluid": {
+      "en": "Cream, fluid",
+      "de": "Sahne, flüssig"
+    },
+    "fdc-group-egg-white": {
+      "en": "Egg whites",
+      "de": "Eiweiß"
+    },
+    "fdc-group-egg-whole": {
+      "en": "Eggs",
+      "de": "Eier"
+    },
+    "fdc-group-egg-yolk": {
+      "en": "Egg yolks",
+      "de": "Eigelb"
+    },
+    "fdc-group-fat": {
+      "en": "Fat",
+      "de": "Fett"
+    },
+    "fdc-group-leavening-agents-baking-powder": {
+      "en": "Baking powder",
+      "de": "Backpulver"
+    },
+    "fdc-group-lettuce": {
+      "en": "Lettuce",
+      "de": "Salat"
+    },
+    "fdc-group-mayonnaise": {
+      "en": "Mayonnaise",
+      "de": "Mayonnaise"
+    },
+    "fdc-group-milk": {
+      "en": "Milk",
+      "de": "Milch"
+    },
+    "fdc-group-milk-buttermilk-fluid": {
+      "en": "Buttermilk",
+      "de": "Buttermilch"
+    },
+    "fdc-group-milk-whole-3-25-milkfat": {
+      "en": "Whole milk",
+      "de": "Vollmilch"
+    },
+    "fdc-group-mushrooms": {
+      "en": "Mushrooms",
+      "de": "Pilze"
+    },
+    "fdc-group-oil": {
+      "en": "Oil",
+      "de": "Öl"
+    },
+    "fdc-group-oil-sunflower": {
+      "en": "Sunflower oil",
+      "de": "Sonnenblumenöl"
+    },
+    "fdc-group-oil-vegetable": {
+      "en": "Vegetable oil",
+      "de": "Pflanzenöl"
+    },
+    "fdc-group-peas": {
+      "en": "Peas",
+      "de": "Erbsen"
+    },
+    "fdc-group-peppers-sweet": {
+      "en": "Bell peppers",
+      "de": "Paprikaschoten"
+    },
+    "fdc-group-rice": {
+      "en": "Rice",
+      "de": "Reis"
+    },
+    "fdc-group-rice-white": {
+      "en": "White rice",
+      "de": "Weißer Reis"
+    },
+    "fdc-group-rice-white-long-grain-regular": {
+      "en": "Long-grain white rice",
+      "de": "Langkornreis"
+    },
+    "fdc-group-semolina": {
+      "en": "Semolina",
+      "de": "Hartweizengrieß"
+    },
+    "fdc-group-sugars": {
+      "en": "Sugar",
+      "de": "Zucker"
+    },
+    "fdc-group-tomato-products-canned": {
+      "en": "Canned tomato products",
+      "de": "Tomatenkonserven"
+    },
+    "fdc-group-vinegar": {
+      "en": "Vinegar",
+      "de": "Essig"
+    },
+    "fdc-group-wheat-flour": {
+      "en": "Flour",
+      "de": "Mehl"
+    },
+    "fdc-group-wheat-flour-white": {
+      "en": "White flour",
+      "de": "Weizenmehl, weiß"
+    },
+    "fdc-group-wheat-flour-white-all-purpose": {
+      "en": "All-purpose flour",
+      "de": "Weizenmehl 405"
+    },
+    "fdc-group-wheat-flour-white-all-purpose-enriched": {
+      "en": "All-purpose flour, enriched",
+      "de": "Weizenmehl 405, angereichert"
+    }
+  }
+}

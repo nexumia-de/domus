@@ -581,6 +581,35 @@ Wikidata's own label):
 Many aliases are regional or historical ("Rüeblí", "Schmer", "Fettbemme");
 they are kept because a search by them is right.
 
+### Kitchen names
+
+The catalogue's names are the database's: "Oil, olive, salad or cooking",
+"Chicken, broilers or fryers, dark meat, thigh, meat only", "Beverages,
+water, tap, drinking", and German names translated word for word. In a
+recipe line they read like a database
+([pitfalls](design.md#pitfalls-of-an-interface-built-by-agents)). Since
+2026-11-24 an entry may carry `x-kitchen`, the name a cook writes, in
+English and German ("Olive oil" / "Olivenöl", "Water" / "Wasser"). It is
+the project's own, written by an AI model and read by another agent (five
+were changed), a judgement: `tools/catalogue/kitchen-names.json`, merged by
+the generator, with its SHA-256 in the envelope (`kitchenNamesDataset`).
+
+- **Shown, not renamed.** `displayName` (`src/shared/names.ts`) shows the
+  kitchen name wherever an ingredient is named, in both languages; the
+  entry's `name` and `names` stay what they are, and a search finds the
+  entry by all of them.
+- **Which entries.** Every ingredient a shipped recipe names (169 on
+  2026-11-24); a new recipe line without one fails
+  `test/kitchen-names.test.ts`. The other 609 entries show the catalogue's
+  name as before.
+- **Honest about the row.** A kitchen name does not claim another food:
+  distilled vinegar is not called rice vinegar, the yellow mustard not
+  Dijon; "Weizenmehl 405" for US all-purpose flour is the nearest German
+  flour, an assumption.
+
+Not verified: no cook read the names; the picker still lists entries by
+their catalogue name, where the long name tells rows apart.
+
 ### Own translation
 
 The 595 entries without a Wikidata name (foods 467, groups 128) have a

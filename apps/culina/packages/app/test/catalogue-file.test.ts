@@ -73,7 +73,7 @@ describe('the shipped file', () => {
       }
     }
   });
-  test('carries no field the source does not give: no roles, shelf life, season', () => {
+  test('carries no field the source does not give, but the kitchen name: no roles, shelf life, season', () => {
     const allowed = [
       'id',
       'name',
@@ -85,6 +85,8 @@ describe('the shipped file', () => {
       'x-fdc',
       'x-group',
       'x-nutrition',
+      // The project's own: the name a cook writes (kitchen-names.json), marked as such.
+      'x-kitchen',
     ];
     for (const row of shipped.ingredients) {
       expect(Object.keys(row).filter((k) => !allowed.includes(k))).toEqual([]);
@@ -153,6 +155,7 @@ describe('rows recomputed from the fixture excerpt', () => {
       delete rest.parentId;
       delete rest.yields;
       delete rest.names;
+      delete rest['x-kitchen'];
       expect(rest).toEqual(row);
     }
     const envelope = { ...shipped, ingredients: rows };

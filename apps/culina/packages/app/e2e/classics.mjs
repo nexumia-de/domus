@@ -14,8 +14,12 @@ import {
   SUB_BUTTER,
   TECHNIQUE,
 } from './classics-fixture.mjs';
+import { rowNamed, shownName } from './catalogue-helpers.mjs';
 import { nutritionSection } from './classics-nutrition.mjs';
 
+const BUTTER_NAME = shownName(rowNamed('Butter, salted'));
+const SALT_NAME = shownName(rowNamed('Salt, table'));
+const OIL_NAME = shownName(rowNamed('Oil, olive, salad or cooking'));
 const NOTE = `Technique: ${TECHNIQUE.name.en}`;
 // The first screen: Cook, the one list of every dish (docs/decisions/cook-screen.md).
 const START = 'Cook';
@@ -171,7 +175,7 @@ const flow = async (browser, origin, width) => {
   const fat = () =>
     page
       .locator('.recipe-line')
-      .filter({ hasText: 'Butter, salted' })
+      .filter({ hasText: BUTTER_NAME })
       .first()
       .locator('.recipe-amount')
       .innerText();
@@ -214,10 +218,11 @@ const flow = async (browser, origin, width) => {
     `${label}: how it was checked is one sentence; the maintainer texts are not shown`,
   );
   // Substitutes: a quiet button on a line that has some, opened under the line.
-  const instead = page.getByRole('button', { name: 'Instead of Butter, salted' });
+  const instead = page.getByRole('button', { name: `Instead of ${BUTTER_NAME}` });
   check((await instead.count()) === 1, `${label}: the butter line offers substitutes`);
   check(
-    (await page.getByRole('button', { name: 'Instead of Salt, table' }).count()) === 0,
+    (await page.getByRole('button', { name: `Instead of ${SALT_NAME}`, exact: true }).count()) ===
+      0,
     `${label}: a line without substitutes has no button`,
   );
   check(
@@ -226,9 +231,7 @@ const flow = async (browser, origin, width) => {
     `${label}: the substitutes are behind a tap`,
   );
   await instead.click();
-  const sub = page
-    .locator('.recipe-line', { hasText: 'Butter, salted' })
-    .locator('.substitute-note');
+  const sub = page.locator('.recipe-line', { hasText: BUTTER_NAME }).locator('.substitute-note');
   check(
     (await sub.count()) === 1 &&
       (await sub.isVisible()) &&
@@ -287,7 +290,7 @@ const flow = async (browser, origin, width) => {
   check((await skills(page)).length === 0, `${label}: nothing is marked as learned automatically`);
   check(
     (await page.locator('.handling-note').count()) === 1 &&
-      (await page.getByRole('heading', { name: 'Handling: Butter, salted' }).isVisible()) &&
+      (await page.getByRole('heading', { name: `Handling: ${BUTTER_NAME}` }).isVisible()) &&
       (await page.locator('.handling-note p').first().innerText()) === RULE_BUTTER.text.en,
     `${label}: the handling rule shows at the first step that uses its ingredient`,
   );
@@ -332,18 +335,16 @@ const flow = async (browser, origin, width) => {
     `${label}: the note is shown once, at the first step that uses the technique`,
   );
   check(
-    (await page.getByRole('heading', { name: 'Handling: Butter, salted' }).count()) === 0 &&
-      (await page.getByRole('heading', { name: 'Handling: Oil' }).count()) === 1 &&
+    (await page.getByRole('heading', { name: `Handling: ${BUTTER_NAME}` }).count()) === 0 &&
+      (await page.getByRole('heading', { name: `Handling: ${OIL_NAME}` }).count()) === 1 &&
       (await page.locator('.handling-note p').first().innerText()) === RULE_OIL.text.en,
     `${label}: a rule shows once; the next ingredient's rule shows at its step`,
   );
   check(
-    (await page
-      .getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' })
-      .count()) === 1,
+    (await page.getByRole('button', { name: `Instead of ${OIL_NAME}` }).count()) === 1,
     `${label}: the step's lines offer substitutes too`,
   );
-  await page.getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' }).click();
+  await page.getByRole('button', { name: `Instead of ${OIL_NAME}` }).click();
   check(
     (await page.locator('.cook-step .substitute-note').innerText()).includes('without a factor'),
     `${label}: a substitute without a factor shows only what the source says`,
@@ -500,9 +501,7 @@ const flow = async (browser, origin, width) => {
   await page.getByRole('button', { name: 'Next' }).click();
   check(
     (await page.locator('.handling-note').count()) === 0 &&
-      (await page
-        .getByRole('button', { name: 'Instead of Oil, olive, salad or cooking' })
-        .count()) === 1,
+      (await page.getByRole('button', { name: `Instead of ${OIL_NAME}` }).count()) === 1,
     `${label}: substitutes do not fade with the skill`,
   );
   await openWith(page, origin, 'settings');

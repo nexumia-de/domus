@@ -12,6 +12,9 @@ export const rowNamed = (name) => {
   return row;
 };
 
+/** The name the app shows for a row: its kitchen name when it has one, in the language, else its catalogue name. */
+export const shownName = (row, lang = 'en') => row['x-kitchen']?.[lang] ?? row.name;
+
 /** The entries above `row`, root first. */
 export const chainOf = (row) => {
   const chain = [];

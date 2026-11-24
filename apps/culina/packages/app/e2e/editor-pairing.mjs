@@ -7,7 +7,7 @@
 // and the random pick without own components shows a way on. What a cook thinks of the pairings
 // is not judged here.
 import { check, watch } from './harness.mjs';
-import { searchBox } from './catalogue-helpers.mjs';
+import { rowNamed, searchBox, shownName } from './catalogue-helpers.mjs';
 import { formReady, layout, listStore, open } from './editor-helpers.mjs';
 
 export const editorPairing = async (browser, server) => {
@@ -94,8 +94,11 @@ export const editorPairing = async (browser, server) => {
       n.trim(),
     );
     check(
-      ['Basil', 'Garlic', 'Oil, olive'].every((n) => provenNames.some((p) => p.startsWith(n))) &&
-        provenNames.length <= 8,
+      [
+        shownName(rowNamed('Basil, fresh')),
+        shownName(rowNamed('Garlic')),
+        shownName(rowNamed('Oil, olive, salad or cooking')),
+      ].every((n) => provenNames.some((p) => p.startsWith(n))) && provenNames.length <= 8,
       `${label}: proven together offers basil, garlic and olive oil with tomatoes (${provenNames.join(', ')})`,
     );
     check(

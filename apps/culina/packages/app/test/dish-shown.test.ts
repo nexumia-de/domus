@@ -17,13 +17,18 @@ import { slotRows } from '../src/dishes/slots';
 import { buildNotebook } from '../src/notebook/build';
 import type { ComponentRecord, DishRecord, IngredientRecord } from '../src/records';
 import { CLASSIC_DIR, jsonFiles } from './content-texts';
+import { displayName } from '../src/shared/names';
 
 const catalogue = JSON.parse(
   readFileSync(new URL('../data/ingredient-catalogue.json', import.meta.url), 'utf8'),
 ) as { ingredients: IngredientRecord[] };
 const byId = new Map(catalogue.ingredients.map((r) => [r.id, r]));
 const lookup: Lookup = (id) => byId.get(id);
-const nameOf = (id: string): string => (byId.get(id)?.name as string | undefined) ?? id;
+// The name as shown: the kitchen name where the catalogue has one ("Ground beef, 80% lean").
+const nameOf = (id: string): string => {
+  const record = byId.get(id);
+  return record === undefined ? id : displayName(record, 'en');
+};
 
 const technique = (id: string, en: string): Technique => ({
   id,

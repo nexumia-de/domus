@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { store as storeCookFixture } from './cook-fixture.mjs';
 import { content as classicsContent, PAN } from './classics-fixture.mjs';
 import { buildApp, distDir, launch } from './harness.mjs';
+import { rowNamed, shownName } from './catalogue-helpers.mjs';
 import { seed } from './seed.mjs';
 import { serve } from './serve.mjs';
 import { ANSWER as AI_ANSWER, paste } from './ai-import-flow.mjs';
@@ -362,7 +363,7 @@ const shots = [
 const CLASSICS_QUERY = '&e2e-store&e2e-content';
 const noteOpen = (page) => page.locator('.technique-more summary').click();
 const insteadOpen = (page) =>
-  page.getByRole('button', { name: 'Instead of Butter, salted' }).click();
+  page.getByRole('button', { name: `Instead of ${shownName(rowNamed('Butter, salted'))}` }).click();
 const secondStep = async (page) => {
   await page.getByRole('button', { name: 'Next' }).click();
   await page.locator('.handling-note summary').click();

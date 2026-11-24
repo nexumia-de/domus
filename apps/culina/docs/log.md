@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-24 (kitchen names)
+
+- **Creation**: [kitchen names](ingredient-catalogue.md#kitchen-names): the 169 catalogue entries the shipped recipes name show the name a cook writes ("Olive oil", "Wasser") in place of the database's ("Oil, olive, salad or cooking", "Beverages, water, tap, drinking"), in English and German; written by an AI model, read by another agent. One row of the [pitfalls table](design.md#pitfalls-of-an-interface-built-by-agents) is answered for the recipes.
+
 ## 2026-11-24 (water is an ingredient)
 
 - **Update**: tap water is a catalogue ingredient (USDA FDC 173647) and 74 water lines of the shipped recipes point at it, so that a recipe with water can be kept in the notebook: 75 of 124 could not, 21 still cannot (a line the catalogue lacks). The finder does not ask for it (role water), the characters do not count it, the nutrition counts 0 kcal ([ingredient catalogue](ingredient-catalogue.md#named-foods), [dish characters](dish-characters.md)).
