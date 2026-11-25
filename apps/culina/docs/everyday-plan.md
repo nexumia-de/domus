@@ -45,11 +45,70 @@ idea[^owner]:
 > Perhaps something like the spices I have, because one really always
 > has those and they are particular. Rice and so on, perhaps.
 
-This is the purpose of the [building kit decision](decisions/building-kit.md)
+After the first version of this plan the owner named the goal itself[^owner]:
+
+> The goal is to have an app for learning to cook that one can also use
+> daily to decide what one wants to cook. So both for beginners, with
+> hints how to cook, and for experts who only look for inspiration and
+> perhaps want to convert amounts.
+
+What this means for the plan is under
+[learning is the purpose](#learning-is-the-purpose-the-evening-is-its-use).
+
+The evening above is the purpose of the [building kit decision](decisions/building-kit.md)
 (open the app and find quickly what to cook; no idea, and not knowing
 what goes together), said as one evening's course of action. It adds
 two things that decision does not hold: the kit is filled by
 **ingredients**, not by recipes, and there is **no stock to keep**.
+
+## Learning is the purpose, the evening is its use
+
+The agent's reading of the owner's second statement, for review.
+
+- **One app, one evening, more or less help.** A beginner and an expert
+  open the same Today screen and click the same board together. What
+  differs is how much the app says while they cook. There is no
+  beginner mode and no expert mode to choose.
+- **The help follows what is marked as learned**, as the skills already
+  work: a technique note, a handling rule, a pattern's method and a
+  tasting row are each shown in full until the cook marks them as
+  known, then short or not at all. A beginner so becomes an expert in
+  the app one skill at a time, and the app "proposes and never
+  switches" ([helper](decisions/mentor.md), point 9). One setting
+  beside it, for the cook who arrives as an expert: show every hint,
+  only new ones, or none.
+- **The four stages of the helper decision come back as places in the
+  app**, no longer as a goal of being free of it:
+
+  | Stage      | Where                                                      | Who it serves       |
+  | ---------- | ---------------------------------------------------------- | ------------------- |
+  | Follow     | a shipped recipe, step by step, with every amount and note | the beginner        |
+  | Understand | a pattern with its method, the notes at its lines          | the beginner, later |
+  | Vary       | the board: swap, see what fits, taste and correct, keep    | everyone            |
+  | Free       | proposals as one line each, pairings, ratios and scaling   | the expert          |
+
+- **The recipes are therefore lessons, not only a shelf.** A beginner
+  who has never made a pan sauce is sent from the pattern to the recipe
+  that teaches it ("cook this once by the recipe"); the 135 shipped
+  recipes and the frames keep that work.
+- **Learning can steer the proposals.** A proposal may carry one thing
+  the cook has not marked as learned ("new tonight: deglazing"), never
+  more than one, and the cook can ask for proposals without anything
+  new. Agent's proposal; an owner question below.
+- **What the expert needs exists**: the ratio cards, baker's
+  percentages and scaling by weight or persons ([roadmap](roadmap.md),
+  built goals 1 and 2), and the notebook. For them the plan adds the
+  proposals and the pairings on a board, and takes the hints away.
+- **Two measures instead of one**: how fast the open app leads to a
+  dish the cook then cooks (the [building kit](decisions/building-kit.md)),
+  and that the cook needs fewer hints over time. The second is seen in
+  the skills marked as learned; nothing else is recorded and nothing
+  leaves the device.
+
+This is the fourth statement of purpose in the records (notebook for
+chefs, helper that teaches, recipe app, building kit). It does not
+replace the last two but joins them: the helper's teaching is the
+purpose again, and the building kit's evening is how it is used daily.
 
 ## Why the app reads as a recipe app today
 
@@ -217,7 +276,9 @@ Not every catalogue entry is offered on a board: a short list per role
   finder and the export as it should.
 - **The engine stays pure** and gets three functions with vectors:
   - `proposals`: from pantry, tonight's ingredients, patterns,
-    directions and the notebook's days, an ordered list of boards. It
+    directions, the notebook's days and the skills marked as learned,
+    an ordered list of boards, each naming at most one skill that is
+    new to the cook. It
     is a deterministic rule, no random draw without a seed: tonight's
     ingredients are placed first, then each open place takes the offer
     that fits best, and the three proposals differ in pattern or
@@ -304,7 +365,9 @@ in English and 1280 px in German, as the app's other screens have.
    a phone; the stages after it are worth building only if it holds.
 5. **Cook, short, and Taste**, with the technique notes at the method
    lines and the handling rules of the board's ingredients
-   ([the skills](#the-skills)).
+   ([the skills](#the-skills)), each in full, short or hidden by what is
+   marked as learned and by the one setting for hints; from a pattern's
+   line the way to the recipe that teaches it.
 6. **Keep and come back.** The board as a notebook dish with the day; a
    kept board among the proposals; "Not cooked for long" on them.
 7. **The shopping list** for a board: the fresh things not tapped
@@ -369,9 +432,10 @@ Nothing is deleted by this plan.
 - **Kept as they are**: the notebook with versions and tasting notes,
   import and export, ratios and baker's percentages, skills, the
   hand-over, the catalogue, the pairing data, the characters.
-- **Recede behind Today**: the 135 shipped recipes and 13 frames, as
-  the book for a dish one wants to make properly and for the bases
-  where the ratio matters.
+- **Recede behind Today, and stay as lessons**: the 135 shipped recipes
+  and 13 frames, as the place where a beginner follows a dish step by
+  step, as the book for a dish one wants to make properly, and for the
+  bases where the ratio matters.
 - **Lose their work**: the stock's detail fields in Culina's screens;
   the finder's ranking by urgency.
 - **Stop for now**: more shipped recipes, more frames, alternatives for
@@ -432,3 +496,11 @@ Each with what the agent would build if the owner says nothing.
    better than it fitted a recipe list.
 8. **Which patterns and directions are missing or wrong** in the drafts
    above: the owner's own everyday cooking is the measure.
+9. **The goal in one sentence** for `AGENTS.md` and the README: "an app
+   for learning to cook that is used daily to decide what to cook, for
+   the beginner with hints and for the expert who looks for ideas and
+   converts amounts"? Agent: yes, with the building kit as how.
+10. **One new skill in a proposal**, at most, with a way to ask for
+    nothing new? Agent: yes.
+11. **The setting for hints** (all, only new, none) beside "learned" per
+    skill? Agent: yes, default "only new".
