@@ -370,6 +370,9 @@ in English and 1280 px in German, as the app's other screens have.
    line the way to the recipe that teaches it.
 6. **Keep and come back.** The board as a notebook dish with the day; a
    kept board among the proposals; "Not cooked for long" on them.
+   Then **6a**, the steps written from the board with the cook-time
+   table, and **6b**, schema.org `Recipe` out and in for Mealie and
+   Tandoor ([a recipe written from the board](#a-recipe-written-from-the-board)).
 7. **The shopping list** for a board: the fresh things not tapped
    tonight and the pantry things not ticked, through the existing
    hand-over.
@@ -424,6 +427,53 @@ Nothing of the skill data or of "learned" changes; the work is in
 stage 5, where the short cook view reads the notes, and in stage 1,
 where the method lines name their techniques and the two missing notes
 are written.
+
+## A recipe written from the board
+
+Asked by the owner on the same day[^owner]: recipes could be made from
+the ingredients and the skills, so that someone who wants a
+step-by-step gets a recipe with a description; it "is not to be the
+focus", and perhaps it can be exported for Mealie or Tandoor.
+
+- **It follows from the plan almost for free.** A kept board is a dish
+  record with steps. The steps are written by a rule from what the
+  board holds: the pattern's method lines, each with the names and
+  amounts of the ingredients in its places, the technique of the line,
+  and the handling rules of those ingredients as sentences of the step.
+  The step-by-step cook view that exists then shows it. No language
+  model writes anything; the same board gives the same recipe.
+- **One table more is needed for it to be a usable recipe: how long a
+  thing cooks.** A method line "add the vegetables" is right only when
+  the carrot goes in before the courgette. Each everyday ingredient
+  gets a class per way of cooking (long, medium, short, at the end),
+  and the rule orders and splits the line by it. A judgement table of
+  the project, marked so, for the 20 to 40 things per role that the
+  boards offer first.
+- **What it will read like**: plain and alike from dish to dish
+  ("Cut the carrot and the pepper. Heat 2 tbsp of oil in a pan. Sear
+  260 g of chicken …"), correct in order and amounts, without the
+  particulars a written recipe has (how brown, what it should smell
+  like). It is marked as put together by the app from a pattern, that
+  nobody cooked it as written. For the beginner this is the "follow"
+  stage on any board, not only on the 135 shipped recipes.
+- **Export.** A kept board exports as every dish does: the own JSON and
+  Cooklang ([exchange](exchange.md)). For Mealie and Tandoor the
+  candidate is one more writer, a schema.org `Recipe` as JSON-LD (name,
+  yield, ingredient lines as text, instructions as steps), which
+  Nextcloud Cookbook stores ([existing tools](existing-tools.md)) and
+  which, as the agent recalls and has not checked, both Mealie and
+  Tandoor read. Before it is built, the import pages of both are read
+  at the source and a file is tried in each; trying needs a running
+  Mealie and Tandoor, which no session has
+  ([owner's list](../../../docs/owner-checks.md)).
+- **Import** from them is the same format read: ingredient lines come
+  as free text and go through the name matching the import already has
+  ([exchange](exchange.md)); what does not match stays a free name. A
+  recipe imported so is a notebook dish, not a board: it has no
+  pattern.
+- **Where it stands in the order**: after the board is judged, as stage
+  6a (the written steps and the cook-time table) and 6b (the schema.org
+  writer and reader). It is not part of the first deliverable.
 
 ## What recedes, and what is kept
 
@@ -504,3 +554,9 @@ Each with what the agent would build if the owner says nothing.
     nothing new? Agent: yes.
 11. **The setting for hints** (all, only new, none) beside "learned" per
     skill? Agent: yes, default "only new".
+12. **A recipe written from the board** by a rule, plain in wording and
+    marked as the app's own: wanted, after stage 6? Agent: yes; it is
+    the beginner's step-by-step on every board.
+13. **Mealie and Tandoor**: is one of them in use in the household, so
+    that an export can be tried there? Without one it is built to the
+    format and marked as not tried.
