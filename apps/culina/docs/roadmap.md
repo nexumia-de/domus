@@ -52,6 +52,13 @@ app and finds quickly what they want to cook or can cook.
 
 # Next, in order
 
+**Note of 2026-11-25:** the owner said the app reads as an ordinary
+recipe app and described the evening they want (click a dish together
+from ingredients, see how well it fits, taste, no stock to keep). The
+[everyday plan](everyday-plan.md) proposes the way there and would put
+its stages before goal 7 and stop goal 7 meanwhile; it is a proposal,
+and the order below stands until the owner decides.
+
 7. **The building kit.** Frames with slots and their fillings (tacos,
    burrito, pizza, bowl, curry, risotto, stir-fry, soup) and more bases
    (sauces, doughs), so that a dish is put together instead of picked
