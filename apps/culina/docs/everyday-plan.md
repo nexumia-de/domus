@@ -302,7 +302,9 @@ in English and 1280 px in German, as the app's other screens have.
 4. **Today and the board.** The first screen, the swap, the fit in
    words. This is the stage after which the owner can judge the idea on
    a phone; the stages after it are worth building only if it holds.
-5. **Cook, short, and Taste.**
+5. **Cook, short, and Taste**, with the technique notes at the method
+   lines and the handling rules of the board's ingredients
+   ([the skills](#the-skills)).
 6. **Keep and come back.** The board as a notebook dish with the day; a
    kept board among the proposals; "Not cooked for long" on them.
 7. **The shopping list** for a board: the fresh things not tapped
@@ -321,6 +323,44 @@ in English and 1280 px in German, as the app's other screens have.
 Stages 1 to 4 are the first deliverable. A rough size, a judgement: 1
 and 2 are a day of agent work each with their reviews, 3 half of one,
 4 two; 5 to 8 a day each; 9 depends on what the native app is to hold.
+
+## The skills
+
+Asked by the owner after the plan was written ("and what about the
+cooking skills?"); the first version said only that they are kept.
+
+The skills are 41 technique notes, 28 handling rules per ingredient and
+9 substitutes, each with its source and level
+(`packages/engine/data/`)[^counts]. Today a note shows at the step of a
+recipe that names its technique, until the cook marks the skill as
+learned. Without recipes on the first screen they would be seen less,
+so the plan gives each kind a place in the evening:
+
+- **Technique notes hang on a pattern's method lines.** A line names
+  its technique (sear, sweat, simmer, cook pasta, cook rice, saute,
+  deglaze, reduce, rest meat, knife cuts all exist), and the short cook
+  view shows the note at that line until the skill is learned, as the
+  step-by-step view does. Missing for the draft patterns: roasting on a
+  tray and stir-frying; `bake` speaks of batters. A new note keeps the
+  rule: a named paper or textbook, or marked as a judgement.
+- **Handling rules follow the ingredient on the board.** They are
+  written per ingredient (potatoes into cold water, garlic cut and
+  cooked, spices early in fat, pasta water salted, spinach late), so a
+  board of ingredients shows them without any recipe. This suits them
+  better than the recipes did.
+- **Substitutes become offers of the swap**, with their effect.
+- **A pattern is itself an ability.** "I can cook a pan dish" is what
+  everyday cooking is learned as. A pattern can be marked as learned
+  like a skill; its method then shows as one line. Agent's proposal,
+  for the owner.
+- **The tasting checklist is the skill the owner asked for by name**
+  ("taste and check"). It fades the same way: a row marked as known is
+  shown short.
+
+Nothing of the skill data or of "learned" changes; the work is in
+stage 5, where the short cook view reads the notes, and in stage 1,
+where the method lines name their techniques and the two missing notes
+are written.
 
 ## What recedes, and what is kept
 
