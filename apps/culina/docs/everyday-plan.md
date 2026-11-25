@@ -24,9 +24,11 @@ sources:
 
 # Everyday cooking, the plan to complete Culina
 
-**Status: a proposal of 2026-11-25, not decided and not built.** The
-quotations under "What the owner said" are the owner's; everything else
-is the agent's, for the owner's review. The tables under "The data" are
+**Status: a plan of 2026-11-25, its questions answered by the owner the
+same day ([answers](#answered-by-the-owner-on-2026-11-25)); nothing is
+built, and no decision record is written yet (stage 0).** The
+quotations under "What the owner said" and the answers are the owner's;
+everything else is the agent's, for the owner's review. The tables under "The data" are
 a first draft written by an AI model from general cooking knowledge,
 from no source and checked by no cook.
 
@@ -91,10 +93,10 @@ The agent's reading of the owner's second statement, for review.
   who has never made a pan sauce is sent from the pattern to the recipe
   that teaches it ("cook this once by the recipe"); the 135 shipped
   recipes and the frames keep that work.
-- **Learning can steer the proposals.** A proposal may carry one thing
-  the cook has not marked as learned ("new tonight: deglazing"), never
-  more than one, and the cook can ask for proposals without anything
-  new. Agent's proposal; an owner question below.
+- **Learning does not steer the proposals** (owner, answer 10). A
+  proposal says how many techniques in it are new to the cook ("2 new
+  techniques"), and from three on that this is much at once; the choice
+  and the order of proposals follow ingredients and direction only.
 - **What the expert needs exists**: the ratio cards, baker's
   percentages and scaling by weight or persons ([roadmap](roadmap.md),
   built goals 1 and 2), and the notebook. For them the plan adds the
@@ -132,8 +134,10 @@ purpose again, and the building kit's evening is how it is used daily.
 
 1. **Open.** The first screen is Today. It shows three proposals, each a
    pattern (pan, tray, pasta with a sauce) filled with ingredients and a
-   direction (Italian, Mexican), and a row "What is there today?" to tap
-   one to three ingredients.
+   direction (Italian, Mexican), and one optional field "with …" in
+   which the cook may name an ingredient or a direction ("with chicken",
+   "Mexican") that all three then hold; left empty, three proposals
+   come all the same.
 2. **Click together.** A proposal opens as a small board: the places of
    the pattern, each with its ingredient, each to be swapped by a tap.
    The offers for a place are ordered by how well they fit what is
@@ -275,12 +279,12 @@ Not every catalogue entry is offered on a board: a short list per role
   that a dish of ingredient slots alone goes through the editor, the
   finder and the export as it should.
 - **The engine stays pure** and gets three functions with vectors:
-  - `proposals`: from pantry, tonight's ingredients, patterns,
-    directions, the notebook's days and the skills marked as learned,
-    an ordered list of boards, each naming at most one skill that is
-    new to the cook. It
-    is a deterministic rule, no random draw without a seed: tonight's
-    ingredients are placed first, then each open place takes the offer
+  - `proposals`: from pantry, the day's wish (an ingredient or a
+    direction, or none), patterns, directions, the notebook's days and
+    the skills marked as learned, an ordered list of boards, each with
+    the count of techniques new to the cook, which does not order them.
+    It is a deterministic rule, no random draw without a seed: the
+    wished ingredient is placed first, then each open place takes the offer
     that fits best, and the three proposals differ in pattern or
     direction.
   - `boardFit`: what a board has and lacks by role (structure), how
@@ -288,13 +292,17 @@ Not every catalogue entry is offered on a board: a short list per role
     ingredients. It returns reasons, not one number; the screen says
     them in words.
   - `offersFor`: the ingredients for one place, ordered by fit with the
-    board, pantry and tonight's first.
+    board, the pantry's first, each with its level of shared aroma
+    with the board (much, some, little).
 - **The order of weight** in a fit, the agent's judgement: structure
   first (a board without a main thing or without acid says so), then
   the direction, then the own affinities, last the shared flavour
   molecules. FlavorDB's hypothesis describes Western cuisines and not
   East Asian ones ([decision](decisions/flavordb.md), point 4), so it
-  may order offers but never calls a board good or bad.
+  may order offers but never calls a board good or bad. The owner
+  wants it seen as a rating (answer 1): each offer shows its level, and
+  the board carries it as a line of its own beside what structure and
+  direction say.
 
 ## The pantry instead of a stock
 
@@ -308,17 +316,17 @@ Not every catalogue entry is offered on a board: a short list per role
   and a second device see the same and nothing is migrated. Culina
   stops asking for amount, state, storage and dates; records that carry
   them keep them untouched.
-- **Fresh things are not kept.** What the cook taps under "What is
-  there today?" holds for the visit and is stored nowhere (to decide:
-  whether it should last until midnight on the device).
-- **What goes**: "Only with what I have" and "Use up first" lose their
-  ground for fresh things. For the recipes they stay as a filter by the
-  pantry alone, or go; an owner question below.
+- **Fresh things are not kept.** The one wish on Today ("with
+  chicken") holds until midnight on the device, is never synced and is
+  no stock.
+- **What goes**: "Only with what I have" and "Use up first" are removed
+  from the recipe list (owner, answer 5); without fresh things in the
+  stock nearly every recipe lacks something.
 
 ## The screens
 
 - **Today** (the new first screen, in place of the dish list as the
-  opening): tonight's row, three proposals as cards (pattern,
+  opening): the optional wish, three proposals as cards (pattern,
   direction, the ingredients, what must be bought), "Something else"
   for three more, "Start empty" for a board from a chosen pattern.
 - **The board**: places top to bottom, a tap opens the offers of a
@@ -354,7 +362,7 @@ in English and 1280 px in German, as the app's other screens have.
    every direction's seasonings have a catalogue entry (a missing one is
    added from the USDA data, as the rule says).
 2. **The engine.** `proposals`, `boardFit`, `offersFor` with vectors:
-   the same input gives the same boards; tonight's ingredient is on
+   the same input gives the same boards; a wished ingredient or direction is on
    every proposal; an empty pantry still gives three; a board without
    acid says so; East Asian boards are not ranked down by molecules.
 3. **The pantry.** The grouped list in place of the Stock screen, the
@@ -373,8 +381,7 @@ in English and 1280 px in German, as the app's other screens have.
    Then **6a**, the steps written from the board with the cook-time
    table, and **6b**, schema.org `Recipe` out and in for Mealie and
    Tandoor ([a recipe written from the board](#a-recipe-written-from-the-board)).
-7. **The shopping list** for a board: the fresh things not tapped
-   tonight and the pantry things not ticked, through the existing
+7. **The shopping list** for a board: the fresh things and the pantry things not ticked, through the existing
    hand-over.
 8. **The recipes recede.** The dish list becomes Recipes behind Today;
    the manifest's description, the store texts and the German strings
@@ -524,9 +531,39 @@ Nothing is deleted by this plan.
 - That a dish of ingredient slots alone passes every existing screen;
   to be checked at stage 1.
 
+## Answered by the owner on 2026-11-25
+
+Asked the questions below one by one in the same session, the owner
+chose[^owner]; the number is the question's. Where the body of this
+plan said otherwise, it was changed with this section.
+
+1. **The own tables: yes**, and FlavorDB as a rating of how well things
+   fit. Asked how visible: **a level on each offer** (shares much, some,
+   little aroma with the board), FlavorDB as a line of its own on the
+   board, the verdict on the whole from structure and direction.
+2. **Three proposals** on Today, "Start empty" beside them.
+3. **No row of things to tap** ("needlessly complex"), but naming a
+   direction is wanted: **one optional field** for an ingredient or a
+   direction, held until midnight on the device.
+4. **The pantry in the shared `stock` collection: yes.**
+5. **"Only with what I have" and "Use up first": removed.**
+6. **Roadmap goal 7 rests** until Today and the board are judged.
+7. **The visible name stays** Cook's Workbench.
+8. Open: which patterns and directions are missing or wrong.
+9. **The goal sentence: yes**, as worded in question 9.
+10. **Learning does not steer the proposals**; each proposal **shows
+    how many techniques are new** to the cook, with a word from three
+    on.
+11. **The setting for hints: yes**, default "only new".
+12. **The recipe written from the board and the export: both**, after
+    stage 6.
+13. **Tandoor is in use**; an export can be tried there by the owner.
+    Mealie is not; its import stays not tried.
+
 ## Questions for the owner
 
-Each with what the agent would build if the owner says nothing.
+As they were asked; answered above except question 8. Each with what
+the agent would have built had the owner said nothing.
 
 1. **The own tables** for patterns, directions and tasting, marked as
    judgements: agreed? (Without them stages 1 to 5 cannot be built.)
