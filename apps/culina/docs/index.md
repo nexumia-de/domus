@@ -57,6 +57,7 @@ links. Change history is in [log.md](log.md).
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Workbench since 2026-11-23 (Cook's Notebook before).
 - [After Mixtura](decisions/after-mixtura.md) - Culina is the second app on the engine Mixtura builds first, as a PWA with own local data.
 - [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
+- [The daily helper](decisions/daily-helper.md) - Decided 2026-11-27: inspiration and what fits while cooking; "Cooking now" with fit in bands and the reason, stage and taste-effect tables written by an AI model and marked, today's ideas, favourites, offers by role, the native app; issues 18 to 26.
 - [Prompt import](decisions/ai-prompt-import.md) - Decided 2026-11-22: a prompt for the user's own language model writes recipes in a small JSON import format the user pastes; Culina checks and matches with confirmation, runs no model itself; Cooklang sections become components of a dish.
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.
 - [Recipe book](decisions/recipe-book.md) - Decided: the user's own recipe book with versions and a finder; no scraping, meal plans or shopping list (planned sister app emptio); stock ticked by default; English canonical, German supported, language follows the device.
