@@ -43,6 +43,8 @@ import type { StockFields } from '../../store';
 import { changeStock, stockState, withPresent } from '../../stock/state';
 import { say } from '../../shell/frame';
 import { shareParts } from './share';
+import { ratingCard } from '../../components/rating-card';
+import { myRating, rate, ratingsState } from '../../ratings/state';
 
 function tag(vm: TagVM): HTMLElement {
   const classes = `tag${vm.strong ? ' tag--strong' : ''}${vm.href ? ' tag--link' : ''}`;
@@ -59,6 +61,7 @@ function body(
   stock: { vm: StockPanelVM | undefined; actions: StockPanelActions },
   shelf: { vm: ShelfVM | undefined; actions: ShelfActions },
   variants: ReturnType<typeof variantVMs> | undefined,
+  rating: HTMLElement | null = null,
 ): HTMLElement {
   return h(
     'div',
@@ -80,6 +83,7 @@ function body(
           specLines(vm.lines, actions),
           specMeta(vm.meta),
         ),
+        !vm.swap && rating,
         !vm.swap && shelfCard(shelf.vm, shelf.actions),
         !vm.swap && variantCard(variants),
         !vm.swap && stockPanel(stock.vm, stock.actions),
@@ -250,6 +254,15 @@ export const screens: Screen[] = [
                 ),
             }
           : {};
+      const ratings = ratingsState(context);
+      const ratingVM =
+        ratings.kind === 'ready'
+          ? {
+              current: myRating(ratings, drink.spec.lineageId),
+              canRate: ratings.deviceOnly || ratings.personId !== undefined,
+              spaceId: ratings.spaceId,
+            }
+          : undefined;
       const page = body(
         vm,
         actions,
@@ -271,6 +284,9 @@ export const screens: Screen[] = [
                 thresholdsFor(context.state.alcoholWithout, context.state.alcoholLow),
               ).class,
             ),
+        ratingCard(ratingVM, (next) => {
+          void rate(context, drink.spec.lineageId, next).catch(() => say(strings.ratings.failed));
+        }),
       );
       const sharing = shareParts(
         context,

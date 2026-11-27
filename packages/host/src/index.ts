@@ -94,6 +94,18 @@ export {
   type CollectionSyncOptions,
   type SyncStatus,
 } from './collection-sync';
+export {
+  addPerson,
+  cleanPersonName,
+  devicePerson,
+  ensureDevicePerson,
+  personsOf,
+  readPersons,
+  renamePerson,
+  setDevicePerson,
+  type Person,
+  type PersonDeps,
+} from './persons';
 export { pickSpace, viewOf, type SpaceView } from './space-choice';
 export {
   SPACE_COLLECTION,

@@ -162,6 +162,18 @@ export const strings = {
     },
     nothingChanged: 'nothing',
   },
+  ratings: {
+    title: 'Your rating',
+    words: { favourite: 'Favourite', good: 'Good', 'not-for-me': 'Not for me' },
+    /** The person made in a space on this device only, with the first rating. */
+    me: 'Me',
+    choosePerson: 'Ratings are personal. Choose who uses this device first.',
+    openHousehold: 'Open Household',
+    failed: 'The rating could not be saved.',
+    together: 'All of us like it',
+    unrated: 'Not rated',
+    chip: (word: string) => `Rating: ${word}`,
+  },
   spaces: {
     /** Name of the space made on a device that has none; it is on this device only. */
     home: 'Home',
@@ -244,6 +256,7 @@ export const strings = {
       strength: 'Strength',
       alcohol: 'Alcohol',
       status: 'Status',
+      rating: 'Rating',
     },
     statusChip: (word: string) => `Status: ${word}`,
     statusHint: 'Retired drinks are hidden unless you choose Retired.',

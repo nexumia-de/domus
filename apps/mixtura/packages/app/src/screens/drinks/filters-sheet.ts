@@ -10,6 +10,7 @@ import type { Derived } from '../../stock/derived';
 import { strings } from '../../strings';
 import {
   activeFilters,
+  RATING_VALUES,
   STATUS_VALUES,
   withFilter,
   withoutFilters,
@@ -31,6 +32,14 @@ interface Choice {
   id: string;
   label: string;
 }
+
+/** The word of a rating filter value, for the sheet and the chip. */
+export const ratingWord = (value: string): string =>
+  value === 'together'
+    ? strings.ratings.together
+    : value === 'unrated'
+      ? strings.ratings.unrated
+      : (strings.ratings.words[value as keyof typeof strings.ratings.words] ?? value);
 
 function groups(
   model: BrowseModel,
@@ -71,6 +80,11 @@ function groups(
         ),
       })),
       hint: strings.browse.statusHint,
+    },
+    {
+      key: 'rating',
+      title: strings.browse.groups.rating,
+      choices: RATING_VALUES.map((id) => ({ id, label: ratingWord(id) })),
     },
     {
       key: 'alcohol',

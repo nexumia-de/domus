@@ -11,6 +11,7 @@ links. Change history is in [log.md](log.md).
 # Plan
 
 - [Roadmap](roadmap.md) - Goals and their order from the engine to the installed app; work items are GitHub issues.
+- [Ratings](ratings.md) - A rating per drink and person in the space, the rating card and the rating filter.
 
 # Research
 
@@ -35,6 +36,7 @@ links. Change history is in [log.md](log.md).
 # Decisions
 
 - [App name](decisions/app-name.md) - Code name Mixtura, visible name Drink Builder.
+- [Decision: ratings per person](decisions/ratings.md) - One rating per drink and person in the space; preferred version and tasting notes instead of version ratings.
 - [Two apps, one engine](decisions/two-apps-one-engine.md) - Bar and kitchen are separate apps; shared code moves out when the second app needs it; the bar app comes first.
 - [Stored unit versus display unit](decisions/units-and-display.md) - Amounts stored as entered, computed in ml and g, display system a setting; default metric proposed, needs owner decision.
 - [Counted units, open amounts and the glass volume](decisions/counted-units.md) - Counted units are units without a table volume; volume only as data (`unitVolumes`, `topMl`), otherwise a line is listed as not counted; no glass volume; batches round counts up.

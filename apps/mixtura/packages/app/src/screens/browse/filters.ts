@@ -9,6 +9,7 @@ import { alcoholOf } from './alcohol';
 import type { BrowseModel, Drink } from './model';
 import { normalise } from './normalise';
 import { bandOf, inBand } from './strength';
+import { RATINGS, type Rating } from '../../ratings/source';
 
 export interface Filters {
   q: string;
@@ -22,11 +23,14 @@ export interface Filters {
   alcohol?: string;
   /** `draft`, `on-menu` or `retired`: the status the user set; retired drinks show only under this filter. */
   status?: string;
+  /** A rating of this device's person, `unrated`, or `together` (docs/ratings.md#filter). */
+  rating?: string;
 }
 
 export const FILTER_KEYS = [
   'makeable',
   'status',
+  'rating',
   'alcohol',
   'template',
   'method',
@@ -36,6 +40,17 @@ export const FILTER_KEYS = [
 export const STATUS_VALUES = ['draft', 'on-menu', 'retired'] as const;
 export const ALCOHOL_VALUES = ['none', 'low'] as const;
 export const MAKEABLE_VALUES = ['yes', 'substitute', 'one'] as const;
+export const RATING_VALUES = [...RATINGS, 'unrated', 'together'] as const;
+
+/** What the ratings say of a drink, by lineage id: this device's rating, and whether all like it. */
+export type RatedOf = (lineageId: string) => { mine: Rating | undefined; together: boolean };
+
+function matchesRating(value: string, rated: RatedOf | undefined, lineageId: string): boolean {
+  const r = rated?.(lineageId);
+  if (value === 'together') return r?.together === true;
+  if (value === 'unrated') return r?.mine === undefined;
+  return r?.mine === value;
+}
 
 /** What the stock allows for each drink, by spec id; absent while nothing is in stock. */
 export type AvailabilityMap = ReadonlyMap<string, Availability>;
@@ -93,6 +108,7 @@ export function matchesFilters(
   filters: Filters,
   availability?: AvailabilityMap,
   thresholds: AlcoholThresholds = ALCOHOL_THRESHOLDS,
+  rated?: RatedOf,
 ): boolean {
   const { spec } = drink;
   if (filters.q && !matchesSearch(drink, filters.q)) return false;
@@ -101,6 +117,7 @@ export function matchesFilters(
     if (alcoholOf(model, drink, thresholds).class !== filters.alcohol) return false;
   }
   if (filters.status && spec.status !== filters.status) return false;
+  if (filters.rating && !matchesRating(filters.rating, rated, spec.lineageId)) return false;
   if (filters.makeable) {
     const wanted = KIND[filters.makeable as keyof typeof KIND];
     if (!wanted || availability?.get(spec.id)?.kind !== wanted) return false;
@@ -127,8 +144,11 @@ export function applyFilters(
   from: readonly Drink[] = poolOf(model, filters),
   availability?: AvailabilityMap,
   thresholds: AlcoholThresholds = ALCOHOL_THRESHOLDS,
+  rated?: RatedOf,
 ): Drink[] {
-  return from.filter((drink) => matchesFilters(model, drink, filters, availability, thresholds));
+  return from.filter((drink) =>
+    matchesFilters(model, drink, filters, availability, thresholds, rated),
+  );
 }
 
 export interface Chip {
@@ -145,6 +165,7 @@ export function chipsOf(
     makeable: (value: string) => string;
     alcohol: (value: string) => string;
     status?: (value: string) => string;
+    rating?: (value: string) => string;
     base: (name: string) => string;
   },
 ): Chip[] {
@@ -155,6 +176,7 @@ export function chipsOf(
       makeable: () => words.makeable(value),
       alcohol: () => words.alcohol(value),
       status: () => words.status?.(value) ?? value,
+      rating: () => words.rating?.(value) ?? value,
       template: () => words.template(model.templateById.get(value)?.name ?? value),
       method: () => model.vocabulary.methods.find((m) => m.id === value)?.name ?? value,
       base: () => words.base(model.ingredientName(value) ?? value),

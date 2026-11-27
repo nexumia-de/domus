@@ -178,6 +178,14 @@ export const stringsDe: Strings = {
       'Im Speicher liegen für diesen Raum noch keine Daten; vielleicht hat das Gerät, das eingeladen hat, noch nicht abgeglichen. „Jetzt abgleichen“ schaut später noch einmal nach.',
     accessSaved: 'Der Zugang ist gespeichert.',
   },
+  person: {
+    title: 'Wer nutzt dieses Gerät',
+    current: (name) =>
+      `Dieses Gerät ist ${name}. Die Apps legen Persönliches wie Bewertungen unter diesem Namen ab.`,
+    none: 'Wähle, wer du bist, oder füge dich hinzu. Die Apps legen Persönliches wie Bewertungen unter diesem Namen ab.',
+    newLabel: 'Neue Person',
+    add: 'Mich hinzufügen',
+  },
   connect: {
     title: 'Speicher verbinden',
     intro: (name) =>

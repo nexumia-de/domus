@@ -1,5 +1,13 @@
 import { expect, test } from 'vitest';
-import { ensureSpace, isDeviceOnly, localChange } from '@nexumia-de/hospes';
+import {
+  addPerson,
+  devicePerson,
+  ensureSpace,
+  isDeviceOnly,
+  localChange,
+  readPersons,
+  setDevicePerson,
+} from '@nexumia-de/hospes';
 import {
   changeAccess,
   connectStorage,
@@ -400,4 +408,19 @@ test('connect: a storage that already holds the file of this space is merged by 
   expect((await b.store.getSpace(id))?.storage).toEqual(github);
   const synced = await syncSpace(space, a.deps);
   expect(synced.ok && synced.name).toBe('Home');
+});
+
+test('persons: one added on the first device is offered on a joining one, which is not it', async () => {
+  const { remote, a, space, id } = await created('Zuhause');
+  const anna = await addPerson(id, 'Anna', a.deps);
+  expect((await syncSpace(space, a.deps)).ok).toBe(true);
+  const invite = parseInviteText(inviteLink('https://domus.test/', space, true));
+  if (!invite.ok || !anna) throw new Error('setup');
+  const b = createDevice(remote, Date.UTC(2026, 10, 19, 13));
+  await joinSpace(invite.invite, invite.invite.access, b.deps);
+  expect(await readPersons(b.store, id)).toEqual([anna]);
+  expect(await devicePerson(b.store, id)).toBeUndefined();
+  await setDevicePerson(b.store, id, anna.id);
+  expect(await devicePerson(b.store, id)).toEqual(anna);
+  expect(await devicePerson(a.store, id)).toEqual(anna);
 });

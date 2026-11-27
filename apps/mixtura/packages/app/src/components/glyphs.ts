@@ -47,3 +47,11 @@ export const share = make([
   ['circle', { cx: '17', cy: '18', r: '2.5' }],
   ['path', { d: 'M8.2 10.8l6.6-3.6M8.2 13.2l6.6 3.6' }],
 ]);
+// Ratings (docs/ratings.md): favourite, good, not for me.
+export const heart = make([
+  ['path', { d: 'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z' }],
+]);
+const THUMB =
+  'M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2 3l-1 3h5.5c1.2 0 2 1 1.7 2.2l-1.5 6c-.3 1-1 1.8-2.2 1.8H7';
+export const thumbUp = make([['path', { d: THUMB }]]);
+export const thumbDown = make([['path', { d: THUMB, transform: 'rotate(180 12 12)' }]]);
