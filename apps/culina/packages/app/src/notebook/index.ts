@@ -5,6 +5,8 @@ export { removeRecord, saveRecord } from './actions';
 export type { WritableKind } from './actions';
 export { learnedSkills, setLearned } from './skills';
 export { clearCooked, cookedByFamily, cookedOn, markCooked, onCookedChange } from './cooked';
+export { isFavourite, markedDishes, onFavouriteChange, setFavourite } from './favourites';
+export type { Marked } from './favourites';
 export { addExamples } from './examples';
 export { dropDraft, draftKey, keepDraft, loadDraft } from './drafts';
 export { newId } from './ids';

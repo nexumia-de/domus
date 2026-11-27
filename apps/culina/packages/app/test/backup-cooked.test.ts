@@ -33,7 +33,7 @@ describe('the day a dish was cooked in the backup', () => {
     await markCooked(DISH);
     const text = await exportText();
     expect(JSON.parse(text)).toMatchObject({
-      formatVersion: 4,
+      formatVersion: 5,
       cooked: [{ id: `cooked-${DISH}`, dish: DISH, date: '2026-11-02' }],
     });
     await startWithStock({ examples: false });

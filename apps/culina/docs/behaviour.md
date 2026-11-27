@@ -1303,6 +1303,57 @@ dishes, 360 px; the ingredients there are the user's own, so only a
 technique gives a character). Not verified:
 desktop width, the German texts in a browser, a screen reader on the chips.
 
+## Favourites
+
+Built on 2026-11-27 (issue 24, [daily helper](decisions/daily-helper.md)).
+The user marks a dish, own or shipped, a frame included, as a favourite and
+finds the favourites again quickly. A mark and no more: it holds no date, no
+count and no place in an order, so it says nothing about how often a dish was
+cooked ([data model](data-model.md#favourite), no food diary).
+
+- **The toggle** is a star button at the end of the dish's name on the page of
+  every dish (`#/classic/<id>` and `#/dishes/<id>`), at least 44 x 44 px. Its
+  name is the same in both states ("Favourite", German "Favorit"); `aria-pressed`
+  says which, the star is filled while the dish is marked, and the tooltip
+  names what a tap does ("Add to favourites" or "Remove from favourites";
+  German "Zu den Favoriten", "Aus den Favoriten entfernen"). The status line
+  under the name says what was done ("Added to favourites.", "Removed from
+  favourites."; German "Zu den Favoriten hinzugefügt.", "Aus den Favoriten
+  entfernt.") or, when the store refuses, the store's sentence, and the mark
+  stays as it was. The focus stays on the star. A second tap while a write is
+  running does nothing.
+- **Per dish, not per version**: a new version of an own dish keeps the mark.
+  A copy kept from a marked shipped dish is an own dish and starts unmarked; a
+  variation is a dish of its own. Deleting an own dish takes its mark with it,
+  and Undo brings both back; the mark of a shipped dish is not touched by it.
+- **On the rows of Cook's list** a favourite says so at the end of its quiet
+  line ("Favourite", German "Favorit"). The row has no toggle of its own: it is
+  one link, and a second target of 44 px on a 360 px row would crowd the name
+  and the quiet line. The toggle is one tap away on the dish page.
+- **"Favourites only"** ("Nur Favoriten") is a tick of the one dish filter,
+  with the other choices (it narrows like they do, shows in the folded
+  filter's summary and is kept with the filter on this device).
+- **"Favourites first"** ("Favoriten zuerst") is a fourth choice of Cook's
+  order, after name, "Use up first" and "Not cooked for long": the favourites,
+  own and shipped, come first, both groups follow by name, as one list without
+  groups. While no dish is marked the list is by name and says so ("No dish is
+  marked as a favourite yet, so the list is by name."). The choice is kept on
+  this device; a build before 2026-11-27 reads it as by name.
+- **Export and import**: the marks are in the export file since format 5 and
+  an older file still imports ([exchange](exchange.md)).
+- **Not built here**: a favourite not cooked for long as one of today's ideas
+  (issue 23 is not built); the native Linux app, which has no notebook and
+  reads "Favourites only" as no choice and "Favourites first" as by name
+  ([native app](native-linux.md)).
+
+**Test:** `test/notebook-favourites.test.ts` (the mark through the notebook),
+`test/cook-favourites.test.ts` (filter, order, kept choices),
+`test/store-favourites.test.ts` (the store kind and the migration of a database
+from before it), `test/backup-favourites.test.ts` (export, import, older file,
+a mark without its dish), `e2e/dish-favourite.mjs` (360 px, English and
+German). Not verified: a screen reader on the star and the status line, a real
+device, desktop width.
+
 ## Dishes like this
 
 Since 2026-11-24, on the page of every dish (a shipped dish, a frame as

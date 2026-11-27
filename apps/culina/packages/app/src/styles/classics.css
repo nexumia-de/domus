@@ -22,6 +22,43 @@
   text-decoration: none;
 }
 
+/* The name of a dish and its favourite toggle (src/screens/favourite-toggle.ts): a star of 44 px at
+   the end of the line, accent while the dish is a favourite. */
+.dish-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.dish-title-row h1 {
+  min-width: 0;
+}
+
+.favourite-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--target);
+  height: var(--target);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.favourite-toggle[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.favourite-status:empty {
+  display: none;
+}
+
 .recipe-block h2 {
   margin: var(--sp-4) 0 var(--sp-2);
 }

@@ -1,7 +1,7 @@
 // The notebook cache: every record in memory (every version of a component or dish), so the screens stay synchronous. The store is
 // opened and read once at startup (start.ts); writes go through the store first and only then
 // change the cache (actions.ts). Without a store the cache is the empty, read-only notebook.
-import type { CookedRecord, SkillRecord } from '@culina/engine';
+import type { CookedRecord, FavouriteRecord, SkillRecord } from '@culina/engine';
 import type { StockSpace } from '../shared-stock/space';
 import type { ErrorCode, Store } from '../store';
 import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
@@ -21,6 +21,8 @@ export interface NotebookState {
   skills: SkillRecord[];
   /** The day each own dish was last cooked: one record per dish family. */
   cooked: CookedRecord[];
+  /** The dishes marked as favourites: one record per dish, own or shipped. */
+  favourites: FavouriteRecord[];
   /** Undefined when the store could not be opened. */
   store: Store | undefined;
   /** Why the store could not be opened. */
@@ -42,6 +44,7 @@ export const state: NotebookState = {
   stockSpace: undefined,
   skills: [],
   cooked: [],
+  favourites: [],
   store: undefined,
   problem: undefined,
   now: () => new Date().toISOString(),
@@ -91,6 +94,7 @@ export const reset = (): void => {
   state.stockSpace = undefined;
   state.skills = [];
   state.cooked = [];
+  state.favourites = [];
   state.store = undefined;
   state.problem = undefined;
   state.timeZone = undefined;

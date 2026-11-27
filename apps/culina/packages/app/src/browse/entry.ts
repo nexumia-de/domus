@@ -47,6 +47,12 @@ export interface DishEntry {
   /** True when every line that names an ingredient has an amount; for a dish of the notebook, every slot. */
   complete: boolean;
   /**
+   * True when the user marked the dish as a favourite (docs/data-model.md, Favourite). Not made by
+   * `entryOfDish` and `entryOfClassic`, which are pure over the dish: `dishEntries()` adds it from
+   * the notebook's favourites. Absent otherwise.
+   */
+  favourite?: true;
+  /**
    * True for a frame (tacos, ramen, pizza): the app's own composition of its recipes
    * (docs/classic-format.md, A frame), shipped or kept in the notebook. A kept copy stores no mark:
    * its entry reads it from the shipped dish it was kept from (`x-origin`). Absent otherwise.

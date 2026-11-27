@@ -290,17 +290,26 @@ export function createSession(options: SessionOptions): Session {
         cuisines: COUNTRIES,
       }),
     dishes: (filter) => allEntries().filter((entry) => matchesFilter(entry, filter)),
-    dishFilter: () => parseDishFilter(prefs.get(PREFS.dishes)),
+    dishFilter: () => {
+      // "Favourites only" asks for the marks of the web app's notebook; the native app has none, so a
+      // kept choice would hide every dish: it is left out.
+      const filter = { ...parseDishFilter(prefs.get(PREFS.dishes)) };
+      delete filter.favouritesOnly;
+      return filter;
+    },
     setDishFilter(filter) {
       prefs.set(PREFS.dishes, JSON.stringify(filter));
       // Every page that shows the filter or what it narrows draws again.
       tell();
     },
     cookList: () => {
-      // "Not cooked for long" orders own dishes by the day they were cooked; the native app has no
-      // notebook, so it has no such dish and does not offer the order: a kept one is by name.
+      // "Not cooked for long" orders own dishes by the day they were cooked and "Favourites first"
+      // puts the marked dishes first; the native app has no notebook, so it has no such dish and
+      // does not offer either order: a kept one is by name.
       const list = parseCookList(prefs.get(PREFS.cookList));
-      return list.order === 'not-cooked' ? { ...list, order: 'name' } : list;
+      return list.order === 'not-cooked' || list.order === 'favourites'
+        ? { ...list, order: 'name' }
+        : list;
     },
     setCookList(list) {
       prefs.set(PREFS.cookList, JSON.stringify(list));

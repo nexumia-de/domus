@@ -1,6 +1,6 @@
 // The summary of a file's content: counts per kind, and a readable label for a record.
 import { EXPORT_KINDS, pickText } from '@culina/engine';
-import { techniques } from '../../classics/content';
+import { classicOf, techniques } from '../../classics/content';
 import { currentLang } from '../../classics/lang';
 import type { ExportKind, ExportRecord, FullRecordSets } from '@culina/engine';
 import { formatDate } from '../../shared/locale';
@@ -16,6 +16,13 @@ export const recordLabel = (kind: ExportKind, record: ExportRecord): string => {
     const dish = getDish(String(record.dish));
     const day = formatDate(String(record.date));
     return dish === undefined ? `${day} ${String(record.dish)}` : `${day} ${dish.name}`;
+  }
+  if (kind === 'favourites') {
+    // The dish by its name where this notebook has it or the app ships it, else the id.
+    const id = String(record.dish);
+    if (record.origin === 'own') return getDish(id)?.name ?? id;
+    const classic = classicOf(id);
+    return classic === undefined ? id : pickText(classic.name, currentLang());
   }
   if (kind === 'skills') {
     const technique = techniques().find((t) => t.id === record.technique);

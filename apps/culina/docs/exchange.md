@@ -61,6 +61,7 @@ How the app uses them: [behaviour](behaviour.md#export-and-import).
 | 2       | 2026-11-20 | No `stock`: it is the shared collection of a space ([stock in spaces](decisions/stock-in-spaces.md)). The migration 1 to 2 leaves it out; `stockLeftOut` counts what it left out |
 | 3       | 2026-11-21 | `skills`: the [skill state](data-model.md#skill-state) (techniques marked as learned, marks taken back). The migration 2 to 3 changes nothing                                    |
 | 4       | 2026-11-24 | `cooked`: the [day a dish was last cooked](data-model.md#date-a-dish-was-cooked), one record per dish family. The migration 3 to 4 changes nothing                               |
+| 5       | 2026-11-27 | `favourites`: the dishes marked as [favourites](data-model.md#favourite), one record per dish. The migration 4 to 5 changes nothing                                              |
 
 A file of version 1 is read through the chain. `parseExport` counts the
 items of its `stock` before the chain runs and returns the number as
@@ -105,6 +106,23 @@ everything" and on a merge (`src/exchange/orphan-days.ts`,
 `test/cooked-orphans.test.ts`). App tests: `test/backup-cooked.test.ts` (export, a new device and
 "Merge now" bring the day back; replace with a version 4 file makes the days
 the file's; replace with a version 3 file leaves them).
+
+Version 5 adds the collection `favourites` (2026-11-27) by the same rules: a
+version 4 file that holds `favourites` is refused (`unknown-field`); a version 4
+file without it reads through the identity migration 4 to 5 and reports
+`fileVersion` 4, so the import says it holds no favourites and "replace
+everything" leaves the marks kept on the device as they are; an app that reads
+up to version 4 refuses a version 5 file as `newer-version` (the vector
+`parse-refuses-newer-version` is now a version 6 file read by a version 5
+reader). A favourite of an own dish whose dish is not there is dropped from the
+export, on "replace everything" and on a merge; a favourite of a shipped dish is
+kept (`src/exchange/orphan-favourites.ts`, `test/backup-favourites.test.ts`).
+A record carries no date or count: one that does is refused. Vectors:
+`parse-reads-favourites-of-version-5`, `parse-reads-version-4-without-favourites`,
+`parse-refuses-favourites-in-version-4`, `parse-an-older-reader-refuses-version-5`,
+`parse-refuses-a-favourite-with-a-date`,
+`parse-refuses-a-favourite-whose-id-names-another-origin` and
+`round-trip-everything`.
 
 **What the file does not hold, and why.** The stock of a space (the shared
 collection of the household's apps; a replace import would delete what

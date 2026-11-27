@@ -7,6 +7,7 @@ import { fail, type Result } from '../store/types';
 import { writeLastExport } from './backup-prefs';
 import { downloadText } from './download';
 import { daysOfLiveDishes, dishFamilies } from './orphan-days';
+import { favouritesOfLiveDishes } from './orphan-favourites';
 
 /** The live records of every kind. */
 export const liveRecords = async (): Promise<Result<{ records: RecordSets }>> => {
@@ -19,7 +20,10 @@ export const liveRecords = async (): Promise<Result<{ records: RecordSets }>> =>
   }
   // A day of cooking whose dish is gone (deleted in another tab while it was cooked here) is a
   // remnant: it is not exported and does not count as a record of this notebook.
-  records.cooked = daysOfLiveDishes(records.cooked ?? [], dishFamilies(records.dishes ?? []));
+  const families = dishFamilies(records.dishes ?? []);
+  records.cooked = daysOfLiveDishes(records.cooked ?? [], families);
+  // The same for the favourite of an own dish that is gone.
+  records.favourites = favouritesOfLiveDishes(records.favourites ?? [], families);
   return { ok: true, records };
 };
 

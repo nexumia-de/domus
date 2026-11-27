@@ -11,12 +11,14 @@ export const KINDS = [
   'tastings',
   'skills',
   'cooked',
+  'favourites',
 ] as const;
 export type Kind = (typeof KINDS)[number];
 
 /**
  * The kinds that are in the export file and in a backup; `skills` since format version 3
- * (docs/data-model.md, Skill state), `cooked` since format version 4 (Date a dish was cooked). `stock` is only where items from before 2026-11-20 wait for
+ * (docs/data-model.md, Skill state), `cooked` since format version 4 (Date a dish was cooked), `favourites` since format version 5
+ * (Favourite). `stock` is only where items from before 2026-11-20 wait for
  * their move into the shared collection of a space (src/shared-stock/legacy.ts); nothing writes it.
  */
 export type ExportedKind = Exclude<Kind, 'stock'>;
@@ -49,6 +51,7 @@ export const emptyRows = (): Rows => ({
   tastings: [],
   skills: [],
   cooked: [],
+  favourites: [],
 });
 
 export type ErrorCode =

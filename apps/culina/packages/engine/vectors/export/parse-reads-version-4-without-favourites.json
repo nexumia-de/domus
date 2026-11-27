@@ -1,0 +1,28 @@
+{
+  "id": "parse-reads-version-4-without-favourites",
+  "description": "A version 4 file (no favourites collection) reads through the migration 4 to 5; its records are kept and the file version is reported as 4",
+  "inputs": {
+    "kind": "export_parse",
+    "file": {
+      "format": "culina-export",
+      "formatVersion": 4,
+      "cooked": [
+        {
+          "id": "cooked-u-00000000-0000-4000-8000-000000000014",
+          "dish": "u-00000000-0000-4000-8000-000000000014",
+          "date": "2026-11-17"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "ok": true,
+    "counts": {
+      "cooked": 1
+    },
+    "formatVersion": 5,
+    "fileVersion": 4
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: the rule is structural (export version 5 adds the favourites), no kitchen figure is involved."
+}

@@ -31,6 +31,12 @@ export const cookStrings = {
   rowCooked: (date: string): string => `cooked ${date}`,
   /** Above the list in the order "Not cooked for long" while no dish has a day. */
   notCookedNone: 'None of your dishes is marked as cooked yet, so the list is by name.',
+  /** The order of the one list that puts the favourites first, own and shipped. */
+  orderFavourites: 'Favourites first',
+  /** On the row of a favourite. */
+  rowFavourite: 'Favourite',
+  /** Above the list in the order "Favourites first" while no dish is a favourite. */
+  favouritesNone: 'No dish is marked as a favourite yet, so the list is by name.',
   /** The way from Cook to the stock screen, and that screen's title. */
   tabStock: 'What is there',
   backToCook: 'Back to Cook',

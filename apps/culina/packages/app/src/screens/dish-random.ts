@@ -97,6 +97,7 @@ const dishKey = (filter: DishFilter): string =>
     filter.cuisine,
     filter.meatFree,
     filter.completeOnly,
+    filter.favouritesOnly,
     state.dishReady,
   ]);
 

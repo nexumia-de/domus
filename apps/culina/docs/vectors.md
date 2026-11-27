@@ -277,6 +277,16 @@ dates and names.
 | `cooked_dates`  | `records`                         | `dates`: family id to day; a record with a stray id is left out |
 | `cooked_order`  | `dishes`: `name`, optional `date` | `names` sorted by `byNotCookedForLong`, then by name            |
 
+## Kinds of favourites (2026-11-27)
+
+Folder: `packages/engine/vectors/favourites/`, run by `test/favourites-vectors.test.ts`.
+Rules: [data model](data-model.md#favourite). Invented ids and names.
+
+| `kind`             | Inputs           | Expected                                                                       |
+| ------------------ | ---------------- | ------------------------------------------------------------------------------ |
+| `favourite_record` | `origin`, `dish` | the record: `id`, `origin`, `dish`                                             |
+| `favourite_dishes` | `records`        | `own` and `shipped`: the dish ids marked; a record with a stray id is left out |
+
 ## Kinds of nutrition (issue 94)
 
 Folder: `packages/engine/vectors/nutrition/`, run by

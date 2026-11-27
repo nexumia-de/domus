@@ -19,6 +19,8 @@ export interface RowMeta {
   useUp?: { itemId: string; daysLeft: number; lacking: number };
   /** For an own dish with a kept day: the day it was last cooked, `YYYY-MM-DD`. */
   cooked?: string;
+  /** True for a favourite. */
+  favourite?: true;
 }
 
 export interface ListRow {
@@ -52,6 +54,7 @@ const metaOf = (
     ? {}
     : { useUp: { itemId: mark.itemId, daysLeft: mark.daysLeft, lacking: mark.lacking } }),
   ...(cooked === undefined ? {} : { cooked }),
+  ...(entry.favourite === true ? { favourite: true as const } : {}),
 });
 
 /** What Cook adds to the filter and the search, each from the finder (src/dishes/). */
@@ -71,6 +74,8 @@ export interface CookNarrowing {
    * dish, follow by name.
    */
   notCookedFirst?: boolean;
+  /** The order "Favourites first": the favourites, own and shipped, before the rest. */
+  favouritesFirst?: boolean;
 }
 
 /**
@@ -78,7 +83,8 @@ export interface CookNarrowing {
  * ready), sorted by name in the content language (own and shipped dishes mixed), the key breaking a
  * tie so the order is stable. With `useUp` the dishes that use a dated item come first, in the
  * engine's order, and the rest follow by name. With `notCookedFirst` the own dishes with a kept day
- * come first, the earliest day first, and the rest follow by name.
+ * come first, the earliest day first, and the rest follow by name. With `favouritesFirst` the
+ * favourites come first and both groups follow by name.
  */
 export const dishListView = (
   entries: readonly DishEntry[],
@@ -88,7 +94,7 @@ export const dishListView = (
   cook: CookNarrowing = {},
 ): DishListView => {
   const collator = new Intl.Collator(lang, { sensitivity: 'base', numeric: true });
-  const { ready, useUp, cooked, notCookedFirst } = cook;
+  const { ready, useUp, cooked, notCookedFirst, favouritesFirst } = cook;
   const dayOf = (e: DishEntry): string | undefined => cooked?.get(e.key);
   const rankOf = (e: DishEntry): number => useUp?.get(e.key)?.rank ?? Infinity;
   const kept = entries.filter(
@@ -105,6 +111,9 @@ export const dishListView = (
       (a, b) =>
         (useUp === undefined || rankOf(a) === rankOf(b) ? 0 : rankOf(a) < rankOf(b) ? -1 : 1) ||
         (notCookedFirst === true ? byNotCookedForLong(dayOf(a), dayOf(b)) : 0) ||
+        (favouritesFirst === true
+          ? Number(b.favourite === true) - Number(a.favourite === true)
+          : 0) ||
         collator.compare(a.name, b.name) ||
         (a.key < b.key ? -1 : 1),
     )
@@ -132,7 +141,7 @@ export const classicsFilter = (country: string | undefined): DishFilter => ({
 export type ActiveChoice =
   | { kind: 'origin'; value: Origin }
   | { kind: 'character' | 'course' | 'cuisine'; value: string }
-  | { kind: 'meatFree' | 'completeOnly' };
+  | { kind: 'meatFree' | 'completeOnly' | 'favouritesOnly' };
 
 /** The choices that narrow, in the order of the controls; none for the empty filter. */
 export const activeChoices = (filter: DishFilter): ActiveChoice[] => [
@@ -144,4 +153,5 @@ export const activeChoices = (filter: DishFilter): ActiveChoice[] => [
   ...(filter.cuisine === undefined ? [] : [{ kind: 'cuisine' as const, value: filter.cuisine }]),
   ...(filter.meatFree === true ? [{ kind: 'meatFree' as const }] : []),
   ...(filter.completeOnly === true ? [{ kind: 'completeOnly' as const }] : []),
+  ...(filter.favouritesOnly === true ? [{ kind: 'favouritesOnly' as const }] : []),
 ];
