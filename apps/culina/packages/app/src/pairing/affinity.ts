@@ -30,12 +30,36 @@ export const AFFINITY_ROWS = 8;
 const WITH_NAMES = 3;
 
 /** The id and its ancestors, the id first. */
-const chainOf = (id: string, parentOf: PairingNames['parentOf']): string[] => {
+export const chainOf = (id: string, parentOf: PairingNames['parentOf']): string[] => {
   const chain: string[] = [];
   for (let at: string | undefined = id; at !== undefined && !chain.includes(at); at = parentOf(at))
     chain.push(at);
   return chain;
 };
+
+/** The nearest of the id and its ancestors that the table names. */
+const tableKey = (
+  id: string,
+  table: AffinityTable,
+  parentOf: PairingNames['parentOf'],
+): string | undefined => chainOf(id, parentOf).find((at) => table.has(at));
+
+/**
+ * Whether the table pairs an ingredient with a line's ingredient: the line stands for its nearest
+ * ingredient the table names (as in `affinityRows`), the ingredient for itself or an ancestor.
+ */
+export function provenWith(
+  ingredient: string,
+  line: string,
+  table: AffinityTable,
+  parentOf: PairingNames['parentOf'],
+): boolean {
+  const key = tableKey(line, table, parentOf);
+  const partners = key === undefined ? undefined : table.get(key);
+  return (
+    partners !== undefined && chainOf(ingredient, parentOf).some((id) => partners.includes(id))
+  );
+}
 
 /**
  * What goes with the lines of a dish: the partners of each line, those most lines name first,
@@ -51,7 +75,7 @@ export function affinityRows(
   const found = new Map<string, string[]>();
   const counted = new Set<string>();
   for (const line of lines) {
-    const key = chainOf(line.ingredient, names.parentOf).find((id) => table.has(id));
+    const key = tableKey(line.ingredient, table, names.parentOf);
     // Two lines that stand for the same ingredient count once.
     if (key === undefined || counted.has(key)) continue;
     counted.add(key);

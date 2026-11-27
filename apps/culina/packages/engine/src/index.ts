@@ -471,8 +471,13 @@ export {
   pairingsForDish,
   sharedMolecules,
 } from './pairing/pair';
+export { FIT_SOME, FIT_STRONG, bandOf, pairingFit } from './pairing/fit';
 export type {
   DishPairing,
+  FitBand,
+  FitItem,
+  FitOptions,
+  IngredientFit,
   Pairing,
   PairingBaseline,
   PairingData,

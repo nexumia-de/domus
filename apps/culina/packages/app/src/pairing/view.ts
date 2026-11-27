@@ -1,7 +1,10 @@
 // What the "Goes with" section of a dish shows: for the ingredients of the dish that the
 // pairing data knows, the ingredients of the catalogue that stand out with them, each with the
-// names of the dish's ingredients it goes with. Pure but for the names it is given.
-import { pairingsForDish } from '@culina/engine';
+// names of the dish's ingredients it goes with. And the fit of every candidate with what is in
+// the pan, in bands, for "Cooking now". Pure but for the names it is given.
+import { pairingFit, pairingsForDish } from '@culina/engine';
+import type { FitBand, FitItem } from '@culina/engine';
+import { chainOf, provenWith, type AffinityTable } from './affinity';
 import type { LoadedPairings } from './load';
 
 /** One line of a dish as the section needs it: the catalogue ingredient and the name shown. */
@@ -112,4 +115,70 @@ export function pairingView(
     });
   }
   return rows.length === 0 ? { kind: 'none' } : { kind: 'rows', rows };
+}
+
+/** One ingredient with its fit to the pan; the score is not shown (decisions/daily-helper.md). */
+export interface FitRow {
+  ingredient: string;
+  name: string;
+  /** `none` when the data cannot say: no data, never a bad fit. */
+  band: FitBand;
+  /** The names of the pan's lines it goes with, the strongest first. */
+  with: string[];
+  /** The names of the pan's lines the project's own table pairs it with ("Proven together"). */
+  proven: string[];
+}
+
+export interface FitView {
+  /** Whether the data knows an ingredient of the pan; when not, every row has the band `none`. */
+  known: boolean;
+  rows: FitRow[];
+}
+
+/**
+ * How well each candidate fits with the lines of the pan (`pairingFit`): by band, the strongest
+ * first, the candidates the data cannot speak for last, each in the order given. A candidate that
+ * is in the pan, as itself, as the group of a line or as a member of one, is left out.
+ */
+export function fitView(
+  lines: readonly PairingLine[],
+  candidates: readonly string[],
+  loaded: LoadedPairings,
+  names: PairingNames,
+  table: AffinityTable,
+): FitView {
+  const nameOf = new Map<string, string>();
+  for (const line of lines)
+    if (!nameOf.has(line.ingredient)) nameOf.set(line.ingredient, line.name);
+  const inPan = new Set(lines.flatMap((line) => chainOf(line.ingredient, names.parentOf)));
+  const pan: FitItem[] = [...nameOf.keys()].map((key) => ({
+    key,
+    entity: entityOf(key, loaded, names.parentOf),
+  }));
+  const offered: FitItem[] = candidates
+    .filter((id) => !inPan.has(id) && !chainOf(id, names.parentOf).some((at) => nameOf.has(at)))
+    .map((key) => ({ key, entity: entityOf(key, loaded, names.parentOf) }));
+  const fits = pairingFit(
+    pan,
+    offered,
+    loaded.data,
+    { proven: (candidate, line) => provenWith(candidate, line, table, names.parentOf) },
+    loaded.weights,
+    loaded.baselines,
+  );
+  const lineNames = (keys: readonly string[]): string[] =>
+    keys.slice(0, WITH_NAMES).map((key) => nameOf.get(key) as string);
+  const known = pan.some((item) =>
+    loaded.data.entities.some((e) => e.id === item.entity && e.molecules.length > 0),
+  );
+  return {
+    known,
+    rows: fits.map((fit) => ({
+      ingredient: fit.key,
+      name: names.nameOf(fit.key),
+      band: fit.band,
+      with: lineNames(fit.with),
+      proven: lineNames(fit.proven),
+    })),
+  };
 }

@@ -178,6 +178,50 @@ export function pairingBaselines(
   return out;
 }
 
+/** How a candidate stands out with the ingredients of a dish. */
+export interface StandOut {
+  /** The sum of the spreads above usual over the dish's ingredients, by their number; to 0.001. */
+  score: number;
+  /** The ids of the dish's ingredients it lies above its usual with, the strongest first. */
+  with: number[];
+  /** The molecules it shares with those. */
+  common: Set<number>;
+}
+
+/**
+ * The score of one candidate with a dish, as `pairingsForDish` and `pairingFit` give it: for each
+ * ingredient of the dish of another family with which it shares at least `minShared` molecules,
+ * how many spreads its overlap lies above its usual; summed and divided by the number of the
+ * dish's ingredients, so an ingredient it is not measured against (itself among them) counts 0.
+ */
+export function standOut(
+  candidate: PairingEntity,
+  dish: readonly PairingEntity[],
+  usual: PairingBaseline,
+  options: PairingOptions,
+  weights: ReadonlyMap<number, number>,
+): StandOut {
+  const minShared = options.minShared ?? MIN_SHARED;
+  const family = familyOf(candidate.category);
+  const pairs: { id: number; above: number }[] = [];
+  const common = new Set<number>();
+  let sum = 0;
+  for (const entity of dish) {
+    if (entity.id === candidate.id) continue;
+    if (options.sameFamily !== true && familyOf(entity.category) === family) continue;
+    const { overlap, shared } = overlapOf(entity, candidate, minShared, weights);
+    if (shared.length === 0) continue;
+    const above = (overlap - usual.mean) / usual.spread;
+    sum += above;
+    if (above > 0) {
+      pairs.push({ id: entity.id, above });
+      for (const id of shared) common.add(id);
+    }
+  }
+  pairs.sort((a, b) => b.above - a.above || a.id - b.id);
+  return { score: round(sum / dish.length), with: pairs.map((p) => p.id), common };
+}
+
 /**
  * What goes with a dish: the ingredients that stand out with those of the dish, best first. For
  * each ingredient of the dish of another family, the candidate's overlap is measured against
@@ -202,7 +246,6 @@ export function pairingsForDish(
   ),
 ): DishPairing[] {
   const limit = options.limit ?? 10;
-  const minShared = options.minShared ?? MIN_SHARED;
   const minMolecules = options.minMolecules ?? MIN_MOLECULES;
   const flavourLimit = options.flavourLimit ?? 5;
   const inDish = new Set(dishEntityIds);
@@ -214,30 +257,14 @@ export function pairingsForDish(
     if (candidates !== undefined && !candidates.has(other.id)) continue;
     const usual = baselines.get(other.id);
     if (!usual || !(usual.spread > 0)) continue;
-    const family = familyOf(other.category);
-    const pairs: { id: number; above: number }[] = [];
-    const common = new Set<number>();
-    let sum = 0;
-    for (const entity of dish) {
-      if (options.sameFamily !== true && familyOf(entity.category) === family) continue;
-      const { overlap, shared } = overlapOf(entity, other, minShared, weights);
-      if (shared.length === 0) continue;
-      const above = (overlap - usual.mean) / usual.spread;
-      sum += above;
-      if (above > 0) {
-        pairs.push({ id: entity.id, above });
-        for (const id of shared) common.add(id);
-      }
-    }
-    const score = round(sum / dish.length);
+    const { score, with: pairs, common } = standOut(other, dish, usual, options, weights);
     if (!(score > 0) || pairs.length === 0) continue;
-    pairs.sort((a, b) => b.above - a.above || a.id - b.id);
     found.push({
       id: other.id,
       name: other.name,
       category: other.category,
       score,
-      with: pairs.map((p) => p.id),
+      with: pairs,
       flavours: [],
       common,
     });

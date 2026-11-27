@@ -1,0 +1,13 @@
+{
+  "id": "fit-band-thresholds",
+  "description": "The band of a score: strong from 0.75, some from 0.25, little below, also at 0 and below 0. The thresholds are inclusive",
+  "inputs": {
+    "kind": "fit_bands",
+    "scores": [1.5, 0.75, 0.749, 0.25, 0.249, 0.001, 0, -0.5]
+  },
+  "expected": {
+    "bands": ["strong", "strong", "some", "some", "little", "little", "little", "little"]
+  },
+  "tolerance": 0,
+  "source": "docs/engine-rules.md#pairing-fit-in-bands: the 95th and the 80th percentile of the scores over the shipped dishes, rounded to a quarter"
+}

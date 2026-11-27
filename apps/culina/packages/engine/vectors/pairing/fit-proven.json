@@ -1,0 +1,166 @@
+{
+  "id": "fit-proven",
+  "description": "The pan holds A, B and an oil without an entity. Proven pairs (the caller's own table, by key, either way round): D with B and A, C with the oil, butter (no entity) with the oil. The mark names the pan's keys in the pan's order, also for a pan item and a candidate without data, and changes neither the band nor the order",
+  "inputs": {
+    "kind": "pairing_fit",
+    "pan": [
+      {
+        "key": "a",
+        "entity": 1
+      },
+      {
+        "key": "b",
+        "entity": 2
+      },
+      {
+        "key": "oil"
+      }
+    ],
+    "candidates": [
+      {
+        "key": "c",
+        "entity": 3
+      },
+      {
+        "key": "d",
+        "entity": 4
+      },
+      {
+        "key": "butter"
+      },
+      {
+        "key": "e",
+        "entity": 5
+      }
+    ],
+    "data": {
+      "entities": [
+        {
+          "id": 1,
+          "alias": "a",
+          "name": "A",
+          "category": "herb",
+          "molecules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        },
+        {
+          "id": 2,
+          "alias": "b",
+          "name": "B",
+          "category": "vegetable",
+          "molecules": [
+            21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+          ]
+        },
+        {
+          "id": 3,
+          "alias": "c",
+          "name": "C",
+          "category": "dairy",
+          "molecules": [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 100, 101,
+            102, 103, 104, 105
+          ]
+        },
+        {
+          "id": 4,
+          "alias": "d",
+          "name": "D",
+          "category": "fruit",
+          "molecules": [
+            1, 2, 3, 4, 5, 6, 7, 8, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+            113, 114, 115
+          ]
+        },
+        {
+          "id": 5,
+          "alias": "e",
+          "name": "E",
+          "category": "spice",
+          "molecules": [
+            11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 110, 111, 112, 113, 114, 115, 116, 117, 118,
+            119, 120, 121, 122, 123, 124, 125
+          ]
+        },
+        {
+          "id": 6,
+          "alias": "f",
+          "name": "F",
+          "category": "meat",
+          "molecules": [
+            36, 37, 38, 39, 40, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+            113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125
+          ]
+        },
+        {
+          "id": 7,
+          "alias": "g",
+          "name": "G",
+          "category": "cereal",
+          "molecules": [
+            200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215
+          ]
+        },
+        {
+          "id": 8,
+          "alias": "h",
+          "name": "H",
+          "category": "nut",
+          "molecules": [
+            100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116,
+            117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130
+          ]
+        },
+        {
+          "id": 9,
+          "alias": "i",
+          "name": "I",
+          "category": "spice",
+          "molecules": [1, 2, 3, 4, 5, 6]
+        }
+      ],
+      "molecules": {}
+    },
+    "proven": [
+      ["d", "b"],
+      ["a", "d"],
+      ["c", "oil"],
+      ["oil", "butter"]
+    ]
+  },
+  "expected": {
+    "fits": [
+      {
+        "key": "c",
+        "entity": 3,
+        "band": "strong",
+        "score": 1.119,
+        "with": ["b", "a"],
+        "proven": ["oil"]
+      },
+      {
+        "key": "e",
+        "entity": 5,
+        "band": "some",
+        "score": 0.621,
+        "with": ["a"],
+        "proven": []
+      },
+      {
+        "key": "d",
+        "entity": 4,
+        "band": "little",
+        "score": 0.014,
+        "with": ["a"],
+        "proven": ["a", "b"]
+      },
+      {
+        "key": "butter",
+        "band": "none",
+        "with": [],
+        "proven": ["oil"]
+      }
+    ]
+  },
+  "tolerance": 0,
+  "source": "Constructed for this test. The expected values were computed with a second implementation of the rule (a Python script, not kept) and checked against the engine; the bands follow from the thresholds 0.75 and 0.25 of docs/engine-rules.md#pairing-fit-in-bands."
+}

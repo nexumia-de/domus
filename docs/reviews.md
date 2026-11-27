@@ -21,6 +21,31 @@ who checked it, so a reader can tell a checked claim from an unchecked
 one. "Lead" is the agent that held the task and committed; the others
 were given one part each and reported back.
 
+## 2026-11-27: pairing fit in bands for Culina (issue 18)
+
+Two runs of one agent (OpenHands), one after the other, no reviewer.
+The first wrote the engine's `pairingFit`, `standOut` taken out of
+`pairingsForDish`, the app's `fitView` and `provenWith`, the seven
+vectors and the view test, and measured the distribution of the score
+over the shipped dishes; it was stopped for budget before the docs and
+left two scratch tests. The second, which had not written that part,
+read it, recomputed the six `pairing_fit` vectors with a Python script
+of its own (all agreed), removed the scratch tests, fixed one lint
+error, added the data test with the control of the dish editor's eight
+offers (values taken from a run on b07e7e6, the same after) and wrote
+the docs.
+
+| Part                                  | Done by    | Checked by                                  |
+| ------------------------------------- | ---------- | ------------------------------------------- |
+| `pairingFit`, `standOut`, the vectors | first run  | second run: own script, the vectors' values |
+| Thresholds from the distribution      | first run  | second run: pinned against the shipped data |
+| `fitView`, `provenWith`               | first run  | second run: read; the view and data tests   |
+| Data test, control, docs              | second run | nobody but the checks                       |
+
+Tests: engine 1292, app 1295, native 25, all passing. Nobody verified
+that a band matches what a cook tastes, and nobody but the agent read
+the change.
+
 ## 2026-11-24: a kept copy is judged, and shows the amounts, as its shipped dish
 
 Two agents under one lead, both on the second-largest model. One made
