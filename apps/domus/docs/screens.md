@@ -134,6 +134,13 @@ affected, and if this is the only device that knows the secret nobody can open
 the files again. After a cycle the stored name follows the collection, so the
 name another device wrote becomes the heading.
 
+Card **Who uses this device** (on both kinds of space): the persons of the
+space as buttons, the chosen one marked, and a field **New person** with
+**Add me**. Apps keep what is personal, like Mixtura's ratings, under this
+person ([persons](../../../packages/host/docs/persons.md)). Adding a person
+syncs a shared space at once. Renaming, removing and merging persons are
+not built.
+
 ## A space on this device only
 
 An app that keeps a shared collection (first: Mixtura's stock) makes a space

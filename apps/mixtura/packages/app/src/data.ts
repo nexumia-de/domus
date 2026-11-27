@@ -9,11 +9,14 @@ import { createExchangeActions, saveAsFile, type ExchangeActions } from './excha
 import { LEGACY_KEY, savePrefs } from './prefs';
 import {
   adapterFor,
+  SPACE_COLLECTION,
   createCollectionSync,
   createIdbStore,
   type CollectionSync,
   type Store as SharedStore,
 } from '@nexumia-de/hospes';
+import { RATINGS_COLLECTION } from './ratings/source';
+import { invalidateRatings } from './ratings/state';
 import { STOCK_COLLECTION } from './stock/source';
 import { invalidateStock } from './stock/state';
 import { GITHUB_API } from './env';
@@ -181,12 +184,15 @@ export function connect(app: Store<AppState>): Connection {
   const shared = createIdbStore();
   const sync = createCollectionSync({
     store: shared,
-    collections: [STOCK_COLLECTION],
+    // `space` brings the persons the Household app adds (docs/ratings.md).
+    collections: [STOCK_COLLECTION, RATINGS_COLLECTION, SPACE_COLLECTION],
     adapter: (storage) => adapterFor(storage, { apiBase: GITHUB_API }),
     now: nowInstant,
     // Records another device changed are read again; a status change only redraws.
     onChange: (what) =>
-      what === 'records' ? invalidateStock(app) : app.set({ stockRev: app.get().stockRev + 1 }),
+      what === 'records'
+        ? (invalidateStock(app), invalidateRatings(app))
+        : app.set({ stockRev: app.get().stockRev + 1 }),
     isVisible: () => globalThis.document?.visibilityState !== 'hidden',
     isOnline: () => globalThis.navigator?.onLine !== false,
   });

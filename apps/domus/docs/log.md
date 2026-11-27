@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-27 (ratings)
+
+- **Update**: a space's screen has the card **Who uses this device**: pick a person of the space or add yourself ([persons](../../../packages/host/docs/persons.md)); adding one syncs the space. Flow test: a person added on one device is offered on a joining one.
+
 ## 2026-11-22 (report a problem)
 
 - **Update**: **Report a Problem…** ([feedback](../../../docs/feedback.md)) at the end of the home page (the app has no settings or About); the dialog is the shared one.

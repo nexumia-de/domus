@@ -14,6 +14,7 @@ used from this repository. Rules for agents: [AGENTS.md](../AGENTS.md).
 # Reference
 
 - [Spaces on the host](spaces.md) - The secret and its HKDF derivation, the sealed file, the invite link, the Store port and the shared `domus` database, a space on this device only (`device.ts`), one sync cycle step by step, the loop and the limits.
+- [Persons of a space](persons.md) - Who is in a household and which person a device is: records of `space`, the device's choice, what apps keep per person.
 - [WebDAV adapter](webdav.md) - What a WebDAV server must do for a browser page, the adapter on fetch only, the table of answers and failures, the connection test and the limits.
 - [Service worker](service-worker.md) - The worker an app installs: a cache per app and build, cache first, only the app's own caches deleted, other hosts never touched.
 - [Frame](frame.md) - The header, sync icon with error banner and toast with Undo the apps share, the tokens they read and what is tested.

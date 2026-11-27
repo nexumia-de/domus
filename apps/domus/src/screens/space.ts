@@ -7,6 +7,7 @@ import { storageWords } from '../logic/storage';
 import { hashFor } from '../router';
 import type { Ctx } from './context';
 import { busy, button, buttonRow, linkButton, notice, textField } from './parts';
+import { personCard } from './person-card';
 import { statusView } from './status-view';
 
 export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
@@ -165,7 +166,12 @@ export function spaceScreen(ctx: Ctx, id: string): HTMLElement {
         ),
       );
     } else storageCard.append(h('h2', {}, t.space.lastTitle), statusBox, buttonRow(sync));
-    body.append(messages, storageCard, renameForm);
+    const afterPerson = async (): Promise<void> => {
+      if (local) return;
+      report(await syncSpace((await ctx.deps.store.getSpace(id)) ?? space, ctx.deps));
+      await drawStatus();
+    };
+    body.append(messages, storageCard, personCard(ctx, id, afterPerson), renameForm);
     if (!local) {
       body.append(
         buttonRow(

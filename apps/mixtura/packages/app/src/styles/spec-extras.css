@@ -144,3 +144,21 @@
 .nowrap {
   white-space: nowrap;
 }
+
+/* Rating card (docs/ratings.md): round icon chips, the chosen one filled. */
+.rating-card .chips {
+  align-items: center;
+}
+.rating-chip {
+  justify-content: center;
+  min-width: var(--target);
+  padding: 0;
+}
+.rating-chip svg.i {
+  width: 22px;
+  height: 22px;
+}
+.rating-chip[aria-pressed='true'] svg.i {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}

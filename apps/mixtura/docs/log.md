@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-27 (ratings)
+
+- **Creation**: [ratings](ratings.md) and the [decision](decisions/ratings.md): collection `ratings` in the space, card Your rating on the spec screen, filter Rating; the sync loop also keeps `ratings` and `space`. Preferred version and tasting notes are issues.
+
 ## 2026-11-23
 
 - **Fix**: a stock change is kept when the page goes away before the store wrote it ([store](store.md#a-change-the-page-did-not-live-to-write), [ordering table](../../../packages/host/docs/sync-orderings.md)). `mixtura-e2e` failed twice in `spec-stock.mjs` on pull request 3 of nexumia-de/domus (mark, reload, the mark was gone); reproduced on the old code under load, 2 of 12 runs. Every change is now noted in `localStorage` in the task of the change and written by the next page (`src/stock/pending.ts`, `test/stock-pending.test.ts`); with it 0 of 16 runs failed under the same load. The check was not changed where it failed; it got one more step (mark and reload in one task). Not fixed: the shared store itself, so the native app and the other apps have the limit as before.

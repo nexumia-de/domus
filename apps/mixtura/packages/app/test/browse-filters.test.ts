@@ -189,3 +189,28 @@ test('sort stays in the address when the filters change and rides along to a dri
   expect(specHash('a', { q: '' }, 'template')).toBe('#/drinks/a?sort=template');
   expect(specHash('a', { q: '' })).toBe('#/drinks/a');
 });
+
+test('the rating filter: a rating of this device, unrated, and liked by all', () => {
+  const daiquiri = model.drinks.find((d) => d.spec.name === 'Daiquiri')!.spec.lineageId;
+  const martini = model.drinks.find((d) => d.spec.name === 'Martini')!.spec.lineageId;
+  const rated = (id: string) => ({
+    mine:
+      id === daiquiri
+        ? ('favourite' as const)
+        : id === martini
+          ? ('not-for-me' as const)
+          : undefined,
+    together: id === daiquiri,
+  });
+  const by = (rating: string): string[] =>
+    applyFilters(model, { q: '', rating }, undefined, undefined, undefined, rated).map(
+      (d) => d.spec.name,
+    );
+  expect(by('favourite')).toEqual(['Daiquiri']);
+  expect(by('not-for-me')).toEqual(['Martini']);
+  expect(by('together')).toEqual(['Daiquiri']);
+  expect(by('unrated')).not.toContain('Daiquiri');
+  expect(by('unrated')).toContain('Gin and Soda');
+  expect(parseFilters(new URLSearchParams('rating=good')).rating).toBe('good');
+  expect(names({ q: '', rating: 'good' })).toEqual([]);
+});

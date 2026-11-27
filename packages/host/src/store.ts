@@ -18,6 +18,8 @@ export interface StoredSpace {
   /** The space id derived from the secret. */
   id: string;
   secret: string;
+  /** Which person of the space this device is (docs/persons.md); never synced. */
+  personId?: string;
   name?: string;
   storage: StoredStorage;
 }

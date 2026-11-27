@@ -29,7 +29,8 @@ import type { BrowseModel } from '../browse/model';
 import { parseSort, sortDrinks, SORT_IDS, sortParams, type SortId } from '../browse/sort';
 import { status } from '../status';
 import { whileHere } from '../still-here';
-import { filtersSheet } from './filters-sheet';
+import { filtersSheet, ratingWord } from './filters-sheet';
+import { ratedOf, ratingsState } from '../../ratings/state';
 import { unknownDetails } from './alcohol-unknown';
 import { drinkRow } from './row';
 import { incrementalRows } from './rows';
@@ -94,6 +95,7 @@ function chipRow(context: ScreenContext, model: BrowseModel, filters: Filters): 
       strings.browse.statusChip(
         strings.spec.status[value as keyof typeof strings.spec.status] ?? value,
       ),
+    rating: (value) => strings.ratings.chip(ratingWord(value)),
     base: strings.browse.baseChip,
   });
   if (chips.length === 0) return null;
@@ -143,7 +145,7 @@ export function drinksListPane(
   const sort = parseSort(context.route.query);
   const hits = sortDrinks(
     model,
-    applyFilters(model, filters, pool, derived?.states, thresholds),
+    applyFilters(model, filters, pool, derived?.states, thresholds, ratedOf(ratingsState(context))),
     sort,
   );
   // Drinks that match everything but the alcohol filter, and whose class is unknown.

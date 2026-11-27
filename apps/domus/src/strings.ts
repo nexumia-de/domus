@@ -193,6 +193,14 @@ export const stringsEn = {
       'The storage holds no data for this space yet; the device that made the invite may not have synced yet. Sync now looks again.',
     accessSaved: 'The access is saved.',
   },
+  person: {
+    title: 'Who uses this device',
+    current: (name: string) =>
+      `This device is ${name}. The apps keep what is personal, like ratings, under this name.`,
+    none: 'Choose who you are, or add yourself. The apps keep what is personal, like ratings, under this name.',
+    newLabel: 'New person',
+    add: 'Add me',
+  },
   connect: {
     title: 'Connect a storage',
     intro: (name: string) =>
