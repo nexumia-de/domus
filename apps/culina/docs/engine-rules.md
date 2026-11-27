@@ -1,7 +1,7 @@
 ---
 type: Specification
 title: Engine rules for amounts, scaling, baker's percentages and ratio templates
-description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9), and components with yield, nesting, edible portion and portions (issue 10), and cross-record validation of the model with named findings (issue 36).
+description: The unit table with exact factors, conversion and its errors, the explicit rounding step, scaling by weight with its cautions, baker's percentages and hydration (issue 8), and ratio templates with derivatives, family queries, the range check, scaling from an anchor, salt by basis and the seed templates with their source rows (issue 9), and components with yield, nesting, edible portion and portions (issue 10), and cross-record validation of the model with named findings (issue 36), and the fit of every catalogue ingredient with a pan in bands (issue 18 of nexumia-de/domus).
 tags:
   [
     engine,
@@ -21,6 +21,8 @@ tags:
     validation,
     references,
     cycles,
+    pairing,
+    fit,
   ]
 generated: { by: claude-code/2.1.326, at: 2026-11-18 }
 sources:
@@ -1406,6 +1408,71 @@ added and `-id` for taken away (`diffDishVersions`, field `characters`,
 after `cuisine`). **Test:** `test/characters.test.ts`, the vector
 `vectors/versions/diff-dish-characters.json`.
 
+# Pairing fit in bands
+
+For the ingredients in the pan, `pairingFit` (`packages/engine/src/pairing/fit.ts`)
+gives every candidate, not only the best eight of the dish editor's
+"Goes with", with a band, the ingredients of the pan it goes with, and
+whether the project's own table pairs them ("Proven together";
+`data/affinities.json`, read by the app). The order is by score, best
+first, then by FlavorDB entity, then in the order given. Decided by the
+owner ([daily helper](decisions/daily-helper.md)): the band and the
+reason are shown, the number is not.
+
+- **The score** is that of `pairingsForDish`, from one function
+  (`standOut` in `pair.ts`): for each ingredient of the pan of another
+  family with which the candidate shares at least 5 molecules, how many
+  spreads its weighted overlap lies above its usual overlap; summed and
+  divided by the number of ingredients in the pan
+  ([pairings](decisions/flavordb.md)). A candidate of the same entity
+  as an ingredient of the pan (another tomato beside the tomato) is not
+  measured against itself; that one counts 0.
+- **The bands**: `strong` from 0.75, `some` from 0.25, `little` below
+  (also at 0 and below 0); the thresholds are inclusive (`FIT_STRONG`,
+  `FIT_SOME`).
+- **`none`, no data**: a candidate without a FlavorDB link (91 of the
+  780 catalogue ingredients, groups included, by their own link or that
+  of a group above them), linked to an entity with fewer than 10
+  molecules (105 more, cream among them), or without a spread, and
+  every candidate when no ingredient of the pan has data. These come
+  after every other candidate, in the order given, with nothing named
+  as the reason. `none` says the data cannot speak; it is never a bad
+  fit. The proven mark is given to them too.
+- **What a band means**: how far the candidate shares flavour molecules
+  with what is in the pan, more than it usually does with anything.
+  No band calls a pairing right or wrong; `little` says the molecules
+  give no reason, not that it does not go.
+
+**How the thresholds were chosen.** Every shipped dish whose ingredient
+lines have a link (all 135 files) was taken as a pan of its linked
+entities (6.2 on average), and every linked entity (248) as a
+candidate: 28,360 scores. The score is already relative to each
+candidate's own usual (the baseline), so one scale serves all. Its
+95th percentile is 0.739 and its 80th 0.198; rounded to the nearest
+quarter, 0.75 and 0.25. So about one score in twenty is strong (4.9 %),
+and about one in six some or strong (17.7 %); 31 % lie above 0. Over
+the first one, two, three and four ingredients of each dish the 95th
+percentile is 1.66, 1.05, 0.83 and 0.76: a pan of one or two
+ingredients gives more strong rows, since a single ingredient's
+overlaps are not averaged with others. The rule and the two numbers
+are pinned by `test/pairing-fit-data.test.ts` in the app (a change of
+data or rule that moves a percentile off its quarter fails) and by the
+vector `fit-band-thresholds`.
+
+For the owner's pan of 2026-11-27 (carrots, mushrooms, onions, coconut
+oil), of the 769 catalogue ingredients not in it 209 were strong, 120
+some, 245 little and 195 none; ginger strong, garlic some, soy sauce
+little, cream none (proven with mushrooms). The dish editor's eight
+offers stand in the strong band for this pan and for tomato, basil and
+garlic, and are unchanged by this work (the same test, pinned from the
+commit before).
+
+**What the tests do not prove**: that a band matches what a cook
+tastes. The vectors are constructed and check the rule (their expected
+values were computed again by a second implementation, a Python script
+of 2026-11-27, not kept); the data test only pins what the rule gives
+on the data fetched on 2026-11-23. Nobody tasted any of it.
+
 # Vectors
 
 `packages/engine/vectors/units/` (conversion for every unit pair,
@@ -1414,7 +1481,7 @@ percentages, formulas, hydration, the zero-flour and the unequal-base
 errors), `vectors/ratios/templates/` (derivative resolution, nested
 derivatives, every error code, family queries, the range check in all
 three positions and on the bounds, a template without range, scaling from
-an anchor, percentages) `vectors/ratios/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions), `vectors/stock/` (remaining days in the future, today, past, without use-by, presence only, from a recorded shelf life, suggestions, using up an amount) in the format of [the vector format](vectors.md)[^vectors]. Each
+an anchor, percentages) `vectors/ratios/salt/` (three bases, errors) and `vectors/components/` (flat, two- and three-level nesting, the 200 g of 800 g example, `outputG`, percent lines, unmeasured lines, every error, yield with loss and gain and unknown, edible round trip, a yield above 100, unknown yield, portions), `vectors/stock/` (remaining days in the future, today, past, without use-by, presence only, from a recorded shelf life, suggestions, using up an amount), `vectors/pairing/fit-*` (the bands at and around their thresholds, the order, the `none` group, a pan the data does not know, what is in the pan left out, the proven mark) in the format of [the vector format](vectors.md)[^vectors]. Each
 names its basis. Expected numbers are plain arithmetic written out in
 the vector's `source`; densities and unit weights in vectors are
 synthetic and say so. `test/units-vectors.test.ts` and

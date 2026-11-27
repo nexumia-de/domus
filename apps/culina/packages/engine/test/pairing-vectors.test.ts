@@ -1,9 +1,16 @@
 // Runs every vector in vectors/pairing against the public entry (docs/vectors.md): pairings from
-// shared flavour molecules, their order and their limits. The vectors are constructed; what the
-// real data gives is not asserted here.
+// shared flavour molecules, their order and their limits, and the fit of every candidate in
+// bands. The vectors are constructed; what the real data gives is not asserted here.
 import { describe, expect, test } from 'vitest';
-import { entityByName, pairingsFor, pairingsForDish, sharedMolecules } from '../src/index';
-import type { PairingData, PairingOptions } from '../src/index';
+import {
+  bandOf,
+  entityByName,
+  pairingFit,
+  pairingsFor,
+  pairingsForDish,
+  sharedMolecules,
+} from '../src/index';
+import type { FitItem, FitOptions, PairingData, PairingOptions } from '../src/index';
 import { loadVectors } from './vector-files';
 
 describe('pairing vectors', () => {
@@ -28,6 +35,21 @@ describe('pairing vectors', () => {
               i.candidates === undefined ? undefined : new Set(i.candidates as number[]),
             ),
           ).toEqual(vector.expected?.pairings);
+        case 'pairing_fit': {
+          const pairs = (i.proven ?? []) as [string, string][];
+          const proven = (candidate: string, inPan: string): boolean =>
+            pairs.some(
+              ([x, y]) => (x === candidate && y === inPan) || (x === inPan && y === candidate),
+            );
+          return expect(
+            pairingFit(i.pan as FitItem[], i.candidates as FitItem[], i.data as PairingData, {
+              ...((i.options ?? {}) as FitOptions),
+              proven,
+            }),
+          ).toEqual(vector.expected?.fits);
+        }
+        case 'fit_bands':
+          return expect((i.scores as number[]).map(bandOf)).toEqual(vector.expected?.bands);
         case 'shared_molecules':
           return expect(sharedMolecules(i.a as number[], i.b as number[])).toEqual(
             vector.expected?.shared,

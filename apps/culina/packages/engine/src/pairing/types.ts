@@ -59,6 +59,41 @@ export interface DishPairing {
   flavours: string[];
 }
 
+/** How well an ingredient fits with what is in the pan, in words; the score is not shown. */
+export type FitBand = 'strong' | 'some' | 'little' | 'none';
+
+/** An ingredient as the caller knows it (its key) and the entity it stands for, if any. */
+export interface FitItem {
+  key: string;
+  entity?: number;
+}
+
+/** One candidate with its fit to the pan. */
+export interface IngredientFit {
+  key: string;
+  /** The entity it stands for; absent when it stands for none. */
+  entity?: number;
+  /** `none` when the data cannot say: no entity, too few molecules, or a pan the data does not know. */
+  band: FitBand;
+  /** The score of `pairingsForDish`, for the order and for tests; absent with `none`. */
+  score?: number;
+  /** The keys of the pan's ingredients it lies above its usual with, the strongest first. */
+  with: string[];
+  /** The keys of the pan's ingredients the caller's own table pairs it with, in the pan's order. */
+  proven: string[];
+}
+
+export interface FitOptions {
+  /** As in `PairingOptions`. */
+  minShared?: number;
+  /** As in `PairingOptions`; a candidate with fewer molecules has the band `none`. */
+  minMolecules?: number;
+  /** As in `PairingOptions`. */
+  sameFamily?: boolean;
+  /** Whether the caller's own table pairs a candidate with an ingredient of the pan, by key. */
+  proven?: (candidate: string, inPan: string) => boolean;
+}
+
 export interface PairingOptions {
   /** At most this many pairings; 10 when absent. */
   limit?: number;
