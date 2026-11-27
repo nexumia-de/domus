@@ -1,27 +1,32 @@
 // Reads every record of the store into the cache. Used at startup and after an import.
-import type { CookedRecord, SkillRecord } from '@culina/engine';
+import type { CookedRecord, FavouriteRecord, SkillRecord } from '@culina/engine';
 import type { Store } from '../store';
 import type { ComponentRecord, DishRecord, IngredientRecord, TastingRecord } from '../records';
 import { emit, sorted, state } from './state';
 
 export const load = async (store: Store): Promise<boolean> => {
   // Stock is not read here: it is the shared collection of a space (src/shared-stock).
-  const [ingredients, components, dishes, tastings, skills, cooked] = await Promise.all([
-    store.list('ingredients'),
-    store.list('components'),
-    store.list('dishes'),
-    store.list('tastings'),
-    store.list('skills'),
-    store.list('cooked'),
-  ]);
+  const [ingredients, components, dishes, tastings, skills, cooked, favourites] = await Promise.all(
+    [
+      store.list('ingredients'),
+      store.list('components'),
+      store.list('dishes'),
+      store.list('tastings'),
+      store.list('skills'),
+      store.list('cooked'),
+      store.list('favourites'),
+    ],
+  );
   if (!ingredients.ok) return false;
   if (!components.ok || !dishes.ok || !tastings.ok || !skills.ok || !cooked.ok) return false;
+  if (!favourites.ok) return false;
   state.ingredients = sorted(ingredients.records as unknown as IngredientRecord[]);
   state.components = sorted(components.records as unknown as ComponentRecord[]);
   state.dishes = sorted(dishes.records as unknown as DishRecord[]);
   state.tastings = tastings.records as unknown as TastingRecord[];
   state.skills = skills.records as unknown as SkillRecord[];
   state.cooked = cooked.records as unknown as CookedRecord[];
+  state.favourites = favourites.records as unknown as FavouriteRecord[];
   return true;
 };
 

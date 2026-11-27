@@ -7,6 +7,7 @@ import { state } from '../notebook/state';
 import type { Change } from '../store';
 import { fail, type Result } from '../store/types';
 import { daysOfLiveDishes, dishFamilies } from './orphan-days';
+import { favouritesOfLiveDishes } from './orphan-favourites';
 
 /** The kinds a file of `fileVersion` can hold; "replace everything" touches these only. */
 export const heldKinds = (fileVersion: number): ExportKind[] =>
@@ -27,14 +28,17 @@ export async function applyMerge(
   prior: FullRecordSets,
 ): Promise<Result<{ added: number; taken: number }>> {
   if (state.store === undefined) return fail({ code: 'unavailable' });
-  // A day of cooking is taken only for a dish that is here or comes with the file.
+  // A day of cooking and the favourite of an own dish are taken only for a dish that is here or
+  // comes with the file.
   const merged = mergeWrites(plan, choices);
   const families = dishFamilies([
     ...prior.dishes,
     ...merged.filter((w) => w.kind === 'dishes').map((w) => w.record),
   ]);
   const writes = merged.filter(
-    (w) => w.kind !== 'cooked' || daysOfLiveDishes([w.record], families).length === 1,
+    (w) =>
+      (w.kind !== 'cooked' || daysOfLiveDishes([w.record], families).length === 1) &&
+      (w.kind !== 'favourites' || favouritesOfLiveDishes([w.record], families).length === 1),
   );
   const entries = writes.map((w) => ({ kind: w.kind, record: w.record }));
   const done = await state.store.bulk.putMany(entries);
@@ -48,9 +52,9 @@ export async function applyMerge(
 /**
  * Makes the notebook exactly the file's records; the old ones stay reachable through Undo. Kinds
  * the file's version could not hold (`heldKinds`) are left as they are: an older file has no skills.
- * The days of cooking are the exception: whatever the file's version, only the days of the dishes
- * the notebook then has stay (the file's own from format 4, the notebook's before), so that a
- * replace leaves no day of a dish it removed.
+ * The days of cooking and the favourites are the exception: whatever the file's version, only those
+ * of the dishes the notebook then has stay (the file's own from format 4 and 5, the notebook's
+ * before), so that a replace leaves no day and no own favourite of a dish it removed.
  */
 export async function applyReplace(
   file: FullRecordSets,
@@ -59,11 +63,14 @@ export async function applyReplace(
 ): Promise<Result> {
   if (state.store === undefined) return fail({ code: 'unavailable' });
   const held = heldKinds(fileVersion);
-  const kinds: ExportKind[] = held.includes('cooked') ? held : [...held, 'cooked'];
+  const kept = (['cooked', 'favourites'] as const).filter((kind) => !held.includes(kind));
+  const kinds: ExportKind[] = [...held, ...kept];
   const given = Object.fromEntries(kinds.map((kind) => [kind, file[kind]])) as FullRecordSets;
-  given.cooked = daysOfLiveDishes(
-    held.includes('cooked') ? file.cooked : prior.cooked,
-    dishFamilies(file.dishes),
+  const families = dishFamilies(file.dishes);
+  given.cooked = daysOfLiveDishes(held.includes('cooked') ? file.cooked : prior.cooked, families);
+  given.favourites = favouritesOfLiveDishes(
+    held.includes('favourites') ? file.favourites : prior.favourites,
+    families,
   );
   const done = await state.store.bulk.replaceAll(given);
   if (!done.ok) return done;

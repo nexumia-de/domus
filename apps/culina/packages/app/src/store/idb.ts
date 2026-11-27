@@ -7,9 +7,9 @@ export const DB_NAME = 'culina';
  * IndexedDB cannot roll its version back when a data migration fails. Raise it whenever an
  * object store is added; the upgrade creates the missing stores and keeps the rows.
  * 1: the first six kinds, `meta`, `backup`. 2: adds `tastings`. 3: adds `drafts`. 4: adds `skills`.
- * 5: adds `cooked` (the date a dish was cooked).
+ * 5: adds `cooked` (the date a dish was cooked). 6: adds `favourites`.
  */
-const LAYOUT_VERSION = 5;
+const LAYOUT_VERSION = 6;
 export const ALL_STORES = [...KINDS, 'drafts', 'meta', 'backup'] as const;
 export type StoreName = (typeof ALL_STORES)[number];
 

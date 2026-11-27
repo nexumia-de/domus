@@ -29,6 +29,7 @@ export const validators: RecordValidators = {
   tastings: compile('tasting'),
   skills: compile('skill'),
   cooked: compile('cooked'),
+  favourites: compile('favourite'),
 };
 
 /** The stock item schema: no kind of the export file since version 2, still Culina's item shape. */

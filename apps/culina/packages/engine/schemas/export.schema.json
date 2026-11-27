@@ -14,7 +14,7 @@
       "const": "culina-export"
     },
     "formatVersion": {
-      "const": 4
+      "const": 5
     },
     "seedVersion": {
       "description": "Version of the seed data the exported ids refer to.",
@@ -71,6 +71,12 @@
       "type": "array",
       "items": {
         "$ref": "cooked.schema.json"
+      }
+    },
+    "favourites": {
+      "type": "array",
+      "items": {
+        "$ref": "favourite.schema.json"
       }
     }
   }

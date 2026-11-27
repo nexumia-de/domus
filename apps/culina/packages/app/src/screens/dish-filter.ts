@@ -1,5 +1,5 @@
 // The controls of the one filter over every dish (browse/filter.ts): selects of 44 px for the
-// origin, the character, the course and the cuisine, and two ticks. A select is only drawn when
+// origin, the character, the course and the cuisine, and three ticks. A select is only drawn when
 // it has something to offer. The caller keeps the filter and draws its list again on a change.
 import type { Origin } from '../browse/entry';
 import type { DishFilter, Offered } from '../browse/filter';
@@ -41,6 +41,8 @@ export const filterChoiceLabel = (choice: ActiveChoice): string => {
       return t.meatFree;
     case 'completeOnly':
       return t.completeOnly;
+    case 'favouritesOnly':
+      return t.favouritesOnly;
   }
 };
 
@@ -187,6 +189,9 @@ export const dishFilterControls = (
     ),
     tick('dish-filter-complete', t.completeOnly, filter.completeOnly === true, (on) =>
       set('completeOnly', on ? true : undefined),
+    ),
+    tick('dish-filter-favourites', t.favouritesOnly, filter.favouritesOnly === true, (on) =>
+      set('favouritesOnly', on ? true : undefined),
     ),
   );
   group.append(grid, ticks);

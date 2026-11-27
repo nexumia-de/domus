@@ -202,6 +202,13 @@ export const appStrings = {
     cookedClear: 'Clear the date',
     cookedKept: (date: string): string => `Marked as cooked on ${date}.`,
     cookedCleared: 'Date removed.',
+    // Favourites (docs/behaviour.md#favourites): the toggle on a dish page. The label is the same
+    // in both states and the pressed state says which; the tooltip names the action.
+    favouriteLabel: 'Favourite',
+    favouriteAdd: 'Add to favourites',
+    favouriteRemove: 'Remove from favourites',
+    favouriteAdded: 'Added to favourites.',
+    favouriteRemoved: 'Removed from favourites.',
     originOwn: 'In my notebook',
     originShipped: 'Shipped with the app',
     fromStock: (name: string): string => `From stock: ${name}`,
@@ -768,11 +775,14 @@ export const appStrings = {
       tastings: 'tasting notes',
       skills: 'skill marks',
       cooked: 'cooking dates',
+      favourites: 'favourites',
     },
     skillsNotInFile:
       'The file is from an older version and holds no skill marks; the skills marked as learned here stay.',
     cookedNotInFile:
       'The file is from an older version and holds no cooking dates; the dates kept here stay.',
+    favouritesNotInFile:
+      'The file is from an older version and holds no favourites; the favourites kept here stay.',
     modeLegend: 'How to bring it in',
     modeMerge: 'Merge with what is here',
     modeMergeHint: 'Records that are not here are added; records that differ are listed for you.',
@@ -969,6 +979,7 @@ export const appStrings = {
     },
     meatFree: 'Without meat and fish',
     completeOnly: 'Only with every amount given',
+    favouritesOnly: 'Favourites only',
     reset: 'Show all',
     none: 'No dish fits these choices.',
     count: (n: number): string => (n === 1 ? '1 dish' : `${n} dishes`),

@@ -1,9 +1,11 @@
 /** Own 24 px line icons: 2 px stroke, round caps, currentColor, decorative (the label is visible). */
 import type { NavEntry } from '../router';
 
-export type IconName = NavEntry | 'settings';
+export type IconName = NavEntry | 'settings' | 'star';
 
 const PATHS: Record<IconName, string> = {
+  // A five-pointed star: the favourite toggle (filled while it is on).
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
   // Two dots over two dots: a ratio sign.
   ratios:
     '<circle cx="12" cy="7" r="1.5"/><circle cx="12" cy="17" r="1.5"/><path d="M4 12h5M15 12h5"/>',

@@ -1,6 +1,6 @@
 // #/dishes/<id> and #/classic/<id>: one dish, whatever its origin, drawn from one view model
-// (`src/dishes/shown.ts`). Top to bottom: the name, the original name where there is one, the
-// quiet line (course, cuisine, meat, origin), the note; what the dish can do (an own dish: its
+// (`src/dishes/shown.ts`). Top to bottom: the name with the favourite toggle, the original name
+// where there is one, the quiet line (course, cuisine, meat, origin), the note; what the dish can do (an own dish: its
 // version, the day it was last cooked, Edit and the rest; a shipped dish: Keep in my notebook); the characters; the portions
 // (kept in memory per dish, so the cook screen cooks them); the ingredient lines per component
 // and for the dish; for an own dish the role slots with Swap; "Cook step by step"; the method;
@@ -12,7 +12,7 @@
 // role: that changes what is shown and cooked now (`src/dishes/session.ts`), and only "Keep as my
 // version" stores it, as a new version.
 import { wantedLines } from '@culina/engine';
-import type { Classic } from '@culina/engine';
+import type { Classic, FavouriteOrigin } from '@culina/engine';
 import { likeInput } from '../browse/alike';
 import { dishEntries, dishEntriesByKey } from '../browse/entries';
 import { entryKey } from '../browse/entry';
@@ -42,6 +42,7 @@ import { showToast } from '../shell/toast';
 import { strings } from '../strings';
 import { characterRow } from './character-chips';
 import { dishCooklangAction } from './cooklang-action';
+import { favouriteToggle } from './favourite-toggle';
 import { cookedSection } from './dish-cooked';
 import { keepButton } from './classics/finish';
 import { nutritionDetails } from './classics/nutrition-block';
@@ -99,6 +100,8 @@ interface DishPage {
   cookHref: string;
   /** The key of the dish among the entries of the lists: an own dish's is that of its family's head. */
   likeKey: string;
+  /** Whose favourite mark the toggle sets: the origin and the id of the dish. */
+  favourite: { origin: FavouriteOrigin; id: string };
 }
 
 const dishPage = (page: DishPage): HTMLElement => {
@@ -106,10 +109,13 @@ const dishPage = (page: DishPage): HTMLElement => {
   const lang = currentLang();
   const { back } = page;
   const title = el('h1', undefined, page.title);
+  const favourite = favouriteToggle(page.favourite.origin, page.favourite.id);
+  const titleRow = el('div', 'dish-title-row');
+  titleRow.append(title, favourite.button);
   const original = el('p', 'muted original-name');
   original.hidden = true;
   const quiet = el('p', 'muted dish-quiet');
-  card.append(back, title, original, quiet);
+  card.append(back, titleRow, original, quiet, favourite.status);
   let portions = portionsOf(page.id, page.startPortions);
   card.append(...page.head(() => portions));
 
@@ -282,6 +288,7 @@ export const classicScreen = (id: string | undefined): HTMLElement => {
     },
     cookHref: hashFor('classic', classic.id, 'cook'),
     likeKey: entryKey('shipped', classic.id),
+    favourite: { origin: 'shipped', id: classic.id },
   });
 };
 
@@ -407,5 +414,6 @@ export const dishDetail = (nb: Notebook, dish: DishRecord): HTMLElement => {
     cookHref: hashFor('dishes', dish.id, 'cook'),
     // An older version is the same dish as the head of its family, which the lists show.
     likeKey: entryKey('own', headOfFamily('dishes', dish.id)?.id ?? dish.id),
+    favourite: { origin: 'own', id: dish.id },
   });
 };

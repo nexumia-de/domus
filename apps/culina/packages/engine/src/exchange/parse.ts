@@ -36,6 +36,8 @@ export const EXPORT_MIGRATIONS: readonly ExportMigration[] = [
   { from: 2, to: 3, migrate: (file) => file },
   // 3 -> 4 adds the collection `cooked`; a file of version 3 has none, so nothing changes.
   { from: 3, to: 4, migrate: (file) => file },
+  // 4 -> 5 adds the collection `favourites`; a file of version 4 has none, so nothing changes.
+  { from: 4, to: 5, migrate: (file) => file },
 ];
 
 export interface ParseOptions {
@@ -119,7 +121,7 @@ export function parseExport(
   if ('error' in done) return done;
   const { file } = done;
 
-  // A kind the file's own version did not have is a field it cannot hold (skills in version 2, cooked in version 3).
+  // A kind the file's own version did not have is a field it cannot hold (skills in version 2, cooked in version 3, favourites in version 4).
   const heldBy = (field: string): boolean =>
     EXPORT_KINDS.some((k) => k === field && (KIND_SINCE[k] ?? 1) <= version);
   for (const field of Object.keys(file)) {

@@ -111,7 +111,7 @@ const roundTrip = async (context, page, origin) => {
     `${label}: Settings says the stock is not in the file and where it lives`,
   );
   check(
-    JSON.parse(file1.text).formatVersion === 4 && JSON.parse(file1.text).skills.length === 2,
+    JSON.parse(file1.text).formatVersion === 5 && JSON.parse(file1.text).skills.length === 2,
     `${label}: the file is format 4 and holds the skill state`,
   );
 
@@ -368,9 +368,9 @@ const refusals = async (page, origin) => {
     'a file from a newer version',
     file(
       'x.json',
-      JSON.stringify({ format: 'culina-export', formatVersion: 5, components: [{ any: 'shape' }] }),
+      JSON.stringify({ format: 'culina-export', formatVersion: 6, components: [{ any: 'shape' }] }),
     ),
-    /newer version of the app \(format 5; this app reads up to 4\)/,
+    /newer version of the app \(format 6; this app reads up to 5\)/,
     before,
   );
   await layout(page, `${label} (refused file)`);

@@ -115,8 +115,11 @@ app and finds quickly what they want to cook or can cook.
    order "Not cooked for long"
    ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Open for the
    owner: whether cooking a shipped dish keeps a day (now it keeps none).
-   Favourites are not built (issue 24); today's ideas on the Cook
-   screen are issue 23 ([daily helper](decisions/daily-helper.md)).
+   Favourites are built (2026-11-27, issue 24): a star on the page of every
+   dish, own or shipped, "Favourites only" in the one dish filter, Cook's
+   order "Favourites first", in the export since format 5
+   ([behaviour](behaviour.md#favourites)); today's ideas on the Cook
+   screen are issue 23, not built ([daily helper](decisions/daily-helper.md)).
    Seasonal produce waits for a source.
 10. **Sync of the notebook.** Components, dishes, own ingredients and
     tasting notes, and the user's settings, as collections of a space

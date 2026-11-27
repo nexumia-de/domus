@@ -11,4 +11,5 @@ export const recordValidators: RecordValidators = {
   tastings: compiled.tastings,
   skills: compiled.skills,
   cooked: compiled.cooked,
+  favourites: compiled.favourites,
 };

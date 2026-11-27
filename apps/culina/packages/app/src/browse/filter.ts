@@ -19,6 +19,8 @@ export interface DishFilter {
   meatFree?: true;
   /** True: only dishes whose every line has an amount. */
   completeOnly?: true;
+  /** True: only the dishes marked as favourites. */
+  favouritesOnly?: true;
 }
 
 export const EMPTY_FILTER: DishFilter = {};
@@ -30,7 +32,8 @@ export const isEmptyFilter = (f: DishFilter): boolean =>
   f.course === undefined &&
   f.cuisine === undefined &&
   f.meatFree !== true &&
-  f.completeOnly !== true;
+  f.completeOnly !== true &&
+  f.favouritesOnly !== true;
 
 /** Whether an entry passes every choice of the filter. */
 export const matchesFilter = (entry: DishEntry, f: DishFilter): boolean =>
@@ -39,7 +42,8 @@ export const matchesFilter = (entry: DishEntry, f: DishFilter): boolean =>
   (f.course === undefined || entry.course === f.course) &&
   (f.cuisine === undefined || entry.cuisine === f.cuisine) &&
   (f.meatFree !== true || entry.meatFree === true) &&
-  (f.completeOnly !== true || entry.complete);
+  (f.completeOnly !== true || entry.complete) &&
+  (f.favouritesOnly !== true || entry.favourite === true);
 
 /** Trimmed, case-insensitive substring of the name; an empty query keeps everything. */
 export const matchesQuery = (entry: DishEntry, query: string): boolean => {
@@ -124,6 +128,7 @@ export const parseDishFilter = (value: unknown): DishFilter => {
     ...(cuisine === undefined ? {} : { cuisine }),
     ...(r['meatFree'] === true ? { meatFree: true as const } : {}),
     ...(r['completeOnly'] === true ? { completeOnly: true as const } : {}),
+    ...(r['favouritesOnly'] === true ? { favouritesOnly: true as const } : {}),
   };
 };
 

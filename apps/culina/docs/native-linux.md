@@ -147,7 +147,11 @@ nothing of it is judged here:
   no day in either app, so the order has nothing to place here: it is not
   offered, and a kept `not-cooked` is read as by name (`session.cookList`,
   `test/session.test.ts`). The dish page and the end of cooking have no day
-  to show for the same reason. Nothing of this was looked at on a screen. The finder's old key
+  to show for the same reason. The web app's "Favourites only" and fourth order
+  "Favourites first" (2026-11-27, issue 24) are marks in the notebook, which the
+  native app does not have: a kept `favourites` order is read as by name and a
+  kept "Favourites only" is left out, so it cannot hide every dish
+  (`session.cookList`, `session.dishFilter`, `test/session.test.ts`). Nothing of this was looked at on a screen. The finder's old key
   `culina.cook` is no longer read or written.
 - The finder's answers are asked once per stock and day (the stock list is
   replaced when the records change), not on every redraw for a status.

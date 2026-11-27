@@ -20,6 +20,7 @@ export const KINDS = {
   tastings: 'tasting',
   skills: 'skill',
   cooked: 'cooked',
+  favourites: 'favourite',
 };
 
 /** Validators that check no stored record: the recipe import format (decision ai-prompt-import). */

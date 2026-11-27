@@ -11,13 +11,16 @@
 // - the notebook's entries: its ingredients, components and dishes (every write of the notebook
 //   cache replaces the list it changes), the catalogue, and the shipped content (a copy kept from a
 //   frame reads its frame mark and parts from there).
+// - the favourite marks (`marked`): a copy of each marked dish's entry, so that a mark does not
+//   derive any entry again.
 // Nothing here is written by a screen; the arrays handed out must not be changed.
 import type { Classic, Lang } from '@culina/engine';
 import { characterLookup } from '../characters/lookup';
 import { classics, dishClassics } from '../classics/content';
 import { currentLang } from '../classics/lang';
 import { catalogueEntries } from '../classics/names';
-import { allVersions, listDishes, listIngredients, notebook } from '../notebook';
+import { allVersions, listDishes, listIngredients, markedDishes, notebook } from '../notebook';
+import { state } from '../notebook/state';
 import { entryOfClassic, entryOfDish, withKeptOrigin } from './entry';
 import type { DishEntry } from './entry';
 
@@ -85,10 +88,27 @@ const ownEntries = keptWhile(
   },
 );
 
+/**
+ * Both halves with the favourite mark added: a copy of an entry whose dish is marked, the other
+ * entries as they are. The marks are read from the notebook's favourites, which the cache replaces
+ * on every write, so a mark made or taken back derives this layer anew and no entry below it.
+ */
+const marked = keptWhile(
+  () => [ownEntries(), shippedEntries(), state.favourites, state.dishes],
+  (): readonly DishEntry[] => {
+    const { own, shipped } = markedDishes();
+    const familyOfHead = new Map(listDishes().map((d) => [d.id, d.version.family]));
+    return [...ownEntries(), ...shippedEntries()].map((e) => {
+      const on = e.origin === 'own' ? own.has(familyOfHead.get(e.id) ?? '') : shipped.has(e.id);
+      return on ? { ...e, favourite: true as const } : e;
+    });
+  },
+);
+
 const both = keptWhile(
-  () => [ownEntries(), shippedEntries()],
+  () => [marked()],
   () => {
-    const list: readonly DishEntry[] = [...ownEntries(), ...shippedEntries()];
+    const list = marked();
     return { list, byKey: new Map(list.map((e) => [e.key, e])) as ReadonlyMap<string, DishEntry> };
   },
 );

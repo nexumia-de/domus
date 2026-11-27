@@ -1,0 +1,35 @@
+{
+  "id": "dishes-ignore-a-stray-record",
+  "description": "Each marked dish is a favourite once, per origin; a record whose id is not favourite-, its origin and its dish marks nothing",
+  "inputs": {
+    "kind": "favourite_dishes",
+    "records": [
+      {
+        "id": "favourite-own-u-00000000-0000-4000-8000-000000000014",
+        "origin": "own",
+        "dish": "u-00000000-0000-4000-8000-000000000014"
+      },
+      {
+        "id": "favourite-shipped-bratkartoffeln",
+        "origin": "shipped",
+        "dish": "bratkartoffeln"
+      },
+      {
+        "id": "favourite-shipped-minestrone",
+        "origin": "shipped",
+        "dish": "pot-au-feu"
+      },
+      {
+        "id": "favourite-pot-au-feu",
+        "origin": "shipped",
+        "dish": "pot-au-feu"
+      }
+    ]
+  },
+  "expected": {
+    "own": ["u-00000000-0000-4000-8000-000000000014"],
+    "shipped": ["bratkartoffeln"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids, no real recipe; the rule is written in the description."
+}

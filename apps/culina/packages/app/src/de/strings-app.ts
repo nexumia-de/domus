@@ -207,6 +207,11 @@ export const appStringsDe: typeof appStrings = {
     cookedClear: 'Datum entfernen',
     cookedKept: (date: string): string => `Als gekocht am ${date} vermerkt.`,
     cookedCleared: 'Datum entfernt.',
+    favouriteLabel: 'Favorit',
+    favouriteAdd: 'Zu den Favoriten',
+    favouriteRemove: 'Aus den Favoriten entfernen',
+    favouriteAdded: 'Zu den Favoriten hinzugefügt.',
+    favouriteRemoved: 'Aus den Favoriten entfernt.',
     originOwn: 'In meinem Notizbuch',
     originShipped: 'Mit der App geliefert',
     fromStock: (name: string): string => `Aus dem Vorrat: ${name}`,
@@ -788,11 +793,14 @@ export const appStringsDe: typeof appStrings = {
       tastings: 'Verkostungsnotizen',
       skills: 'Lernmarkierungen',
       cooked: 'Kochdaten',
+      favourites: 'Favoriten',
     },
     skillsNotInFile:
       'Die Datei ist älter und enthält keine Lernmarkierungen; die hier als gelernt markierten Fertigkeiten bleiben.',
     cookedNotInFile:
       'Die Datei ist älter und enthält keine Kochdaten; die hier vermerkten bleiben.',
+    favouritesNotInFile:
+      'Die Datei ist älter und enthält keine Favoriten; die hier markierten bleiben.',
     modeLegend: 'Wie übernehmen',
     modeMerge: 'Mit dem Vorhandenen zusammenführen',
     modeMergeHint:
@@ -991,6 +999,7 @@ export const appStringsDe: typeof appStrings = {
     },
     meatFree: 'Ohne Fleisch und Fisch',
     completeOnly: 'Nur mit allen Mengen',
+    favouritesOnly: 'Nur Favoriten',
     reset: 'Alle zeigen',
     none: 'Kein Gericht passt zu dieser Auswahl.',
     count: (n: number): string => (n === 1 ? '1 Gericht' : `${n} Gerichte`),

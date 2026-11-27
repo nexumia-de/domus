@@ -58,6 +58,9 @@ export async function renderJsonImport(
   // Nor, before format 4, the days a dish was cooked: the days kept here stay.
   if (!held.includes('cooked'))
     sections.append(el('p', 'note cooked-not-in-file', text.cookedNotInFile));
+  // Nor, before format 5, the favourites: the favourites kept here stay.
+  if (!held.includes('favourites'))
+    sections.append(el('p', 'note favourites-not-in-file', text.favouritesNotInFile));
   if (total(file) === 0) {
     sections.append(el('p', 'note', text.nothingInFile));
     return;

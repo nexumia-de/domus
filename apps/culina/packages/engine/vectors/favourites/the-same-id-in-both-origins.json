@@ -1,0 +1,25 @@
+{
+  "id": "the-same-id-in-both-origins",
+  "description": "A slug can be the id of an example dish of the notebook and of a shipped dish: the two marks are two records and neither hides the other",
+  "inputs": {
+    "kind": "favourite_dishes",
+    "records": [
+      {
+        "id": "favourite-own-pot-au-feu",
+        "origin": "own",
+        "dish": "pot-au-feu"
+      },
+      {
+        "id": "favourite-shipped-pot-au-feu",
+        "origin": "shipped",
+        "dish": "pot-au-feu"
+      }
+    ]
+  },
+  "expected": {
+    "own": ["pot-au-feu"],
+    "shipped": ["pot-au-feu"]
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids, no real recipe; the rule is written in the description."
+}

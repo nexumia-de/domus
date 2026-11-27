@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexumia-de.github.io/culina/schemas/favourite.schema.json",
+  "title": "Favourite",
+  "description": "A dish the user marked as a favourite, own or shipped. A stored personal record, one per dish; its id is favourite-, the origin and the dish id. A mark and no more: no date, no count, no order.",
+  "type": "object",
+  "required": ["id", "origin", "dish"],
+  "additionalProperties": false,
+  "patternProperties": { "^x-": true },
+  "properties": {
+    "id": {
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "pattern": "^favourite-(own|shipped)-"
+    },
+    "origin": {
+      "description": "Where the dish lives: own (the user's notebook) or shipped (the collection the app ships). The ids of the two are not disjoint.",
+      "enum": ["own", "shipped"]
+    },
+    "dish": {
+      "description": "The id of the dish: a shipped dish's id, or the family id of an own dish (the id of its first version).",
+      "$ref": "https://nexumia-de.github.io/culina/schemas/common.schema.json#/$defs/id",
+      "type": "string",
+      "maxLength": 60
+    }
+  }
+}

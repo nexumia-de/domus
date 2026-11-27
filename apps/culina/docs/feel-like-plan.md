@@ -206,8 +206,12 @@ for the owner as written in the recommendation.
 - **Decided and built** (owner 2026-11-23, [building kit](decisions/building-kit.md),
   answer 3; built 2026-11-24): the date only, one day per own dish, no
   history; "not cooked for long" as an order of Cook
-  ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Favourites are
-  not built.
+  ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Favourites were
+  wanted by the owner on 2026-11-27 ([daily helper](decisions/daily-helper.md))
+  and built the same day, in the way the **Needs** line says: one mark per own
+  dish family or shipped dish id, a star on the dish page, "Favourites only" in
+  the one filter, the order "Favourites first", in the export since format 5
+  ([behaviour](behaviour.md#favourites)); the mark has no date and no count.
 
 ## Recommendation
 

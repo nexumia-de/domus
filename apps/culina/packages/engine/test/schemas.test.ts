@@ -40,6 +40,7 @@ const entities = [
   'classic',
   'skill',
   'cooked',
+  'favourite',
   'recipe-import',
 ];
 
@@ -216,6 +217,7 @@ describe('data-model.md and the schemas agree', () => {
     classic: 'Classic',
     skill: 'Skill state',
     cooked: 'Date a dish was cooked',
+    favourite: 'Favourite',
     'recipe-import': 'Recipe import file',
   };
   const table = (title: string): Map<string, boolean> => {

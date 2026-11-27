@@ -1,0 +1,16 @@
+{
+  "id": "record",
+  "description": "The record of a favourite has the id favourite-, the origin and the dish id; an own dish is named by its family id, a shipped dish by its slug",
+  "inputs": {
+    "kind": "favourite_record",
+    "origin": "own",
+    "dish": "u-00000000-0000-4000-8000-000000000014"
+  },
+  "expected": {
+    "id": "favourite-own-u-00000000-0000-4000-8000-000000000014",
+    "origin": "own",
+    "dish": "u-00000000-0000-4000-8000-000000000014"
+  },
+  "tolerance": 0,
+  "source": "Synthetic example: invented ids, no real recipe; the rule is written in the description."
+}

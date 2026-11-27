@@ -374,6 +374,8 @@ export {
   isCalendarDay,
 } from './cooked/cooked';
 export type { CookedRecord } from './cooked/cooked';
+export { favouriteDishes, favouriteId, favouriteRecord } from './favourites/favourites';
+export type { FavouriteOrigin, FavouriteRecord } from './favourites/favourites';
 
 export { validateClassic } from './classics/validate';
 export type { ClassicContext } from './classics/validate';

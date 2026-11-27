@@ -270,6 +270,18 @@ test('the web app\'s order "Not cooked for long" is read as by name: no own dish
   session.stop();
 });
 
+test('the web app\'s "Favourites first" and "Favourites only" are not read here: no favourites here', async () => {
+  const { session, kept } = await make();
+  kept.set(PREFS.cookList, '{"have":false,"order":"favourites"}');
+  expect(session.cookList()).toEqual({ have: false, order: 'name' });
+  kept.set(PREFS.dishes, '{"favouritesOnly":true,"course":"main"}');
+  expect(session.dishFilter()).toEqual({ course: 'main' });
+  // Control: the other choices of the filter are kept as they are.
+  kept.set(PREFS.dishes, '{"completeOnly":true}');
+  expect(session.dishFilter()).toEqual({ completeOnly: true });
+  session.stop();
+});
+
 test('a tick is a record of the collection stock as the web app writes it', async () => {
   const { session, store } = await make();
   await session.load();

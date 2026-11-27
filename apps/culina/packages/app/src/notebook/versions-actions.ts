@@ -2,11 +2,12 @@
 // Restore and Make a variation each add a new record, and the whole family goes away or comes
 // back together (a user's delete of the whole thing, not an edit of history). Tasting notes are
 // records of their own and may be added and changed.
-import type { CookedRecord } from '@culina/engine';
+import type { CookedRecord, FavouriteRecord } from '@culina/engine';
 import { fail, type Result } from '../store/types';
 import type { ComponentRecord, DishRecord, TastingRecord } from '../records';
 import { removeRecord, saveRecord } from './actions';
 import { removeCookedOf, restoreCooked } from './cooked';
+import { removeFavouriteOf, restoreFavourite } from './favourites';
 import { newId } from './ids';
 import { state, today } from './state';
 import { headOfFamily, versionChain, versionRecord, type VersionKind } from './versions';
@@ -20,6 +21,8 @@ export interface RemovedFamily {
   tastings: TastingRecord[];
   /** The day a dish was last cooked, when one was kept. */
   cooked?: CookedRecord;
+  /** The favourite mark of a dish, when it had one. */
+  favourite?: FavouriteRecord;
 }
 
 /** Adds a tasting note, or changes one that is stored (same id). */
@@ -32,7 +35,7 @@ export const removeTasting = async (id: string): Promise<Result<{ removed: Tasti
 
 /**
  * Deletes a whole component or dish: every version record, every note on one and, for a dish, the
- * day it was last cooked.
+ * day it was last cooked and its favourite mark.
  */
 export const removeFamily = async (
   kind: VersionKind,
@@ -68,6 +71,12 @@ export const removeFamily = async (
       return done;
     }
     if (done.removed !== undefined) removed.cooked = done.removed;
+    const marked = await removeFavouriteOf('own', family);
+    if (!marked.ok) {
+      await restoreFamily(removed);
+      return marked;
+    }
+    if (marked.removed !== undefined) removed.favourite = marked.removed;
   }
   return { ok: true, removed };
 };
@@ -82,7 +91,11 @@ export const restoreFamily = async (removed: RemovedFamily): Promise<Result> => 
     const done = await saveRecord('tastings', note);
     if (!done.ok) return done;
   }
-  if (removed.cooked !== undefined) return restoreCooked(removed.cooked);
+  if (removed.cooked !== undefined) {
+    const done = await restoreCooked(removed.cooked);
+    if (!done.ok) return done;
+  }
+  if (removed.favourite !== undefined) return restoreFavourite(removed.favourite);
   return { ok: true };
 };
 
