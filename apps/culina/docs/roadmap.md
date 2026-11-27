@@ -96,6 +96,11 @@ app and finds quickly what they want to cook or can cook.
    no data set with a usable licence was found
    ([plan](feel-like-plan.md), item 5), and the correction rules wait
    for a book on the [owner's list](../../../docs/owner-checks.md).
+   **Decided on 2026-11-27** ([daily helper](decisions/daily-helper.md)):
+   a "Cooking now" screen ranks every ingredient by fit in bands, when to
+   add and what the pan still needs come from two tables written by an AI
+   model and marked as judgement, and offers by role and the native app
+   follow; issues 18 to 22 and 25 under the tracking issue 26.
 9. **Finding faster.** What the question "what do I feel like" still
    needs without new data ([plan](feel-like-plan.md)): something like
    this dish is built (2026-11-24, "Dishes like this" on a dish page,
@@ -110,7 +115,8 @@ app and finds quickly what they want to cook or can cook.
    order "Not cooked for long"
    ([behaviour](behaviour.md#the-date-a-dish-was-cooked)). Open for the
    owner: whether cooking a shipped dish keeps a day (now it keeps none).
-   Favourites are not built.
+   Favourites are not built (issue 24); today's ideas on the Cook
+   screen are issue 23 ([daily helper](decisions/daily-helper.md)).
    Seasonal produce waits for a source.
 10. **Sync of the notebook.** Components, dishes, own ingredients and
     tasting notes, and the user's settings, as collections of a space

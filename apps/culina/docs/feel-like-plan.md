@@ -225,7 +225,9 @@ for the owner as written in the recommendation.
 3. **Item 7 waits for the owner's word** on the food diary rule. "Last
    tasted" from existing notes may be offered meanwhile, since it adds no
    state.
-4. **Items 5 and 6 wait for a source.** Without a data set with a licence,
+4. **Items 5 and 6 wait for a source.** (Item 5 decided otherwise by the
+   owner on 2026-11-27: a taste-effect table written by an AI model and
+   marked as judgement, issue 21, [daily helper](decisions/daily-helper.md).) Without a data set with a licence,
    they would be the project's judgement on every ingredient, which is a
    large and visible risk to trust for a small gain.
 
