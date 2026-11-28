@@ -25,6 +25,12 @@ written below, are unchanged and are the owner's open point 1 there. The
 "start screen" below is the Cook screen since 2026-11-22
 ([decision](decisions/cook-screen.md)).
 
+**Note of 2026-11-28:** the [daily flow](decisions/daily-flow.md) takes
+up items 6 and 7: a season table written by an AI model and marked as the
+app's judgement, for Germany (issue 41), and today's ideas from
+favourites, dishes that went well and dishes new but close (issues 23 and
+43). No idea draws on the stock any more.
+
 The owner's question is "what do I cook, what do I feel like?"
 ([decision](decisions/one-dish-list.md)). After the unification, one
 filter narrows every dish by origin, character, course, cuisine, "Without
@@ -185,6 +191,10 @@ for the owner as written in the recommendation.
   with a licence has been read for it.
 - **Touches**: sources and licences as in item 5. The device's language
   does not give the region; asking for one is a new setting.
+- **Decided on 2026-11-28** ([daily flow](decisions/daily-flow.md)): a
+  table written by an AI model, read by a second agent and marked as the
+  app's judgement, for one region (Germany, central Europe), no region
+  setting; issue 41.
 
 ### 7. Favourites and "not cooked for long"
 

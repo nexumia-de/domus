@@ -1,7 +1,7 @@
 ---
 type: Plan
 title: Roadmap
-description: Goals and their order for Culina under the purpose of 2026-11-23 (open the app and find what to cook, from a building kit); what is built, what is next (frames and fillings, taste profiles), what waits for the owner; work items are GitHub issues of nexumia-de/domus.
+description: Goals and their order for Culina under the daily flow of 2026-11-28 (get better and more varied, no inventory but the staples) and the purpose of 2026-11-23 (open the app and find what to cook, from a building kit); the lanes of the daily flow, what is built, what is next, what waits for the owner; work items are GitHub issues of nexumia-de/domus.
 tags: [plan, roadmap]
 generated: { by: claude-code/2.1.326, at: 2026-11-16 }
 ---
@@ -15,7 +15,25 @@ suitably/domus are closed or stayed there;
 [triage](../../../docs/decisions/issue-triage-2026-11-22.md)). The
 purpose the goals serve is in the
 [building kit decision](decisions/building-kit.md): the user opens the
-app and finds quickly what they want to cook or can cook.
+app and finds quickly what they want to cook or can cook; since
+2026-11-28 inside the [daily flow](decisions/daily-flow.md): the user
+wants to get better at cooking and more varied, and keeps no inventory
+but the staples.
+
+# The daily flow, next
+
+Decided on 2026-11-28 ([daily flow](decisions/daily-flow.md)); tracking
+issue [26](https://github.com/nexumia-de/domus/issues/26). Lanes that
+can be worked on at the same time:
+
+| Step of the flow          | Issues                                                                                          | Goal below |
+| ------------------------- | ----------------------------------------------------------------------------------------------- | ---------- |
+| Today: three ideas        | 23 today's ideas (proven, new but close, in season), 41 season table                            | 9          |
+| I have / Cooking now      | 19 the screen, 20 when to add, 21 what it still needs, 22 offers by role, 38 what it can become | 8          |
+| One learning point a dish | 42                                                                                              | 5          |
+| After cooking             | 43 the day for every dish and how it was                                                        | 9          |
+| Staples, no inventory     | 39 set up once, 40 gone onto the list and back when bought                                      | 4          |
+| Native app                | 25, last                                                                                        | 8          |
 
 # Built
 
@@ -34,14 +52,20 @@ app and finds quickly what they want to cook or can cook.
    date; what it allows, ranked by urgency and role. Since 2026-11-20
    the stock is the shared collection `stock` of a space and syncs with
    the household's other apps
-   ([decision](decisions/stock-in-spaces.md)).
+   ([decision](decisions/stock-in-spaces.md)). Since 2026-11-28 the daily
+   flow keeps no inventory ([daily flow](decisions/daily-flow.md)): dated
+   stock and "Use up first" stay as built and are not developed further;
+   the staples (set up once, issue 39; gone onto the shopping list and back
+   when bought, issue 40) are the one stock the flow reads.
 5. **Skills.** Built on 2026-11-19 after the
    [helper build plan](helper-plan.md): technique notes, handling rules
    per ingredient and substitutes with their effect, each with source
    and evidence level; a skill marked as learned is not taught again;
    135 shipped dishes cooked step by step. They are there so that the
    user can learn abilities ([helper](decisions/mentor.md)), no longer
-   the app's purpose.
+   the app's purpose. Next: one learning point per dish, the first
+   technique of its steps not yet learned (issue 42,
+   [daily flow](decisions/daily-flow.md)).
 6. **One list, one Cook screen.** Own and shipped dishes in one list
    with one filter (origin, character, course, cuisine, without meat and
    fish, only with every amount)
@@ -100,7 +124,11 @@ app and finds quickly what they want to cook or can cook.
    a "Cooking now" screen ranks every ingredient by fit in bands, when to
    add and what the pan still needs come from two tables written by an AI
    model and marked as judgement, and offers by role and the native app
-   follow; issues 18 to 22 and 25 under the tracking issue 26.
+   follow; issues 18 to 22 and 25 under the tracking issue 26. Fit in
+   bands is built (issue 18). **Added on 2026-11-28**
+   ([daily flow](decisions/daily-flow.md)): "Cooking now" is also the
+   "I have" step, nothing ticked is written to the stock, and what the
+   ticked ingredients can become is issue 38.
 9. **Finding faster.** What the question "what do I feel like" still
    needs without new data ([plan](feel-like-plan.md)): something like
    this dish is built (2026-11-24, "Dishes like this" on a dish page,
@@ -118,9 +146,13 @@ app and finds quickly what they want to cook or can cook.
    Favourites are built (2026-11-27, issue 24): a star on the page of every
    dish, own or shipped, "Favourites only" in the one dish filter, Cook's
    order "Favourites first", in the export since format 5
-   ([behaviour](behaviour.md#favourites)); today's ideas on the Cook
-   screen are issue 23, not built ([daily helper](decisions/daily-helper.md)).
-   Seasonal produce waits for a source.
+   ([behaviour](behaviour.md#favourites)). **Next, decided on 2026-11-28**
+   ([daily flow](decisions/daily-flow.md)): today's ideas without any
+   input, proven, new but close, in season, and none from the stock
+   (issue 23); a season table written by an AI model and marked, for
+   Germany (issue 41); shipped dishes keep the day they were cooked and
+   every dish a short verdict, the latest only (issue 43), which answers
+   the owner's question above.
 10. **Sync of the notebook.** Components, dishes, own ingredients and
     tasting notes, and the user's settings, as collections of a space
     like the stock ([stock in spaces](decisions/stock-in-spaces.md)).

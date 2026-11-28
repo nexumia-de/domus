@@ -15,7 +15,7 @@ there.
 | `packages/list`  | the list package (name provisional): the shopping list's entry and rules, pure          |
 | `packages/gjs`   | gjs, what the native Linux apps share: Web Crypto subset, libsoup fetch, files, tooling |
 | `apps/mixtura`   | Mixtura (Drink Builder), a workbench for mixed drinks, with a native Linux app          |
-| `apps/culina`    | Culina (Cook's Workbench), finding what to cook from a building kit, with a notebook    |
+| `apps/culina`    | Culina (Cook's Workbench), the daily driver for cooking better and more varied          |
 | `apps/emptio`    | Emptio (Shopping List), the household's shopping list, with a native Linux app          |
 | `apps/domus`     | Household (`@domus/app`): the app at the root of the address, where sync is set up      |
 | `scripts`        | checks and the site build that span the parts                                           |
