@@ -10,7 +10,7 @@ links. Change history is in [log.md](log.md).
 
 # Plan
 
-- [Roadmap](roadmap.md) - What is built and what is next under the purpose of 2026-11-23: the building kit (frames and fillings), taste profiles, finding faster, sync of the notebook, the hand-over to Emptio; what waits for the owner.
+- [Roadmap](roadmap.md) - What is built and what is next under the daily flow of 2026-11-28 and the purpose of 2026-11-23: the lanes of the daily flow with their issues, the building kit (frames and fillings), taste profiles, finding faster, sync of the notebook, the hand-over to Emptio; what waits for the owner.
 - [Helper build plan](helper-plan.md) - Carried out on 2026-11-19, kept as the record of that work: the owner's answers, the four stages, the data that is added, the work packages with order and model, the checks and the end: classics of four countries with their techniques, cookable step by step.
 - [What "what do I feel like" still needs](feel-like-plan.md) - After one dish list: course and cuisine coverage, the filter with the stock, something like this dish, time and effort, taste effects, seasonal produce, favourites and history, each with its data, cost and the rule it touches; the recommendation.
 - [Deployment](deployment.md) - Replaced on 2026-11-19: Culina is served from domus.nexumia.de/culina/ with the other apps and culina.nexumia.de redirects there; the page keeps the earlier deploy of its own on Cloudflare Workers static assets and how to serve the same folder elsewhere.
@@ -57,6 +57,7 @@ links. Change history is in [log.md](log.md).
 - [App name](decisions/app-name.md) - Code name Culina, visible name Cook's Workbench since 2026-11-23 (Cook's Notebook before).
 - [After Mixtura](decisions/after-mixtura.md) - Culina is the second app on the engine Mixtura builds first, as a PWA with own local data.
 - [Shared model](decisions/shared-model.md) - Accepted: the general model comes from nexumia-de/materia at an exact version tag; Culina's engine adds the kitchen rules.
+- [The daily flow](decisions/daily-flow.md) - Decided 2026-11-28: Culina is the daily driver of a cook who wants to get better and more varied; today's ideas without input (proven, new but close, in season), "I have" and "Cooking now" with what it can become, one learning point per dish, a short verdict after cooking; no inventory but the staples, set up once; issues 19 to 23, 25 and 38 to 43 under issue 26.
 - [The daily helper](decisions/daily-helper.md) - Decided 2026-11-27: inspiration and what fits while cooking; "Cooking now" with fit in bands and the reason, stage and taste-effect tables written by an AI model and marked, today's ideas, favourites, offers by role, the native app; issues 18 to 26.
 - [Prompt import](decisions/ai-prompt-import.md) - Decided 2026-11-22: a prompt for the user's own language model writes recipes in a small JSON import format the user pastes; Culina checks and matches with confirmation, runs no model itself; Cooklang sections become components of a dish.
 - [Cooklang](decisions/cooklang.md) - Decided: own JSON as the lossless format; Cooklang export and import, where on import the user supplies what the file cannot carry.

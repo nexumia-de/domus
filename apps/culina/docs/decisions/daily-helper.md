@@ -10,7 +10,10 @@ sources:
 
 # The daily helper
 
-**Status: decided by the owner on 2026-11-27.**
+**Status: decided by the owner on 2026-11-27; extended on 2026-11-28 by
+the [daily flow](daily-flow.md)**, which changes today's ideas (issue 23:
+no idea from the stock; proven, new but close, in season) and adds issues
+38 to 43 under the tracking issue 26.
 
 ## Context
 

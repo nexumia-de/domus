@@ -10,7 +10,11 @@ sources:
 
 # Open the app and find what to cook, from a building kit
 
-**Status: decided by the owner on 2026-11-23.** The points under
+**Status: decided by the owner on 2026-11-23; sharpened on 2026-11-28 by
+the [daily flow](daily-flow.md)**: the purpose stands inside a daily flow
+for a cook who wants to get better and more varied, the kit is the way to
+vary a dish, and no inventory is kept but the staples, so "Use up first"
+no longer serves the purpose as named under "What follows". The points under
 "Decision" are the owner's words read closely; what the agent concluded
 from them is under "What follows" and marked as the agent's; what nobody
 decided is under "Open, for the owner".
