@@ -1,1 +1,0 @@
-On a frame's page you choose what fills a slot that has alternatives (the beans in place of the chicken), and the ingredients, the method, the source, the meat line and cooking step by step follow the choice; Cook's list stands in groups, the frames first, then by course, each with its count.
