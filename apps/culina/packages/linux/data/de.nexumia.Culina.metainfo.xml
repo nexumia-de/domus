@@ -43,7 +43,41 @@
     <control>keyboard</control>
     <control>touch</control>
   </supports>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Choose what to cook from the classics</caption>
+      <image>https://github.com/nexumia-de/domus/releases/download/culina-v0.2.0/dishes-phone-light.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Choose what to cook from the classics</caption>
+      <image>https://github.com/nexumia-de/domus/releases/download/culina-v0.2.0/dishes-desktop-light.png</image>
+    </screenshot>
+  </screenshots>
   <releases>
+    <release version="0.2.0" date="2026-11-28">
+      <description>
+        <ul>
+          <li>Two more frames: a rice bowl with a choice of rice, main, vegetable, pickle and sauce, and a clear vegetable soup with semolina dumplings or egg custard, with six recipes written for them.</li>
+          <li>The first page is Cook: every dish in one list under the filter, with a switch "Only with what I have" (only the dishes the stock covers completely) and the order "Use up first" (the dishes that use an item with a use-by date set in the web app come first), and the stock in the bottom bar; the page "What can I cook" with its choice "lacking at most" is gone, as in the web app.</li>
+          <li>The preferences can create a space, kept in step through a GitHub repository or a WebDAV folder, and leave a space after a confirmation that says what is deleted on this device and what stays in the storage.</li>
+          <li>The first page lists every dish at once with the filter "what you feel like" (character, course, cuisine, without meat and fish, only with every amount) in place of the pages by country.</li>
+          <li>On a frame's page you choose what fills a slot that has alternatives (the beans in place of the chicken), and the ingredients, the method, the source, the meat line and cooking step by step follow the choice; Cook's list stands in groups, the frames first, then by course, each with its count.</li>
+          <li>Three more frames (miso ramen, burrito, risotto) and five recipes for them; a frame is listed and shown with the recipe that fills each slot.</li>
+          <li>Eight dishes are frames the app put together from its own recipes (tacos, pizza, plates of several cuisines); the source of such a dish names each part and says that nobody cooked the combination. Ingredients are named as a cook writes them ("Olive oil", "Wasser"), and a recipe with water can be listed with its water as an ingredient.</li>
+          <li>A dish that is the app's own recipe says so in place of a source: written by an AI model, read a second time, cooked by nobody; dishes of nine more cuisines can be listed and filtered.</li>
+          <li>Report a Problem… in the main menu sends a problem or an idea as a GitHub issue, with your own token or through the filled-in issue form in the browser; About links to that form.</li>
+          <li>The order "Not cooked for long" of the web app, which sorts the dishes of one's own notebook, is read here as "By name": this app lists the shipped dishes only.</li>
+          <li>The favourites of the web app ("Favourites only", the order "Favourites first") are read here as no choice and as "By name": the favourites are marks in the notebook, which this app does not have.</li>
+          <li>The app is called Cook's Workbench (before: Cook's Notebook). Files exported before keep working.</li>
+          <li>About and the app's store page name the project's new address, github.com/nexumia-de/domus; Report a Problem opens its issues there.</li>
+          <li>A shipped sauce that is a base (mayonnaise, alioli, a white sauce) is no longer in the list of dishes, as in the web app: it is a part of dishes, not a dish.</li>
+          <li>The app's page in the software centre shows screenshots.</li>
+          <li>Cook's list, its filter and "Only with what I have" judge a frame by the filling you chose on its page, not by the one it ships with.</li>
+          <li>The text fields of the preferences take the keyboard on a tap of a finger only, so a drag that starts on one scrolls the preferences; a mouse works as before. Not tried on a phone.</li>
+          <li>A cooked dish is no longer called "Uncooked" because its heat steps are written as plain actions (heat, cook, melt): pizza, tacos, tamagoyaki and 17 more lose the mark and drop out of that filter; the raw salads keep it.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-11-21">
       <description>
         <p>Cook's Notebook is now also an app for Linux phones and desktops: browse the classics by country, set the portions, cook step by step and see what you can cook from your stock.</p>
